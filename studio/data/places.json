@@ -1,0 +1,26 @@
+{
+ "note": "Stable place IDs shared by the plan viewer and the 3D studio (presentation only, 11/20). The viewer's room records carry the same IDs. A shot is the studio camera view for the place; 'at' is the room center in studio plan inches (used when there is no shot).",
+ "places": {
+  "ff-kitchen":     { "label": "Kitchen", "level": "first", "shot": "ff-kitchen", "at": [127, 137] },
+  "ff-living":      { "label": "Living / dining", "level": "first", "shot": "ff-living", "at": [326, 258] },
+  "ff-foyer":       { "label": "Foyer", "level": "first", "shot": "ff-foyer", "at": [393, 274] },
+  "ff-hall":        { "label": "Hall and laundry", "level": "first", "shot": null, "at": [318, 175] },
+  "ff-bed113":      { "label": "Bed 113", "level": "first", "shot": null, "at": [314, 99] },
+  "ff-hallbath":    { "label": "Hall bath", "level": "first", "shot": "ff-hallbath", "at": [414, 58] },
+  "ff-bed132":      { "label": "Bed 132", "level": "first", "shot": null, "at": [502, 104] },
+  "ff-masterbath":  { "label": "Master bath", "level": "first", "shot": "ff-mbath-vanity", "at": [547, 205] },
+  "ff-master":      { "label": "Master bedroom", "level": "first", "shot": null, "at": [535, 273] },
+  "ff-bed121":      { "label": "Bed 121", "level": "first", "shot": null, "at": [42, 317] },
+  "ll-family":      { "label": "Family room", "level": "lower", "shot": "fam-brick", "at": [198, 270] },
+  "ll-commonbath":  { "label": "Common bath / mudroom", "level": "lower", "shot": "ll-commonbath", "at": [108, 44] },
+  "ll-utility":     { "label": "Common utility room", "level": "lower", "shot": null, "at": [93, 132] },
+  "ll-wetbar":      { "label": "Wet bar", "level": "lower", "shot": null, "at": [105, 197] },
+  "ll-commonhall":  { "label": "Common hall, stair, vestibule", "level": "lower", "shot": "ll-commonhall", "at": [166, 172] },
+  "adu-living":     { "label": "Apartment living", "level": "lower", "shot": "adu-living", "at": [325, 23] },
+  "adu-kitchen":    { "label": "Apartment kitchen", "level": "lower", "shot": "adu-kitchen", "at": [489, 81] },
+  "adu-bath":       { "label": "Apartment bath", "level": "lower", "shot": "adu-bath", "at": [572, 153] },
+  "adu-closet":     { "label": "Apartment bedroom closet", "level": "lower", "shot": null, "at": [572, 201] },
+  "adu-office":     { "label": "Apartment office", "level": "lower", "shot": "adu-office", "at": [421, 262] },
+  "adu-bedroom":    { "label": "Apartment bedroom", "level": "lower", "shot": "adu-bedroom", "at": [552, 302] }
+ }
+}

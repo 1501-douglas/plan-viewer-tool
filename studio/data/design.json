@@ -1,0 +1,1119 @@
+{
+ "meta": {
+  "note": "Design alternatives and camera shots. Everything here is an owner-review concept, not an approved selection. Colors are screen approximations, not paint or product codes.",
+  "direction": "Warm modern (owner brief, 11/18): warm whites and soft neutrals, sand and taupe, natural wood, natural-looking stone, matte or low-sheen finishes, restrained black or bronze hardware, simple trim.",
+  "defaultScheme": "W",
+  "defaultExtra": {
+   "tvwall": "B"
+  }
+ },
+ "zones": {
+  "adu": {
+   "name": "ADU",
+   "level": "lower",
+   "rects": [
+    [
+     236.5,
+     2,
+     387,
+     191
+    ],
+    [
+     372,
+     191,
+     115,
+     180
+    ],
+    [
+     484,
+     191,
+     140,
+     221
+    ]
+   ],
+   "note": "Footprint of the ADU floors in the model (plan inches). Shared walls on its edge take the ADU paint on both faces in this version."
+  }
+ },
+ "options": {
+  "floor": {
+   "label": "Floor (LVP)",
+   "items": {
+    "base": {
+     "name": "As before (mid oak)",
+     "wood": [
+      202,
+      174,
+      138
+     ],
+     "var": 14
+    },
+    "lightOak": {
+     "name": "Light white oak",
+     "wood": [
+      214,
+      190,
+      156
+     ],
+     "var": 10
+    },
+    "naturalOak": {
+     "name": "Natural oak",
+     "wood": [
+      190,
+      150,
+      108
+     ],
+     "var": 16
+    },
+    "greigeOak": {
+     "name": "Greige oak",
+     "wood": [
+      184,
+      168,
+      146
+     ],
+     "var": 9
+    },
+    "walnutTone": {
+     "name": "Warm walnut tone",
+     "wood": [
+      140,
+      100,
+      70
+     ],
+     "var": 14
+    },
+    "whiteOakWide": {
+     "name": "Natural white oak, wide plank, matte",
+     "wood": [
+      208,
+      184,
+      150
+     ],
+     "var": 9
+    }
+   }
+  },
+  "wall": {
+   "label": "Wall paint",
+   "items": {
+    "base": {
+     "name": "As before (bright white)",
+     "color": "#fafaf8"
+    },
+    "warmWhite": {
+     "name": "Warm white",
+     "color": "#f3eee5"
+    },
+    "softSand": {
+     "name": "Soft sand",
+     "color": "#e8dfd0"
+    },
+    "greige": {
+     "name": "Light greige",
+     "color": "#e2dcd2"
+    },
+    "taupeWhite": {
+     "name": "Taupe white",
+     "color": "#e9e2d8"
+    },
+    "alabaster": {
+     "name": "Creamy off-white (like SW Alabaster)",
+     "color": "#ece6da"
+    }
+   }
+  },
+  "cab": {
+   "label": "Cabinets",
+   "items": {
+    "base": {
+     "name": "As before (white)",
+     "color": "#f4f2ec",
+     "rough": 0.55
+    },
+    "warmWhiteMatte": {
+     "name": "Warm white, matte slab",
+     "color": "#eee8dd",
+     "rough": 0.75
+    },
+    "whiteOak": {
+     "name": "White oak, slab",
+     "color": "#c9a77c",
+     "rough": 0.65
+    },
+    "walnut": {
+     "name": "Walnut, slab",
+     "color": "#6f4c36",
+     "rough": 0.6
+    },
+    "mushroom": {
+     "name": "Mushroom taupe, matte",
+     "color": "#b3a593",
+     "rough": 0.75
+    }
+   }
+  },
+  "counter": {
+   "label": "Counter",
+   "items": {
+    "base": {
+     "name": "As before (white)",
+     "color": "#f1f0ec",
+     "rough": 0.35
+    },
+    "softWhiteQuartz": {
+     "name": "Warm white quartz, soft taupe veining",
+     "color": "#eeeae3",
+     "rough": 0.3,
+     "vein": true
+    },
+    "limestoneLook": {
+     "name": "Honed limestone look",
+     "color": "#d8cfbf",
+     "rough": 0.7
+    },
+    "warmConcrete": {
+     "name": "Warm concrete look",
+     "color": "#bdb4a7",
+     "rough": 0.8
+    },
+    "darkSoapstone": {
+     "name": "Soapstone look",
+     "color": "#4a4c4b",
+     "rough": 0.6
+    }
+   }
+  },
+  "hw": {
+   "label": "Hardware",
+   "items": {
+    "base": {
+     "name": "As before (dark gray)",
+     "color": "#444444",
+     "metal": 0.7,
+     "rough": 0.3
+    },
+    "matteBlack": {
+     "name": "Matte black",
+     "color": "#232323",
+     "metal": 0.2,
+     "rough": 0.6
+    },
+    "bronze": {
+     "name": "Brushed bronze",
+     "color": "#7d5f3f",
+     "metal": 0.8,
+     "rough": 0.4
+    },
+    "agedBrass": {
+     "name": "Aged brass",
+     "color": "#a3824e",
+     "metal": 0.85,
+     "rough": 0.35
+    }
+   }
+  },
+  "trim": {
+   "label": "Trim and doors",
+   "items": {
+    "base": {
+     "name": "As before (white)",
+     "color": "#ffffff"
+    },
+    "warmWhite": {
+     "name": "Warm white",
+     "color": "#f5f1ea"
+    },
+    "matchWall": {
+     "name": "Match the wall",
+     "color": null
+    }
+   }
+  },
+  "tvwall": {
+   "label": "TV wall (concept)",
+   "items": {
+    "none": {
+     "name": "As on the owner sheet",
+     "color": "#c9c2b8"
+    },
+    "A": {
+     "name": "A: full-length console across the seam, walnut",
+     "color": "#6e4f3a"
+    },
+    "Ab": {
+     "name": "A: full-length console across the seam, black",
+     "color": "#232323"
+    },
+    "B": {
+     "name": "B: 84 in walnut console, TV centered on the brick (chosen 11/18)",
+     "color": "#6e4f3a"
+    }
+   }
+  },
+  "scope": {
+   "label": "Applies to",
+   "items": {
+    "adu": {
+     "name": "ADU only",
+     "color": "#ffffff"
+    },
+    "house": {
+     "name": "Whole house (both levels)",
+     "color": "#ffffff"
+    }
+   }
+  },
+  "soft": {
+   "label": "Upholstery",
+   "items": {
+    "base": {
+     "name": "As before (slate gray)",
+     "color": "#8d97a1"
+    },
+    "oatmeal": {
+     "name": "Oatmeal",
+     "color": "#cbbfac"
+    },
+    "sand": {
+     "name": "Textured sand",
+     "color": "#c3ad8e"
+    }
+   }
+  },
+  "tile": {
+   "label": "Bath floor tile",
+   "items": {
+    "base": {
+     "name": "As before (light gray)",
+     "color": "#e4e6e6"
+    },
+    "warmGreige": {
+     "name": "Warm greige (bath finish direction, 10/10)",
+     "color": "#cdc4b6"
+    },
+    "limestone": {
+     "name": "Warm limestone look",
+     "color": "#e6dccb"
+    }
+   }
+  },
+  "famuse": {
+   "label": "Family room use (concept)",
+   "items": {
+    "open": {
+     "name": "Family room (as planned)",
+     "color": "#c9c2b8"
+    },
+    "studio": {
+     "name": "Future guest-studio concept (not a sleeping room until an escape window is installed)",
+     "color": "#8fa3b5"
+    }
+   }
+  },
+  "brick": {
+   "label": "Brick finish (concept, both faces)",
+   "items": {
+    "natural": {
+     "name": "Natural red, untouched (decided 11/18)",
+     "color": "#a0614a"
+    },
+    "limeLight": {
+     "name": "Light limewash, warm white (red shows through)",
+     "color": "#d8bfae"
+    },
+    "limeFull": {
+     "name": "Full limewash, warm white",
+     "color": "#ebe3d6"
+    },
+    "painted": {
+     "name": "Painted, mineral paint, warm white",
+     "color": "#e8e1d4"
+    },
+    "stain": {
+     "name": "Mineral stain, soft umber",
+     "color": "#76523f"
+    }
+   }
+  },
+  "staging": {
+   "label": "Staging (art, mirrors, lamps, plants)",
+   "items": {
+    "on": {
+     "name": "Staged",
+     "color": "#c98f6a"
+    },
+    "off": {
+     "name": "Not staged (clean finish view)",
+     "color": "#ffffff"
+    }
+   }
+  },
+  "foyer": {
+   "label": "Foyer (concept)",
+   "items": {
+    "A": {
+     "name": "A: as planned (shoe cabinet and hooks)",
+     "color": "#f4f2ec"
+    },
+    "B": {
+     "name": "B: slim console, round mirror, lamp, runner",
+     "color": "#6e4f3a"
+    },
+    "C": {
+     "name": "C: drop-zone bench, hooks and shelf",
+     "color": "#c9a77c"
+    }
+   }
+  }
+ },
+ "schemes": [
+  {
+   "id": "base",
+   "name": "As before",
+   "note": "The detail-pass page's colors, kept for comparison.",
+   "pick": {
+    "floor": "base",
+    "wall": "base",
+    "cab": "base",
+    "counter": "base",
+    "hw": "base",
+    "trim": "base",
+    "scope": "adu",
+    "soft": "base",
+    "tile": "base"
+   }
+  },
+  {
+   "id": "A",
+   "name": "A: Light oak and warm white",
+   "note": "Brightest option for a basement: light floor, warm white walls and cabinets, soft white counter, matte black pulls.",
+   "pick": {
+    "floor": "lightOak",
+    "wall": "warmWhite",
+    "cab": "warmWhiteMatte",
+    "counter": "softWhiteQuartz",
+    "hw": "matteBlack",
+    "trim": "warmWhite",
+    "scope": "adu",
+    "soft": "base",
+    "tile": "base"
+   }
+  },
+  {
+   "id": "B",
+   "name": "B: Walnut and sand",
+   "note": "Warmer and darker: walnut cabinets against sand walls, bronze pulls. Reads cozy; needs good lighting in a 7'-6\" to 7'-9\" basement.",
+   "pick": {
+    "floor": "naturalOak",
+    "wall": "softSand",
+    "cab": "walnut",
+    "counter": "softWhiteQuartz",
+    "hw": "bronze",
+    "trim": "warmWhite",
+    "scope": "adu",
+    "soft": "base",
+    "tile": "base"
+   }
+  },
+  {
+   "id": "C",
+   "name": "C: Greige oak and taupe",
+   "note": "Quiet, low-contrast: greige floor, taupe cabinets, limestone-look counter, aged brass. Hides wear well for rentals.",
+   "pick": {
+    "floor": "greigeOak",
+    "wall": "taupeWhite",
+    "cab": "mushroom",
+    "counter": "limestoneLook",
+    "hw": "agedBrass",
+    "trim": "matchWall",
+    "scope": "adu",
+    "soft": "base",
+    "tile": "base"
+   }
+  },
+  {
+   "id": "W",
+   "name": "W: Whole-house warm modern (working concept)",
+   "note": "Working warm-modern concept for both levels, from the owner brief (11/18). The owner adopted this warm-modern direction on 11/19, choosing the low-risk options. Decided by the owner: the metal rule (matte black outside the baths, brushed nickel in them); SW Alabaster as the working wall paint, final after a sample check; TV wall B; the round dining table. Kept from earlier decisions: the bath floor formats, the owned white shaker first-floor kitchen, the natural brick. Everything else shown (white oak LVP, white oak ADU cabinets, warm white quartz, matte black pulls, oatmeal upholstery, white oak stair treads) is an unselected concept: no product is chosen. See the whole-house finish palette record for the state of each item.",
+   "pick": {
+    "floor": "whiteOakWide",
+    "wall": "alabaster",
+    "cab": "whiteOak",
+    "counter": "softWhiteQuartz",
+    "hw": "matteBlack",
+    "trim": "matchWall",
+    "scope": "house",
+    "soft": "oatmeal",
+    "tile": "warmGreige"
+   }
+  }
+ ],
+ "shots": [
+  {
+   "id": "adu-entry",
+   "name": "1. ADU entry, looking in",
+   "level": "lower",
+   "x": 256,
+   "y": 30,
+   "eye": 60,
+   "yaw": -1.78,
+   "pitch": -0.06,
+   "fov": 68
+  },
+  {
+   "id": "adu-living",
+   "name": "2. Living area toward the kitchen",
+   "level": "lower",
+   "x": 262,
+   "y": 172,
+   "eye": 60,
+   "yaw": -0.95,
+   "pitch": -0.05,
+   "fov": 68
+  },
+  {
+   "id": "adu-kitchen",
+   "name": "3. Kitchen run and peninsula",
+   "level": "lower",
+   "x": 566,
+   "y": 88,
+   "eye": 60,
+   "yaw": 1.05,
+   "pitch": -0.1,
+   "fov": 68
+  },
+  {
+   "id": "adu-pantry",
+   "name": "4. Pantry wall and coffee niche",
+   "level": "lower",
+   "x": 556,
+   "y": 40,
+   "eye": 60,
+   "yaw": 3.14159,
+   "pitch": -0.1,
+   "fov": 80
+  },
+  {
+   "id": "adu-bedroom",
+   "name": "5. Bedroom from the door",
+   "level": "lower",
+   "x": 507,
+   "y": 228,
+   "eye": 60,
+   "yaw": -2.45,
+   "pitch": -0.1,
+   "fov": 68
+  },
+  {
+   "id": "adu-office",
+   "name": "6. Office",
+   "level": "lower",
+   "x": 395,
+   "y": 206,
+   "eye": 60,
+   "yaw": -2.6,
+   "pitch": -0.08,
+   "fov": 68
+  },
+  {
+   "id": "adu-tvwall",
+   "name": "7. TV wall from the sofa (seated)",
+   "level": "lower",
+   "x": 318,
+   "y": 100,
+   "eye": 42,
+   "yaw": 3.14159,
+   "pitch": -0.02,
+   "fov": 68
+  },
+  {
+   "id": "fam-brick",
+   "name": "8. Family room: the brick wall (other face of the ADU TV wall)",
+   "level": "lower",
+   "x": 300,
+   "y": 335,
+   "eye": 60,
+   "yaw": 0.0,
+   "pitch": 0.02,
+   "fov": 70
+  },
+  {
+   "id": "ff-living",
+   "name": "9. First floor: living room toward the feature wall",
+   "level": "first",
+   "x": 360,
+   "y": 330,
+   "eye": 60,
+   "yaw": 1.5708,
+   "pitch": -0.04,
+   "fov": 70
+  },
+  {
+   "id": "ff-kitchen",
+   "name": "10. First floor: kitchen",
+   "level": "first",
+   "x": 140,
+   "y": 152,
+   "eye": 60,
+   "yaw": 0.64,
+   "pitch": -0.1,
+   "fov": 70
+  },
+  {
+   "id": "ff-fridgewall",
+   "name": "10b. First floor: fridge wall, base and upper",
+   "level": "first",
+   "x": 118,
+   "y": 118,
+   "eye": 60,
+   "yaw": -1.5708,
+   "pitch": -0.1,
+   "fov": 72
+  },
+  {
+   "id": "ff-hallbath",
+   "name": "11. First floor: hall bath",
+   "level": "first",
+   "x": 420,
+   "y": 104,
+   "eye": 60,
+   "yaw": 0.0,
+   "pitch": -0.12,
+   "fov": 78
+  },
+  {
+   "id": "ff-masterbath",
+   "name": "12. First floor: master bath",
+   "level": "first",
+   "x": 540,
+   "y": 205,
+   "eye": 60,
+   "yaw": -1.19,
+   "pitch": -0.12,
+   "fov": 80
+  },
+  {
+   "id": "ff-masterbath-w",
+   "name": "12b. Master bath: wainscot and vanity side",
+   "level": "first",
+   "x": 568,
+   "y": 215,
+   "eye": 60,
+   "yaw": 0.85,
+   "pitch": -0.15,
+   "fov": 80
+  },
+  {
+   "id": "ll-commonbath",
+   "name": "13. Lower level: common bath / mudroom",
+   "level": "lower",
+   "x": 82,
+   "y": 40,
+   "eye": 60,
+   "yaw": -2.36,
+   "pitch": -0.12,
+   "fov": 78
+  },
+  {
+   "id": "adu-bath",
+   "name": "14. ADU bath",
+   "level": "lower",
+   "x": 540,
+   "y": 172,
+   "eye": 60,
+   "yaw": -1.45,
+   "pitch": -0.12,
+   "fov": 80
+  },
+  {
+   "id": "stair",
+   "name": "15. Stair, from the bottom landing looking up",
+   "level": "lower",
+   "x": 218,
+   "y": 184,
+   "eye": 62,
+   "yaw": 0,
+   "pitch": 0.32,
+   "fov": 75
+  },
+  {
+   "id": "fam-studio",
+   "name": "16. Family room from the west end (shows the studio concept when picked)",
+   "level": "lower",
+   "x": 40,
+   "y": 300,
+   "eye": 60,
+   "yaw": -1.4,
+   "pitch": -0.08,
+   "fov": 72
+  },
+  {
+   "id": "ff-foyer",
+   "name": "17. Foyer from the front door",
+   "level": "first",
+   "x": 396,
+   "y": 350,
+   "eye": 62,
+   "yaw": 0.12,
+   "pitch": -0.08,
+   "fov": 72
+  },
+  {
+   "id": "stair-top",
+   "name": "18. Stair, from the top looking down",
+   "level": "first",
+   "x": 213,
+   "y": 30,
+   "eye": 63,
+   "yaw": 3.14159,
+   "pitch": -0.42,
+   "fov": 75
+  },
+  {
+   "id": "ff-mbath-vanity",
+   "name": "19. Master bath: 60 in double vanity (owner decision 11/19)",
+   "level": "first",
+   "x": 590,
+   "y": 238,
+   "eye": 60,
+   "yaw": 1.2,
+   "pitch": -0.12,
+   "fov": 80
+  },
+  {
+   "id": "ll-commonhall",
+   "name": "20. Lower level: common hall toward the new rated wall and door",
+   "level": "lower",
+   "x": 170,
+   "y": 75,
+   "eye": 60,
+   "yaw": 3.14159,
+   "pitch": -0.05,
+   "fov": 75
+  }
+ ],
+ "features": {
+  "tvwall": {
+   "A": [
+    {
+     "type": "console",
+     "x": 249,
+     "y": 176,
+     "w": 132,
+     "d": 15,
+     "z": 8,
+     "h": 14,
+     "mat": "walnut",
+     "label": "Floating media console, walnut, 132 in (concept)"
+    },
+    {
+     "type": "box",
+     "x": 371.25,
+     "y": 190.2,
+     "w": 1.5,
+     "d": 0.8,
+     "z": 0,
+     "h": 93,
+     "mat": "black",
+     "label": "Seam trim, 1.5 in matte black, where the brick meets the drywall (concept)"
+    },
+    {
+     "type": "box",
+     "x": 316.8,
+     "y": 189.6,
+     "w": 2,
+     "d": 1.2,
+     "z": 22,
+     "h": 5,
+     "mat": "raceway",
+     "label": "Cord raceway behind the TV, down into the console (surface-mounted on the brick, no cutting)"
+    }
+   ],
+   "Ab": [
+    {
+     "type": "console",
+     "x": 249,
+     "y": 176,
+     "w": 132,
+     "d": 15,
+     "z": 8,
+     "h": 14,
+     "mat": "black",
+     "label": "Floating media console, matte black, 132 in (concept)"
+    },
+    {
+     "type": "box",
+     "x": 371.25,
+     "y": 190.2,
+     "w": 1.5,
+     "d": 0.8,
+     "z": 0,
+     "h": 93,
+     "mat": "black",
+     "label": "Seam trim, 1.5 in matte black, where the brick meets the drywall (concept)"
+    },
+    {
+     "type": "box",
+     "x": 316.8,
+     "y": 189.6,
+     "w": 2,
+     "d": 1.2,
+     "z": 22,
+     "h": 5,
+     "mat": "raceway",
+     "label": "Cord raceway behind the TV, down into the console (surface-mounted on the brick, no cutting)"
+    }
+   ],
+   "B": [
+    {
+     "type": "box",
+     "x": 268.5,
+     "y": 179,
+     "w": 78,
+     "d": 10,
+     "z": 0,
+     "h": 4,
+     "mat": "gap",
+     "label": "Recessed base (toe kick), 4 in high, set back 3 in (TV wall B)"
+    },
+    {
+     "type": "console",
+     "x": 265.5,
+     "y": 175,
+     "w": 84,
+     "d": 16,
+     "z": 4,
+     "h": 18,
+     "mat": "walnut",
+     "label": "Media console B: 84 x 16 x 22 in high, walnut, floor-supported on a recessed base, centered on the brick"
+    },
+    {
+     "type": "tvpanel",
+     "x": 279.0,
+     "y": 188.6,
+     "w": 57,
+     "d": 1.6,
+     "z": 26,
+     "h": 33,
+     "mat": "black",
+     "label": "65 in TV (about 57 x 33 in), centered on the brick, center 42 in up (TV wall B)"
+    },
+    {
+     "type": "box",
+     "x": 371.25,
+     "y": 190.2,
+     "w": 1.5,
+     "d": 0.8,
+     "z": 0,
+     "h": 93,
+     "mat": "black",
+     "label": "Seam trim, 1.5 in matte black, where the brick meets the drywall"
+    },
+    {
+     "type": "box",
+     "x": 306.5,
+     "y": 189.4,
+     "w": 2,
+     "d": 1.2,
+     "z": 22,
+     "h": 5,
+     "mat": "raceway",
+     "label": "Cord raceway, about 4 in visible, TV down into the console (surface-mounted, no cutting)"
+    },
+    {
+     "type": "box",
+     "x": 305.25,
+     "y": 189.6,
+     "w": 4.5,
+     "d": 1.4,
+     "z": 10,
+     "h": 8,
+     "mat": "black",
+     "label": "Media box behind the console (2-gang surface box: receptacles plus data), center about 14 in up; hidden by the console"
+    },
+    {
+     "type": "box",
+     "x": 349.5,
+     "y": 189.6,
+     "w": 22.5,
+     "d": 1.2,
+     "z": 1,
+     "h": 1.5,
+     "mat": "raceway",
+     "label": "Feed raceway at the floor line, from the wall stub at the seam to the console, about 22 in visible (electrician to confirm route)"
+    }
+   ]
+  },
+  "info": {
+   "status": "owner concept",
+   "why": "From the ADU TV feature wall brief (11/18). Owner chose B on 11/18 (night). The console, TV position, media box and feed route rest on four working assumptions until the site visit: brick about 10'-9\" long, about 12 in of solid wall before the pocket-door wall, the brick about 1/2 to 1 in proud of the drywall, and solid brick. Sizes are placeholders until products are chosen.",
+   "source": "TV wall brief 11/18; owner sheet L-2/LP-2; ADU design record S10",
+   "fix": "Owner picks a version; measure the brick length, the seam and the pocket-wall edge (worksheet row L-24 plus a new row for the seam)."
+  },
+  "hides": {
+   "tvwall": {
+    "B": [
+     "65\" TV"
+    ]
+   },
+   "famuse": {
+    "studio": [
+     "75\" TV",
+     "low linear electric fireplace",
+     "sofa 90 x 38",
+     "coffee table (family room)"
+    ]
+   }
+  },
+  "famuse": {
+   "studio": [
+    {
+     "type": "furn",
+     "label": "Sofa 90 x 38, moved north to face the TV (studio concept)",
+     "parts": [
+      {
+       "x": 220,
+       "y": 203,
+       "w": 38,
+       "d": 90,
+       "h": 32,
+       "z": 0,
+       "kind": "sofa",
+       "label": "sofa"
+      }
+     ]
+    },
+    {
+     "type": "furn",
+     "label": "Coffee table, moved north clear of the bed (studio concept)",
+     "parts": [
+      {
+       "x": 272,
+       "y": 228,
+       "w": 22,
+       "d": 40,
+       "h": 16,
+       "z": 0,
+       "kind": "table",
+       "label": "coffee table"
+      }
+     ]
+    },
+    {
+     "type": "box",
+     "x": 355,
+     "y": 213,
+     "w": 2,
+     "d": 66,
+     "z": 36,
+     "h": 37,
+     "mat": "black",
+     "label": "75 in TV at the capped second box, about 3 ft north of center (W7b)"
+    },
+    {
+     "type": "box",
+     "x": 355,
+     "y": 216,
+     "w": 2,
+     "d": 60,
+     "z": 15,
+     "h": 15,
+     "mat": "fire",
+     "label": "Low electric fireplace, moved north under the TV (studio concept)"
+    },
+    {
+     "type": "box",
+     "x": 339,
+     "y": 290,
+     "w": 18,
+     "d": 68,
+     "z": 0,
+     "h": 84,
+     "mat": "cab",
+     "label": "Queen wall bed cabinet on the feature wall (W8 blocking and switched outlets), shown open"
+    },
+    {
+     "type": "furn",
+     "label": "Queen wall bed, open (about 80 in from the cabinet face)",
+     "parts": [
+      {
+       "x": 259,
+       "y": 292,
+       "w": 80,
+       "d": 64,
+       "h": 22,
+       "z": 0,
+       "kind": "bed",
+       "label": "bed"
+      },
+      {
+       "x": 339,
+       "y": 292,
+       "w": 1,
+       "d": 64,
+       "h": 40,
+       "z": 0,
+       "kind": "head",
+       "label": ""
+      }
+     ]
+    },
+    {
+     "type": "furn",
+     "label": "Nightstand (studio concept)",
+     "parts": [
+      {
+       "x": 321,
+       "y": 270,
+       "w": 18,
+       "d": 18,
+       "h": 24,
+       "z": 0,
+       "kind": "wood",
+       "label": "nightstand"
+      }
+     ]
+    },
+    {
+     "type": "box",
+     "x": 13,
+     "y": 199,
+     "w": 48,
+     "d": 24,
+     "z": 0,
+     "h": 80,
+     "mat": "cab",
+     "label": "Freestanding wardrobe, 48 x 24 (studio concept; no closet is framed)"
+    },
+    {
+     "type": "furn",
+     "label": "Dresser 48 x 18 (studio concept)",
+     "parts": [
+      {
+       "x": 70,
+       "y": 348,
+       "w": 48,
+       "d": 18,
+       "h": 34,
+       "z": 0,
+       "kind": "wood",
+       "label": "dresser"
+      }
+     ]
+    },
+    {
+     "type": "box",
+     "x": 144,
+     "y": 192,
+     "w": 40,
+     "d": 1.5,
+     "z": 0,
+     "h": 80,
+     "label": "Hall door: conceptual only, not approved construction (a new partition and door would need the architect)"
+    }
+   ]
+  },
+  "infoBy": {
+   "famuse": {
+    "status": "assumed",
+    "why": "Hypothetical layout (Claude, 11/19), kept for future reference; not an owner decision and not a current use. Governing rule, owner decision W8 (11/07): the family room is not a sleeping room until an escape window is installed. The layout uses the W7b and W8 provisions (wall-bed blocking, switched outlets, capped TV box). It stays part of the house with no cooking appliance: R-1-B allows one accessory apartment per lot, and the ADU is it. The hall door is conceptual only, not approved construction.",
+    "source": "Owner decisions W7, W7b, W8 (11/07); DC zoning Subtitle U 253 (one accessory apartment); IRC R310 (escape openings)",
+    "fix": "Only if the owner pursues it: escape window and well (architect), a door to the common hall, wall bed product and its open depth."
+   }
+  }
+ },
+ "people": {
+  "note": "Scale figures (entourage): neutral mannequins that show scale and how a room is used. Positions follow the owner-sheet furniture; they do not follow furniture moved in arrange mode. Heights: about 5'-9\" and 5'-4\".",
+  "items": [
+   {
+    "level": "lower",
+    "x": 330,
+    "y": 91,
+    "yaw": 3.141592653589793,
+    "pose": "seat",
+    "seat": 16,
+    "h": 69,
+    "label": "Person on the ADU sofa, facing the TV wall"
+   },
+   {
+    "level": "lower",
+    "x": 461,
+    "y": 44,
+    "yaw": 0,
+    "pose": "work",
+    "h": 64,
+    "label": "Person at the ADU cooktop"
+   },
+   {
+    "level": "lower",
+    "x": 392,
+    "y": 62,
+    "yaw": -1.5707963267948966,
+    "pose": "seat",
+    "seat": 26,
+    "h": 69,
+    "label": "Person at the ADU peninsula stool"
+   },
+   {
+    "level": "lower",
+    "x": 442,
+    "y": 280,
+    "yaw": -1.5707963267948966,
+    "pose": "seat",
+    "seat": 18,
+    "h": 64,
+    "label": "Person at the ADU office desk"
+   },
+   {
+    "level": "lower",
+    "x": 236,
+    "y": 282,
+    "yaw": -1.5707963267948966,
+    "pose": "seat",
+    "seat": 16,
+    "h": 69,
+    "label": "Person on the family room sofa"
+   },
+   {
+    "level": "lower",
+    "x": 184,
+    "y": 258,
+    "yaw": -1.5707963267948966,
+    "pose": "seat",
+    "seat": 26,
+    "h": 64,
+    "label": "Person at the family room counter stool"
+   },
+   {
+    "level": "first",
+    "x": 292,
+    "y": 300,
+    "yaw": 1.5707963267948966,
+    "pose": "seat",
+    "seat": 16,
+    "h": 64,
+    "label": "Person on the living room sofa"
+   },
+   {
+    "level": "first",
+    "x": 119,
+    "y": 45,
+    "yaw": 0,
+    "pose": "work",
+    "h": 69,
+    "label": "Person at the kitchen sink"
+   },
+   {
+    "level": "first",
+    "x": 241,
+    "y": 221,
+    "yaw": -1.5707963267948966,
+    "pose": "seat",
+    "seat": 18,
+    "h": 69,
+    "label": "Person at the dining table"
+   }
+  ]
+ }
+}

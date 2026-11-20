@@ -1,0 +1,499 @@
+{
+ "meta": {
+  "note": "Element register: what each tracked element is modeled at, why, its source, its confidence, and the worksheet row that settles it. Update a record here when a field value arrives; do not move geometry without updating its record.",
+  "worksheet": "https://claude.ai/artifact/AUjomnrKUw6o1zom6MHRZp",
+  "asOf": "2026-11-19"
+ },
+ "windows": [
+  {
+   "id": "F-16",
+   "level": "first",
+   "name": "Kitchen window",
+   "x": 99.0,
+   "y": 0.0,
+   "values": {
+    "width_in": 83.0,
+    "sill_in": 36,
+    "head_in": 84
+   },
+   "status": "assumed",
+   "why": "Width 6'-11\" scaled from the owner sheets (about \u00b14 in). A001 gives no sill or head heights and there is no window schedule, so the 36 in sill and 84 in head are one placeholder used for every window on this level.",
+   "source": "Douglas_Plan_Geometry_v1.json (10/01) for width; heights are placeholders",
+   "fix": "Measure width, sill height and head height (Site measurement worksheet (11/18), row F-16)."
+  },
+  {
+   "id": "F-17",
+   "level": "first",
+   "name": "Bed 113 window",
+   "x": 269.5,
+   "y": 0.0,
+   "values": {
+    "width_in": 70.5,
+    "sill_in": 36,
+    "head_in": 84
+   },
+   "status": "assumed",
+   "why": "Width 5'-10\" scaled from the owner sheets (about \u00b14 in). A001 gives no sill or head heights and there is no window schedule, so the 36 in sill and 84 in head are one placeholder used for every window on this level.",
+   "source": "Douglas_Plan_Geometry_v1.json (10/01) for width; heights are placeholders",
+   "fix": "Measure width, sill height and head height (Site measurement worksheet (11/18), row F-17)."
+  },
+  {
+   "id": "F-24",
+   "level": "first",
+   "name": "Hall bath window",
+   "x": 410.0,
+   "y": 0.0,
+   "values": {
+    "width_in": 34.5,
+    "sill_in": 36,
+    "head_in": 84
+   },
+   "status": "assumed",
+   "why": "Width 2'-10\" scaled from the owner sheets (about \u00b14 in). A001 gives no sill or head heights and there is no window schedule, so the 36 in sill and 84 in head are one placeholder used for every window on this level.",
+   "source": "Douglas_Plan_Geometry_v1.json (10/01) for width; heights are placeholders",
+   "fix": "Measure width, sill height and head height (Site measurement worksheet (11/18), row F-24)."
+  },
+  {
+   "id": "F-18",
+   "level": "first",
+   "name": "Bed 132 window, north",
+   "x": 484.0,
+   "y": 0.0,
+   "values": {
+    "width_in": 46.5,
+    "sill_in": 36,
+    "head_in": 84
+   },
+   "status": "assumed",
+   "why": "Width 3'-10\" scaled from the owner sheets (about \u00b14 in). A001 gives no sill or head heights and there is no window schedule, so the 36 in sill and 84 in head are one placeholder used for every window on this level.",
+   "source": "Douglas_Plan_Geometry_v1.json (10/01) for width; heights are placeholders",
+   "fix": "Measure width, sill height and head height (Site measurement worksheet (11/18), row F-18)."
+  },
+  {
+   "id": "F-19",
+   "level": "first",
+   "name": "Bed 132 window, east",
+   "x": 608.0,
+   "y": 44.0,
+   "values": {
+    "width_in": 69.0,
+    "sill_in": 36,
+    "head_in": 84
+   },
+   "status": "assumed",
+   "why": "Width 5'-9\" scaled from the owner sheets (about \u00b14 in). A001 gives no sill or head heights and there is no window schedule, so the 36 in sill and 84 in head are one placeholder used for every window on this level.",
+   "source": "Douglas_Plan_Geometry_v1.json (10/01) for width; heights are placeholders",
+   "fix": "Measure width, sill height and head height (Site measurement worksheet (11/18), row F-19)."
+  },
+  {
+   "id": "F-25",
+   "level": "first",
+   "name": "Master bath window",
+   "x": 608.0,
+   "y": 161.5,
+   "values": {
+    "width_in": 21.5,
+    "sill_in": 36,
+    "head_in": 84
+   },
+   "status": "assumed",
+   "why": "Width 1'-10\" scaled from the owner sheets (about \u00b14 in). A001 gives no sill or head heights and there is no window schedule, so the 36 in sill and 84 in head are one placeholder used for every window on this level.",
+   "source": "Douglas_Plan_Geometry_v1.json (10/01) for width; heights are placeholders",
+   "fix": "Measure width, sill height and head height (Site measurement worksheet (11/18), row F-25)."
+  },
+  {
+   "id": "F-21",
+   "level": "first",
+   "name": "Bed 121 window, west",
+   "x": 0.0,
+   "y": 235.5,
+   "values": {
+    "width_in": 71.0,
+    "sill_in": 36,
+    "head_in": 84
+   },
+   "status": "assumed",
+   "why": "Width 5'-11\" scaled from the owner sheets (about \u00b14 in). A001 gives no sill or head heights and there is no window schedule, so the 36 in sill and 84 in head are one placeholder used for every window on this level.",
+   "source": "Douglas_Plan_Geometry_v1.json (10/01) for width; heights are placeholders",
+   "fix": "Measure width, sill height and head height (Site measurement worksheet (11/18), row F-21)."
+  },
+  {
+   "id": "F-22",
+   "level": "first",
+   "name": "Master bedroom window, east",
+   "x": 608.0,
+   "y": 293.0,
+   "values": {
+    "width_in": 71.0,
+    "sill_in": 36,
+    "head_in": 84
+   },
+   "status": "assumed",
+   "why": "Width 5'-11\" scaled from the owner sheets (about \u00b14 in). A001 gives no sill or head heights and there is no window schedule, so the 36 in sill and 84 in head are one placeholder used for every window on this level.",
+   "source": "Douglas_Plan_Geometry_v1.json (10/01) for width; heights are placeholders",
+   "fix": "Measure width, sill height and head height (Site measurement worksheet (11/18), row F-22)."
+  },
+  {
+   "id": "F-20",
+   "level": "first",
+   "name": "Bed 121 window, south",
+   "x": 68.0,
+   "y": 360.5,
+   "values": {
+    "width_in": 72.0,
+    "sill_in": 36,
+    "head_in": 84
+   },
+   "status": "assumed",
+   "why": "Width 6'-0\" scaled from the owner sheets (about \u00b14 in). A001 gives no sill or head heights and there is no window schedule, so the 36 in sill and 84 in head are one placeholder used for every window on this level.",
+   "source": "Douglas_Plan_Geometry_v1.json (10/01) for width; heights are placeholders",
+   "fix": "Measure width, sill height and head height (Site measurement worksheet (11/18), row F-20)."
+  },
+  {
+   "id": "F-15",
+   "level": "first",
+   "name": "Living room window",
+   "x": 202.5,
+   "y": 360.5,
+   "values": {
+    "width_in": 106.5,
+    "sill_in": 36,
+    "head_in": 84
+   },
+   "status": "assumed",
+   "why": "Width 8'-10\" scaled from the owner sheets (about \u00b14 in). A001 gives no sill or head heights and there is no window schedule, so the 36 in sill and 84 in head are one placeholder used for every window on this level.",
+   "source": "Douglas_Plan_Geometry_v1.json (10/01) for width; heights are placeholders",
+   "fix": "Measure width, sill height and head height (Site measurement worksheet (11/18), row F-15)."
+  },
+  {
+   "id": "F-23",
+   "level": "first",
+   "name": "Master bedroom window, south",
+   "x": 483.0,
+   "y": 395.0,
+   "values": {
+    "width_in": 72.0,
+    "sill_in": 36,
+    "head_in": 84
+   },
+   "status": "assumed",
+   "why": "Width 6'-0\" scaled from the owner sheets (about \u00b14 in). A001 gives no sill or head heights and there is no window schedule, so the 36 in sill and 84 in head are one placeholder used for every window on this level.",
+   "source": "Douglas_Plan_Geometry_v1.json (10/01) for width; heights are placeholders",
+   "fix": "Measure width, sill height and head height (Site measurement worksheet (11/18), row F-23)."
+  },
+  {
+   "id": "L-31",
+   "level": "lower",
+   "name": "Family room window, west",
+   "x": 0,
+   "y": 234.5,
+   "values": {
+    "width_in": 75.5,
+    "sill_in": 48,
+    "head_in": 84
+   },
+   "status": "assumed",
+   "why": "Width 6'-4\" scaled from the owner sheets (about \u00b14 in). A001 gives no sill or head heights and there is no window schedule, so the 48 in sill and 84 in head are one placeholder used for every window on this level.",
+   "source": "Douglas_Plan_Geometry_v1.json (10/01) for width; heights are placeholders",
+   "fix": "Measure width, sill height and head height (Site measurement worksheet (11/18), row L-31)."
+  },
+  {
+   "id": "L-32",
+   "level": "lower",
+   "name": "Family room window, south",
+   "x": 206,
+   "y": 363.5,
+   "values": {
+    "width_in": 109.5,
+    "sill_in": 48,
+    "head_in": 84
+   },
+   "status": "assumed",
+   "why": "Width 9'-2\" scaled from the owner sheets (about \u00b14 in). A001 gives no sill or head heights and there is no window schedule, so the 48 in sill and 84 in head are one placeholder used for every window on this level.",
+   "source": "Douglas_Plan_Geometry_v1.json (10/01) for width; heights are placeholders",
+   "fix": "Measure width, sill height and head height (Site measurement worksheet (11/18), row L-32)."
+  },
+  {
+   "id": "L-33",
+   "level": "lower",
+   "name": "ADU living window",
+   "x": 273.0,
+   "y": 2.0,
+   "values": {
+    "width_in": 72,
+    "sill_in": 48,
+    "head_in": 84
+   },
+   "status": "assumed",
+   "why": "Width 6'-0\" scaled from the owner sheets (about \u00b14 in). A001 gives no sill or head heights and there is no window schedule, so the 48 in sill and 84 in head are one placeholder used for every window on this level.",
+   "source": "Douglas_Plan_Geometry_v1.json (10/01) for width; heights are placeholders",
+   "fix": "Measure width, sill height and head height (Site measurement worksheet (11/18), row L-33)."
+  },
+  {
+   "id": "L-34",
+   "level": "lower",
+   "name": "ADU kitchen window, north",
+   "x": 490.0,
+   "y": 2.0,
+   "values": {
+    "width_in": 48,
+    "sill_in": 48,
+    "head_in": 84
+   },
+   "status": "assumed",
+   "why": "Width 4'-0\" scaled from the owner sheets (about \u00b14 in). A001 gives no sill or head heights and there is no window schedule, so the 48 in sill and 84 in head are one placeholder used for every window on this level.",
+   "source": "Douglas_Plan_Geometry_v1.json (10/01) for width; heights are placeholders",
+   "fix": "Measure width, sill height and head height (Site measurement worksheet (11/18), row L-34)."
+  },
+  {
+   "id": "L-35",
+   "level": "lower",
+   "name": "ADU kitchen window, east",
+   "x": 617.5,
+   "y": 39.5,
+   "values": {
+    "width_in": 70.5,
+    "sill_in": 48,
+    "head_in": 84
+   },
+   "status": "assumed",
+   "why": "Width 5'-10\" scaled from the owner sheets (about \u00b14 in). A001 gives no sill or head heights and there is no window schedule, so the 48 in sill and 84 in head are one placeholder used for every window on this level.",
+   "source": "Douglas_Plan_Geometry_v1.json (10/01) for width; heights are placeholders",
+   "fix": "Measure width, sill height and head height (Site measurement worksheet (11/18), row L-35)."
+  },
+  {
+   "id": "L-16",
+   "level": "lower",
+   "name": "ADU bedroom east window (the only egress window on this level)",
+   "x": 617.5,
+   "y": 292.5,
+   "values": {
+    "width_in": 70.5,
+    "sill_in": 48,
+    "head_in": 84
+   },
+   "status": "assumed",
+   "why": "Width 5'-10\" scaled from the owner sheets (about \u00b14 in). A001 gives no sill or head heights and there is no window schedule, so the 48 in sill and 84 in head are one placeholder used for every window on this level. Egress depends on this window's real sill height and clear opening (IRC R310); nothing here shows it meets egress.",
+   "source": "Douglas_Plan_Geometry_v1.json (10/01) for width; heights are placeholders",
+   "fix": "Measure width, sill height and head height (Site measurement worksheet (11/18), row L-16)."
+  },
+  {
+   "id": "L-36",
+   "level": "lower",
+   "name": "ADU bedroom window, south",
+   "x": 493.5,
+   "y": 404.0,
+   "values": {
+    "width_in": 67,
+    "sill_in": 48,
+    "head_in": 84
+   },
+   "status": "assumed",
+   "why": "Width 5'-7\" scaled from the owner sheets (about \u00b14 in). A001 gives no sill or head heights and there is no window schedule, so the 48 in sill and 84 in head are one placeholder used for every window on this level.",
+   "source": "Douglas_Plan_Geometry_v1.json (10/01) for width; heights are placeholders",
+   "fix": "Measure width, sill height and head height (Site measurement worksheet (11/18), row L-36)."
+  }
+ ],
+ "ceilings": {
+  "first": {
+   "id": "F-01",
+   "name": "First-floor ceiling",
+   "values": {
+    "height_in": 96
+   },
+   "status": "drawing-derived",
+   "why": "8'-0\" as printed on A001. Not measured; may vary room to room.",
+   "source": "A001",
+   "fix": "Measure floor to ceiling (Site measurement worksheet (11/18), row F-01)."
+  },
+  "lower": {
+   "id": "L-01 to L-04",
+   "name": "Lower-level ceiling",
+   "values": {
+    "height_in": 93
+   },
+   "status": "assumed",
+   "why": "7'-9\" as printed on A001. The owner estimates a little under 7'-6\" (11/07), and it is unclear whether A001 means finished height or height to the joists. The ADU beam is not modeled. If the real figure is about 7'-6\", stair headroom under the soffits may be at or below the 6'-8\" minimum (CX-24).",
+   "source": "A001; owner estimate 11/07",
+   "fix": "Measure floor to joists and to the beam (Site measurement worksheet (11/18), rows L-01 to L-04, L-07)."
+  }
+ },
+ "rooms": [
+  {
+   "id": "L-19",
+   "level": "lower",
+   "name": "ADU bedroom (Option A)",
+   "values": {
+    "model_in": "about 130 x 190 (10'-10\" x 15'-10\")",
+    "label": "~10'-9\" x 15'-6\"",
+    "record": "about 10'-9\" x 16'-1\" (ADU design record)",
+    "A001": "10'-9\" x 13'-5\" before Option A"
+   },
+   "status": "unresolved",
+   "why": "Three figures disagree: the room label on the page (15'-6\"), the ADU design record (16'-1\") and the model walls (about 15'-10\"). All are drawing-derived; Option A is not framed or drawn by the architect. Note: the model's king bed was 4 in short until v0.2 (corrected to 76 x 80), so earlier fit views of this room were 4 in generous.",
+   "source": "ADU_Design_Record (11/18); HP2_Relocation (11/05); model",
+   "fix": "Measure the strip and the bedroom (Site measurement worksheet (11/18), rows L-18 and L-19), then correct the label and the record together."
+  },
+  {
+   "id": "L-23",
+   "level": "lower",
+   "name": "ADU office",
+   "values": {
+    "A001": "9'-3\" x 14'-5\""
+   },
+   "status": "drawing-derived",
+   "why": "From A001 via the owner sheet.",
+   "source": "A001",
+   "fix": "Site measurement worksheet (11/18), row L-23."
+  },
+  {
+   "id": "L-24",
+   "level": "lower",
+   "name": "ADU living / dining",
+   "values": {
+    "A001": "23'-9\" x 15'-4\""
+   },
+   "status": "drawing-derived",
+   "why": "From A001 via the owner sheet.",
+   "source": "A001",
+   "fix": "Site measurement worksheet (11/18), row L-24."
+  },
+  {
+   "id": "L-25",
+   "level": "lower",
+   "name": "ADU kitchen (north wall length, window edges)",
+   "values": {
+    "A001": "157 SF"
+   },
+   "status": "drawing-derived",
+   "why": "Cabinet run fit depends on this wall length.",
+   "source": "A001; owner sheet L-2",
+   "fix": "Site measurement worksheet (11/18), row L-25."
+  },
+  {
+   "id": "L-26",
+   "level": "lower",
+   "name": "Chimney chase",
+   "values": {
+    "model_in": "27.5 x 32"
+   },
+   "status": "drawing-derived",
+   "why": "Scaled from the sheets.",
+   "source": "Geometry file",
+   "fix": "Site measurement worksheet (11/18), row L-26."
+  },
+  {
+   "id": "F-13",
+   "level": "first",
+   "name": "Hall bath",
+   "values": {
+    "measured": "5'-0\" x 9'-0\"",
+    "model_in": "about 59.5 x 105-109"
+   },
+   "status": "measured",
+   "why": "The only field-measured item so far (owner; date not recorded). The model agrees within about 3 in. The model walls were not moved to it.",
+   "source": "Owner field measurement; worksheet row F-13",
+   "fix": "Record the date and method on the worksheet."
+  },
+  {
+   "id": "F-09",
+   "level": "first",
+   "name": "Bed 121",
+   "values": {
+    "label": "121 SF",
+    "scaled": "about 148 SF"
+   },
+   "status": "unresolved",
+   "why": "The sheet prints 121 SF but scales to about 148 SF.",
+   "source": "Owner sheets; A001",
+   "fix": "Site measurement worksheet (11/18), row F-09."
+  },
+  {
+   "id": "MB-1",
+   "level": "first",
+   "name": "Master bath / master bedroom wall (moved for the double vanity)",
+   "values": {
+    "model_in": "wall moved 16 in south; bath about 104.5 x 87.5 (about 64 SF); master about 169 SF",
+    "decision": "Master_Bath_Record Decision 5 (owner, 11/19)"
+   },
+   "status": "owner concept",
+   "why": "Owner decision 11/19: 60 in double vanity on the bath west wall; the shared wall moves about 16 in into the master bedroom so the vanity plus the door swing fit (about 3 in to spare). The room depth behind it is scaled (about 6 ft 0 in), not measured.",
+   "source": "Master_Bath_Record (11/19); owner sheets L-1 Rev 13, SC-1 Rev 10",
+   "fix": "Measure the bath depth, its west wall length and the master bedroom depth at the site visit (add a worksheet row); structural engineer confirms the wall is non-bearing."
+  },
+  {
+   "id": "RZ-1",
+   "level": "first",
+   "name": "House duct riser chase beside the stair (kitchen side)",
+   "values": {
+    "model_in": "about 23 x 23 (geometry file chase)"
+   },
+   "status": "owner concept",
+   "why": "Owner decision 11/20: the riser runs beside the stair on the kitchen side, fridge against it, from the common hall ceiling below to the attic. Matches the riser beside the stair on the architect's 11/13 M001. Replaces the two alternatives shown through v0.6.",
+   "source": "Owner decision 11/20; owner sheets L-1 Rev 13, M001 11/20; architect set 11/13 (M001)",
+   "fix": "Engineer sizes the chase; architect sets fire dampers or a rated enclosure; field-check the floor framing at that corner."
+  }
+ ],
+ "discrepancies": [
+  {
+   "id": "D1",
+   "title": "ADU bedroom size: three figures",
+   "detail": "Label 15'-6\", record 16'-1\", model about 15'-10\". See L-19.",
+   "settles": "L-18, L-19"
+  },
+  {
+   "id": "D2",
+   "title": "Lower level runs about 8 in wider and 7 in deeper than the first floor",
+   "detail": "The ADU part of the lower level spans about 387 in east-west against about 378 in for the same span upstairs (about 2%). Foundation walls can be thicker, but a 2% difference also looks like a scale error in the ADU sheet transform. Every ADU wall position inherits it.",
+   "settles": "F-02 (overall outside dimensions) plus any ADU wall-to-wall length"
+  },
+  {
+   "id": "D3",
+   "title": "Doubled wall between the ADU and the family room",
+   "detail": "Two 6 in walls about 5 in apart (x = 367 and x = 372) were traced from two different sheets, so the model shows a wall about 11 in thick. One of the two positions is wrong.",
+   "settles": "L-24 and L-27 room widths"
+  },
+  {
+   "id": "D4",
+   "title": "Lower-level ceiling height",
+   "detail": "Modeled at 7'-9\" (A001); owner estimate a little under 7'-6\". Affects stair headroom (CX-24) and every lower-level view.",
+   "settles": "L-01 to L-04, L-07"
+  },
+  {
+   "id": "D5",
+   "title": "Window heights are one placeholder per level",
+   "detail": "No window schedule exists. Every sill and head on a level shares one value; the ADU bedroom egress window is not verified.",
+   "settles": "Window rows L-16, L-31 to L-36, F-15 to F-25"
+  },
+  {
+   "id": "D6",
+   "title": "Stair direction",
+   "detail": "Which end is the bottom is not measured. Since v0.6 the model puts the top at the north end (first-floor opening at the north end; both scanned plans in the XRF report draw the arrow rising north; the lower stair hall opens at its south end). Clash CX-24 assumed the opposite (bottom at the vestibule). If the bottom is at the south, the bottom landing sits under the common hall soffit rather than the vestibule soffit; the headroom budget is the same.",
+   "settles": "L-06"
+  },
+  {
+   "id": "D7",
+   "title": "Bed 121 area",
+   "detail": "Prints 121 SF, scales about 148 SF.",
+   "settles": "F-09"
+  },
+  {
+   "id": "D8",
+   "title": "Bed lengths on the first floor",
+   "detail": "The four first-floor queen beds scale from the owner sheets to about 60 x 77.5 in; a queen mattress is 60 x 80. Bedroom fit on those sheets is about 2.5 in generous. Not changed in the model, because it follows the sheets. (The ADU king was 76 x 76 by a data-entry error in the 11/18 build and was corrected to 76 x 80 on 11/18 v0.2.)",
+   "settles": "Owner sheet L-1 bed sizes; F-08, F-09, F-10, F-11 room sizes"
+  },
+  {
+   "id": "D9",
+   "title": "ADU bedroom door has no wall to hang in",
+   "detail": "The geometry file draws the ADU bedroom door hinged at the bedroom hall, but there is no wall between the bedroom hall and the bedroom (about a 40 in gap); the door leaf is drawn on the solid partition beside it. Walking passes through the gap. Option A was never redrawn as geometry.",
+   "settles": "The Option A layout drawn by the architect, or a site measurement once framed"
+  },
+  {
+   "id": "D10",
+   "title": "Drawn stair opening is short for the stair below it",
+   "detail": "The first-floor opening is drawn about 82 in long (to y = 123 in). With 14 risers of about 7-3/8 in on 9 in treads, the stair runs about 117 in, so the last 35 in of the run sits under the first-floor floor, where the headroom works out to about 5'-4\" at the opening edge (code minimum 6'-8\"). The house has been used this way, so the opening on site is probably longer, the closet floor over the stair is raised, or the stair differs. The stair walk shows the drawn condition and says so on screen.",
+   "settles": "L-06, L-07 (stair rise, run, opening length and headroom)"
+  }
+ ]
+}
