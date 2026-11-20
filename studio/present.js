@@ -2,8 +2,8 @@
 // Opening screen, guided tour, shareable view links and plan-viewer handoff.
 // Presentation only: it moves the camera and applies existing finish picks through window.__studio.
 // It adds no geometry and changes no records.
-const V = '2026-11-20';
-const VIEWER = '../1501-Douglas-Sheet-Viewer.html?v=' + V;
+const V = '2026-11-20b';   // studio files version
+const VIEWER = '../1501-Douglas-Sheet-Viewer.html?v=2026-11-20';
 const K_SEEN = 'douglas.studio.intro.seen', K_PICK = 'douglas.studio.pick.v3';
 const ls = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { v === null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} } };
 const esc = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -95,7 +95,7 @@ intro.addEventListener('keydown', e => { if (e.key === 'Escape') { e.stopPropaga
 $('bHelp').onclick = openIntro;
 
 // ---------- 2. guided tour ----------
-const STOPS = TOUR.stops.filter(t => ST.shotById(t.shot));
+const STOPS = TOUR.stops.filter(t => t.cam || ST.shotById(t.shot));
 const tourEl = document.createElement('div'); tourEl.id = 'pTour'; tourEl.setAttribute('role', 'region'); tourEl.setAttribute('aria-label', 'Guided tour'); tourEl.setAttribute('aria-live', 'polite');
 document.body.appendChild(tourEl);
 let tourAt = -1;
@@ -117,11 +117,13 @@ function renderTour() {
 }
 function showStop(i) {
   tourAt = Math.max(0, Math.min(STOPS.length, i));
-  if (tourAt < STOPS.length) ST.goShot(ST.shotById(STOPS[tourAt].shot));
+  const t = STOPS[tourAt];
+  if (t) ST.goShot(t.cam ? { id: 'tour-' + tourAt, level: ST.shotById(t.shot)?.level || 'lower', ...t.cam } : ST.shotById(t.shot));
+  ST.highlight(t && t.highlight ? t.highlight : null);
   renderTour(); $('note').style.display = 'none'; $('elegend').style.display = 'none';
 }
 function startTour(i = 0) { hideStudioChrome(); closeLink(false); showStop(i); }
-function stopTour() { tourAt = -1; renderTour(); }
+function stopTour() { tourAt = -1; ST.highlight(null); renderTour(); }
 tourEl.addEventListener('click', e => {
   const b = e.target.closest('[data-t]'); if (!b) return;
   const a = b.dataset.t;
@@ -147,7 +149,7 @@ function finishParams() {
 }
 function linkFor() {
   const v = ST.view(), q = new URLSearchParams();
-  if (v.shot && v.mode === 'walk') q.set('shot', v.shot);
+  if (v.shot && v.mode === 'walk' && ST.shotById(v.shot)) q.set('shot', v.shot);
   else { q.set('m', v.mode); q.set('lv', v.level);
     if (v.mode === 'walk') { q.set('x', r2(v.w.x)); q.set('y', r2(v.w.y)); q.set('yaw', r3(v.w.yaw)); q.set('pitch', r3(v.w.pitch)); }
     else { q.set('c', v.c.map(r3).join(',')); q.set('t', v.t.map(r3).join(',')); } }

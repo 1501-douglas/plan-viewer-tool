@@ -1,21 +1,71 @@
 {
  "note": "Guided tour (presentation only, 11/20). Reuses existing camera shots from design.json; adds no geometry. Each stop says plainly what is decided by the owner and what is still open.",
  "stops": [
-  { "shot": "ff-foyer", "place": "ff-foyer", "tag": "How to read this", "title": "Front door, first floor",
-    "text": "This is the owner's design as of the 11/20 owner sheets. Walls are traced from the drawings and are accurate to about 4 in; nothing is field-measured yet. Finishes shown are a working concept, not selections." },
-  { "shot": "ff-living", "place": "ff-living", "tag": "Owner decision", "title": "Living room",
-    "text": "The feature wall holds the TV and fireplace only; no duct chase runs in it (owner, 11/20)." },
-  { "shot": "ff-fridgewall", "place": "ff-kitchen", "tag": "Owner decision, size open", "title": "Kitchen and the duct riser",
-    "text": "The house ducts rise in a chase beside the stair on the kitchen side, with the fridge against it (owner, 11/20). The chase size is a placeholder until the mechanical engineer sizes the ducts." },
-  { "shot": "ff-mbath-vanity", "place": "ff-masterbath", "tag": "Owner decision, measure first", "title": "Master bath double vanity",
-    "text": "A 60 in double vanity, with the wall to the bedroom moved about 16 in (owner, 11/19). Before framing: measure the bath and bedroom, and the engineer confirms the wall is not bearing." },
-  { "shot": "ll-commonhall", "place": "ll-commonhall", "tag": "Conditions noted, review pending", "title": "Lower level common hall",
-    "text": "A new 1-hour wall and a 45-minute self-closing door separate the common hall from the family room. DOB raised no objection on these conditions (11/05); the plan reviewer makes the decision." },
-  { "shot": "adu-living", "place": "adu-living", "tag": "Owner concept", "title": "Apartment living area",
-    "text": "The apartment layout (Option A) is the owner's concept and is not yet on the architect's set. Heating and cooling is a ductless wall unit; the unit size is not selected." },
-  { "shot": "adu-bedroom", "place": "adu-bedroom", "tag": "Owner concept", "title": "Apartment bedroom",
-    "text": "A second wall unit sits on the east (outside) wall (owner, 11/18), so its line set goes straight out and nothing crosses a rated wall. Exact spot per the HVAC designer." },
-  { "shot": "fam-brick", "place": "ll-family", "tag": "Open item", "title": "Family room brick wall",
-    "text": "The old brick wall stays exposed on both faces (owner, 11/18). It is also the separation from the apartment, so the architect must confirm its fire rating without furring." }
+  {
+   "shot": "ff-foyer",
+   "place": "ff-foyer",
+   "tag": "How to read this",
+   "title": "Front door, first floor",
+   "text": "This is the owner's design as of the 11/20 owner sheets. Walls are traced from the drawings and are accurate to about 4 in; nothing is field-measured yet. Finishes shown are a working concept, not selections."
+  },
+  {
+   "shot": "ff-living",
+   "place": "ff-living",
+   "tag": "Owner decision",
+   "title": "Living room",
+   "text": "The feature wall holds the TV and fireplace only; no duct chase runs in it (owner, 11/20)."
+  },
+  {
+   "shot": "ff-fridgewall",
+   "place": "ff-kitchen",
+   "tag": "Owner decision, size open",
+   "title": "Kitchen and the duct riser",
+   "text": "The house ducts rise in a chase beside the stair on the kitchen side, with the fridge against it (owner, 11/20). The chase size is a placeholder until the mechanical engineer sizes the ducts."
+  },
+  {
+   "shot": "ff-mbath-vanity",
+   "place": "ff-masterbath",
+   "tag": "Owner decision, measure first",
+   "title": "Master bath double vanity",
+   "text": "A 60 in double vanity, with the wall to the bedroom moved about 16 in (owner, 11/19). Before framing: measure the bath and bedroom, and the engineer confirms the wall is not bearing."
+  },
+  {
+   "shot": "ll-commonhall",
+   "place": "ll-commonhall",
+   "tag": "Conditions noted, review pending",
+   "title": "Lower level common hall",
+   "text": "The new 1-hour wall (shown in red) and its 45-minute self-closing door separate the family room, where you are standing, from the common hall beyond. DOB raised no objection on these conditions (11/05); the plan reviewer makes the decision.",
+   "highlight": "ratedNew",
+   "cam": {
+    "x": 170,
+    "y": 228,
+    "eye": 60,
+    "yaw": 0,
+    "pitch": 0.0,
+    "fov": 75,
+    "name": "Common hall door from the family room"
+   }
+  },
+  {
+   "shot": "adu-living",
+   "place": "adu-living",
+   "tag": "Owner concept",
+   "title": "Apartment living area",
+   "text": "The apartment layout (Option A) is the owner's concept and is not yet on the architect's set. Heating and cooling is a ductless wall unit; the unit size is not selected."
+  },
+  {
+   "shot": "adu-bedroom",
+   "place": "adu-bedroom",
+   "tag": "Owner concept",
+   "title": "Apartment bedroom",
+   "text": "A second wall unit sits on the east (outside) wall (owner, 11/18), so its line set goes straight out and nothing crosses a rated wall. Exact spot per the HVAC designer."
+  },
+  {
+   "shot": "fam-brick",
+   "place": "ll-family",
+   "tag": "Open item",
+   "title": "Family room brick wall",
+   "text": "The old brick wall stays exposed on both faces (owner, 11/18). It is also the separation from the apartment, so the architect must confirm its fire rating without furring."
+  }
  ]
 }
