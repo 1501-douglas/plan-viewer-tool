@@ -106,7 +106,7 @@
 <div id="legend" style="position:fixed;left:10px;top:58px;background:rgba(255,255,255,.95);border:1px solid #bbb;border-radius:8px;padding:8px 10px;font-size:12px;display:none;max-width:280px;line-height:1.45"></div>
 <div id="warn">This page needs WebGL, which this browser did not provide.</div>
 <div id="note"><button class="x" id="noteX" aria-label="Hide note">×</button>
-  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-21d, walk release 2: map and tap to move): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
+  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-21e, walk release 2: map and tap to move): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
 </div>
 
 <script type="importmap">
@@ -125,7 +125,7 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const [M, EL, DS] = await Promise.all(['data/model.json', 'data/elements.json', 'data/design.json'].map(u =>
-  fetch(u + '?v=2026-11-21d').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
+  fetch(u + '?v=2026-11-21e').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
   const w = document.getElementById('warn'); w.textContent = 'Could not load the model data (' + e.message + ').'; w.style.display = 'block'; throw e; });
 const S = 0.0254, EYE = 63, RAD = 9;
 
@@ -816,9 +816,17 @@ function hitAt(lv, x, y, r = RAD) {
   return false;
 }
 const blocked = (x, y) => hitAt(cur, x, y);
+function wallDist(lv, x, y) {   // 21e: distance to the nearest wall, chase or angled wall (no furniture)
+  let m = Infinity;
+  for (const w of [...lv.L.walls, ...lv.L.fixed]) { const qx = x < w.x ? w.x : x > w.x + w.w ? w.x + w.w : x, qy = y < w.y ? w.y : y > w.y + w.d ? w.y + w.d : y; m = Math.min(m, Math.hypot(x - qx, y - qy)); }
+  for (const [x1, y1, x2, y2] of lv.segs) { const ex = x2 - x1, ey = y2 - y1, L2 = ex * ex + ey * ey; let t = L2 ? ((x - x1) * ex + (y - y1) * ey) / L2 : 0; t = t < 0 ? 0 : t > 1 ? 1 : t; m = Math.min(m, Math.hypot(x1 + t * ex - x, y1 + t * ey - y)); }
+  return m;
+}
+const hitWalls = (lv, x, y, r = RAD) => wallDist(lv, x, y) < r;
+const stepOut = (lv, x, y, nx, ny) => { const d1 = wallDist(lv, nx, ny); return d1 >= RAD || d1 > wallDist(lv, x, y) + 0.01; };   // out of furniture: not into a wall, or at least away from one
 function moveAxis(ax, d) {   // try the move; if blocked, slide sideways around a corner or door jamb within WALK.nudge in
   const [x, y] = [walker.x, walker.y], nx = ax === 'x' ? x + d : x, ny = ax === 'y' ? y + d : y;
-  if (!blocked(nx, ny)) { walker.x = nx; walker.y = ny; return true; }
+  if (!blocked(nx, ny) || (blocked(x, y) && stepOut(cur, x, y, nx, ny))) { walker.x = nx; walker.y = ny; return true; }   // 21e: standing inside furniture (some shots start there), you can step out, never into a wall
   for (let k = 1; k <= WALK.nudge; k++) for (const sg of [1, -1]) {
     const ox = ax === 'y' ? sg * k : 0, oy = ax === 'x' ? sg * k : 0;
     if (!blocked(nx + ox, ny + oy)) { const st = Math.min(k, Math.abs(d)); const sx = ax === 'y' ? sg * st : 0, sy = ax === 'x' ? sg * st : 0; if (!blocked(x + sx, y + sy)) { walker.x = x + sx; walker.y = y + sy; return true; } return false; }
@@ -2370,9 +2378,9 @@ function fromImg(id, px, py) {
   const z = d.zones[0]; return [(px - z.bx) / z.ax, (py - z.by) / z.ay];
 }
 
-Promise.all(['data/minimap.json', 'data/places.json'].map(u => fetch(u + '?v=2026-11-21d').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); })))
+Promise.all(['data/minimap.json', 'data/places.json'].map(u => fetch(u + '?v=2026-11-21e').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); })))
   .then(([d, P]) => Promise.all(Object.entries(d.levels).map(([id, l]) => new Promise((res, rej) => {
-    const im = new Image(); im.onload = () => { mini.img[id] = im; res(); }; im.onerror = () => rej(new Error(l.img)); im.src = 'data/' + l.img + '?v=2026-11-21d';
+    const im = new Image(); im.onload = () => { mini.img[id] = im; res(); }; im.onerror = () => rej(new Error(l.img)); im.src = 'data/' + l.img + '?v=2026-11-21e';
   }))).then(() => {
     mini.data = d; mini.places = Object.entries(P.places).map(([id, p]) => ({ id, ...p })).filter(p => p.at && lvById(p.level));
     const sel = ui('miniGo');
@@ -2549,7 +2557,7 @@ function wallClear(lv, a, b) {   // no wall between two points (furniture ignore
   const n = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1])));
   for (let k = 0; k <= n; k++) {
     const x = a[0] + (b[0] - a[0]) * k / n, y = a[1] + (b[1] - a[1]) * k / n;
-    if (lv.L.walls.some(w => x > w.x && x < w.x + w.w && y > w.y && y < w.y + w.d)) return false;
+    if ([...lv.L.walls, ...lv.L.fixed].some(w => x > w.x && x < w.x + w.w && y > w.y && y < w.y + w.d)) return false;
     for (const [x1, y1, x2, y2] of lv.segs) { const ex = x2 - x1, ey = y2 - y1, L2 = ex * ex + ey * ey; let t = L2 ? ((x - x1) * ex + (y - y1) * ey) / L2 : 0; t = t < 0 ? 0 : t > 1 ? 1 : t; if ((x1 + t * ex - x) ** 2 + (y1 + t * ey - y) ** 2 < 1) return false; }
   }
   return true;
@@ -2568,7 +2576,13 @@ function faceCell(lv, G, seen, rect, to) {   // a room too full to stand in (a w
   return -1;
 }
 function legOn(lv, from, to, toR = 36, rect = null) {
-  const G = gridOf(lv), s = nearCell(G, from[0], from[1], 12);
+  const G = gridOf(lv); let s = nearCell(G, from[0], from[1], 12);
+  if (!walkOk(lv, from[0], from[1])) {   // 21e: you are inside furniture: start from the nearest open spot you can step straight out to
+    s = -1; const [ci, cj] = G.cell(from[0], from[1]), rc = Math.ceil(72 / CELL), c = [];
+    for (let j = Math.max(0, cj - rc); j <= Math.min(G.ny - 1, cj + rc); j++) for (let i = Math.max(0, ci - rc); i <= Math.min(G.nx - 1, ci + rc); i++) { const n = j * G.nx + i, d = Math.hypot(G.cx(i) - from[0], G.cy(j) - from[1]); if (G.free[n] && d <= 72) c.push([d, n, G.cx(i), G.cy(j)]); }
+    c.sort((a, b) => a[0] - b[0]);
+    for (const [, n, x, y] of c) if (wallClear(lv, from, [x, y])) { s = n; break; }
+  }
   if (s < 0) return { why: 'start' };
   const seen = flood(G, s); let g = nearCell(G, to[0], to[1], toR, seen, rect);
   if (g < 0 && rect && FACE) g = faceCell(lv, G, seen, rect, to);
@@ -2597,6 +2611,7 @@ function planCore(levelId, x, y, toR = 36, rect = null) {
   }
   for (let j = 1; j < wp.length; j++) {   // every point of the route, 1 in apart, must pass the walk collision check
     const p = wp[j - 1], q = wp[j]; if (p.lv !== q.lv) continue;
+    if (j === 1 && !walkOk(lvById(p.lv), p.x, p.y)) { if (!wallClear(lvById(p.lv), [p.x, p.y], [q.x, q.y])) return { ok: false, why: 'check' }; continue; }   // 21e: stepping out of furniture: no wall on the way
     if (!segClear(lvById(p.lv), [p.x, p.y], [q.x, q.y], walkOk)) return { ok: false, why: 'check' };
   }
   return { ok: true, wp, dest: [levelId, dest[0], dest[1]], len: wp.reduce((s, q, j) => s + (j && q.lv === wp[j - 1].lv ? Math.hypot(q.x - wp[j - 1].x, q.y - wp[j - 1].y) : 0), 0) };
@@ -2707,7 +2722,7 @@ window.__mini = {
     glide: glide ? { i: glide.i, n: glide.wp.length, label: glide.label, dest: glide.dest, free: glide.free } : null }),
   toImg: (id, x, y) => toImg(id, x, y), fromImg: (id, px, py) => fromImg(id, px, py), data: () => mini.data, places: () => mini.places,
   plan: (id, x, y, r, rect) => planRoute(id, x, y, r, rect), go: (id, x, y, label, room) => goTo(id, x, y, label, room), setOpen: setMiniOpen, stairPts: STAIR_PTS,
-  walkOk: (id, x, y) => walkOk(lvById(id), x, y), okAt: (id, x, y) => okAt(lvById(id), x, y), hit: (id, x, y, r) => hitAt(lvById(id), x, y, r), leaves: id => lvById(id).leaves.map(r => r.slice()),
+  walkOk: (id, x, y) => walkOk(lvById(id), x, y), okAt: (id, x, y) => okAt(lvById(id), x, y), wallDist: (id, x, y) => wallDist(lvById(id), x, y), hit: (id, x, y, r) => hitAt(lvById(id), x, y, r), leaves: id => lvById(id).leaves.map(r => r.slice()),
   tapImg: (px, py) => { const r = mC.getBoundingClientRect(), d = mini.data.levels[mini.view]; return [r.left + px / d.w * r.width, r.top + py / d.h * r.height]; } };
 const clock = new THREE.Clock();
 renderer.setAnimationLoop(() => {
@@ -2719,6 +2734,6 @@ renderer.setAnimationLoop(() => {
   if (!cmp.on) updateLabels(); else hideLabels();
 });
 </script>
-<script type="module" src="present.js?v=2026-11-21d"></script>
+<script type="module" src="present.js?v=2026-11-21e"></script>
 </body>
 </html>
