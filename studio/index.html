@@ -53,7 +53,7 @@
     #bar button { flex: 0 0 auto; font-size: 13px; padding: 6px 11px; }
     #bar .sep { display: none; }
     #bL1, #bL0 { order: 1; } #bDoll, #bTop, #bWalk, #bWalk2 { order: 2; } #bDes, #bShots, #bReg { order: 3; }
-    #bEl, #bAs { order: 4; } #bFurn, #bLab, #bAO { order: 5; } #bar::after { content: ''; flex: 0 0 30px; order: 9; }
+    #bEl, #bAs { order: 4; } #bFurn, #bFix, #bLab, #bAO { order: 5; } #bar::after { content: ''; flex: 0 0 30px; order: 9; }
     .spanel, #lpanel { left: 0 !important; right: 0 !important; top: auto !important; bottom: 0 !important; width: 100% !important; transform: none !important;
       max-height: 48vh; border-radius: 14px 14px 0 0 !important; border-width: 1px 0 0 0 !important; box-shadow: 0 -4px 16px rgba(0,0,0,.15);
       padding: 10px 12px calc(12px + env(safe-area-inset-bottom)) !important; overflow: auto; box-sizing: border-box; z-index: 6 !important; }
@@ -84,6 +84,7 @@
   <button id="bWalk2" style="display:none">Walk ADU</button>
   <span class="sep"></span>
   <button id="bFurn" class="on">Furniture</button>
+  <button id="bFix" class="on" title="Light fixtures, switches, outlets and alarms from the owner lighting and power sheets">Fixtures</button>
   <button id="bLab" class="on">Labels</button>
   <button id="bAO" class="on">Soft shade</button>
   <button id="bEl">Layers</button>
@@ -106,7 +107,7 @@
 <div id="legend" style="position:fixed;left:10px;top:58px;background:rgba(255,255,255,.95);border:1px solid #bbb;border-radius:8px;padding:8px 10px;font-size:12px;display:none;max-width:280px;line-height:1.45"></div>
 <div id="warn">This page needs WebGL, which this browser did not provide.</div>
 <div id="note"><button class="x" id="noteX" aria-label="Hide note">×</button>
-  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-21e, walk release 2: map and tap to move): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
+  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-21f, walk release 2: map and tap to move; fixtures on by default): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
 </div>
 
 <script type="importmap">
@@ -123,9 +124,10 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
 const [M, EL, DS] = await Promise.all(['data/model.json', 'data/elements.json', 'data/design.json'].map(u =>
-  fetch(u + '?v=2026-11-21e').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
+  fetch(u + '?v=2026-11-21f').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
   const w = document.getElementById('warn'); w.textContent = 'Could not load the model data (' + e.message + ').'; w.style.display = 'block'; throw e; });
 const S = 0.0254, EYE = 63, RAD = 9;
 
@@ -407,7 +409,7 @@ const INFO = {
   optionA: { status: 'owner concept', why: 'Option A and the 11/18 storage ideas. Not on the architect\'s set and not sent.', source: 'HP2_Relocation (11/05); ADU_Design_Record (11/18)', fix: 'Owner confirms, then the architect draws it.' },
   closetDoor: { status: 'assumed', why: 'The geometry file recorded closet doors only as gaps, so these fronts are placeholders. Door type follows the owner sheet notes where they give one.', source: 'Owner sheet notes (bypass doors at Bed 113, Bed 121 and Bed 132; master closets to match built-ins); ADU design record', fix: 'Choose the door type and size per closet; measure each opening.' },
   pocket: { status: 'owner concept', why: '3 ft pocket door plus a 2 ft fixed panel into the ADU office, from the owner sheet. The pocket wall and header are drawn to make the opening read; their sizes are placeholders.', source: 'Owner sheet L-2 (10/19 base)', fix: 'Architect draws the opening; pocket frame size from the door chosen.' },
-  elec: { status: 'owner concept', why: 'Device positions come from the owner lighting and power sheets, not the architect\'s E001. Mounting heights are typical values, not specified: outlets 16 in, switches 48 in, thermostat and sensors 60 in, TV boxes per the sheet notes. Wall devices are moved onto the nearest wall in this model, so a few sit up to about 2 ft from where the sheet draws them (the label says so).', source: 'Owner sheets LP-1 Rev 18, LP-2 Rev 22 (Option A, 11/05 layout), LP-3 Rev 33 (open family room), all 11/07', fix: 'The architect\'s E001 and the electrician; confirm each box at the framed walkthrough before rough-in.' },
+  elec: { status: 'owner concept', why: 'Device positions come from the owner lighting and power sheets, not the architect\'s E001. Mounting heights are typical values, not specified: outlets 16 in, switches 48 in, thermostat and sensors 60 in, TV boxes per the sheet notes. Wall devices are moved onto the nearest wall face in this model, so some sit up to about 18 in from where the sheet draws them; the few that sit farther (up to about 2 ft) say so in their label.', source: 'Owner sheets LP-1 Rev 18, LP-2 Rev 22 (Option A, 11/05 layout), LP-3 Rev 33 (open family room), all 11/07', fix: 'The architect\'s E001 and the electrician; confirm each box at the framed walkthrough before rough-in.' },
   mOwner: { status: 'owner concept', why: 'Register and grille positions are the owner\'s proposal on Owner M (11/20). House system: air handler in the lower-level common utility room, flat ducts in the common hall ceiling to the riser beside the stair, attic trunks upstairs; the family room is fed by a short branch through the new hall wall. Not checked against an engineer\'s design.', source: 'Owner M sheet 11/20; owner decisions 11/13 (M5) and 11/20', fix: 'Mechanical engineer lays out registers, returns and duct sizes.' },
   hood: { status: 'owner concept', why: 'Hood position follows the range or cooktop; ducted outside per the owner\'s decision. Size and duct route not designed.', source: 'Owner M 11/07 (CX-03 for the ADU duct)', fix: 'Hood selection and the HVAC route.' },
   mADU: { status: 'unresolved', why: 'Your Owner M sheet (11/07) still shows the ADU on the ducted HP-2 system with these registers. On 11/13 you chose a ductless mini-split for the ADU (M5), and no sheet shows where its indoor unit or units go yet.', source: 'Owner M sheet 11/07l; owner decision M5 (11/13)', fix: 'Choose the ductless indoor unit locations (owner and HVAC designer), then redraw Owner M.' },
@@ -585,14 +587,16 @@ const EKEY = [
   ['Ceiling light', '#ffe2a8'], ['Outlet / switch plate', '#fdfdfb'], ['TV box', '#d8efe9'], ['Capped future TV box', '#7fc8b8'],
   ['Appliance power', '#cfe0f6'], ['Smoke / smoke + CO alarm (red dot)', '#f7f7f3'], ['Panel', '#8d9399'],
 ];
-function buildElectrical(L) {
+function buildElectrical(L, pres = false) {   // pres (21f): the default presentation view: finished-house devices only, plain white plates, no coordination symbols
   const grp = new THREE.Group(), C = L.ceil; grp.visible = false;
   for (const e of (L.electrical || [])) {
     const g = new THREE.Group(); let hit;
     const k = e.k;
+    if (pres && (k === 'data' || k === 'wifi' || k === 'tvcap')) continue;   // coordination only (capped boxes are behind the finish)
     if (e.z !== undefined) {             // wall devices
       if (k === 'outlet') { wallBox(g, e, 2.75, 4.5, 0.25, EM.plate); for (const dz of [-1, 1]) for (const du of [-0.35, 0.35]) wallBox(g, e, 0.15, 0.6, 0.1, EM.slot, du, dz, 0.25); hit = [6, 7, 2]; }
       else if (k === 'switch') { wallBox(g, e, 2.75, 4.5, 0.25, EM.plate); wallBox(g, e, 1.3, 2.6, 0.35, EM.rocker, 0, 0, 0.25); hit = [6, 7, 2]; }
+      else if (pres && (k === 'tv' || k === 'appl')) { wallBox(g, e, k === 'tv' ? 4.5 : 2.75, 4.5, 0.25, EM.plate); if (k === 'appl') for (const dz of [-1, 1]) for (const du of [-0.35, 0.35]) wallBox(g, e, 0.15, 0.6, 0.1, EM.slot, du, dz, 0.25); hit = [6, 7, 2]; }   // plain white plates
       else if (k === 'tv') { wallBox(g, e, 8, 8, 0.3, EM.tv); wallBox(g, e, 2.75, 4.5, 0.15, EM.plate, -1.6, 0, 0.3); wallBox(g, e, 1.6, 1.6, 0.15, EM.data, 1.8, 0, 0.3); hit = [10, 10, 2]; }
       else if (k === 'tvcap') { wallBox(g, e, 8, 8, 0.3, EM.tvcap); hit = [10, 10, 2]; }
       else if (k === 'data') { wallBox(g, e, 2.75, 4.5, 0.25, EM.plate); wallBox(g, e, 1, 1, 0.15, EM.data, 0, 0, 0.25); hit = [6, 7, 2]; }
@@ -700,7 +704,7 @@ function buildSystems(L) {
   return out;
 }
 const LEVELS = M.levels.map(buildLevel);
-for (const v of LEVELS) { v.g = { elec: buildElectrical(v.L), ...buildSystems(v.L) }; for (const k in v.g) v.root.add(v.g[k]); }
+for (const v of LEVELS) { v.g = { elec: buildElectrical(v.L), ...buildSystems(v.L) }; for (const k in v.g) v.root.add(v.g[k]); v.fix = buildElectrical(v.L, true); v.root.add(v.fix); }
 const LAY = { elec: false, hvac: false, plumb: false, rated: false };
 const anyLay = () => Object.values(LAY).some(Boolean);
 let cur = LEVELS[0];
@@ -708,9 +712,10 @@ let cur = LEVELS[0];
 const ui = id => document.getElementById(id), hint = ui('hint');
 let mode = 'doll', labelsOn = true, furnOn = true, elegHidden = false, walkPrev = null, glide = null;   // glide: a tap-to-move in progress (walk release 2)   // walkPrev: the view Exit walk returns to
 const walker = { x: 0, y: 0, yaw: 0, pitch: 0 };
+let fixOn = (() => { try { return localStorage.getItem('studio.fixtures') !== '0'; } catch (e) { return true; } })();   // 21f: fixtures on unless this browser turned them off
 function refresh() {
   for (const v of LEVELS) {
-    v.root.visible = v === cur; v.labs.visible = labelsOn && mode !== 'walk'; v.furn.visible = furnOn; v.ceil.visible = mode === 'walk'; for (const k in v.g) v.g[k].visible = LAY[k];
+    v.root.visible = v === cur; v.labs.visible = labelsOn && mode !== 'walk'; v.furn.visible = furnOn; v.ceil.visible = mode === 'walk'; for (const k in v.g) v.g[k].visible = LAY[k]; v.fix.visible = fixOn && !LAY.elec;
   }
   ui('bL1').classList.toggle('on', cur === LEVELS[0]); ui('bL0').classList.toggle('on', cur === LEVELS[1]);
   ui('bWalk2').style.display = cur.L.starts.length > 1 ? '' : 'none'; if (cur.L.starts[1]) ui('bWalk2').textContent = cur.L.starts[1].label || 'Walk ' + cur.L.starts[1].name;
@@ -758,6 +763,11 @@ ui('bTop').onclick = () => setMode('top');
 ui('bWalk').onclick = () => setMode('walk', 0);
 ui('bWalk2').onclick = () => setMode('walk', 1);
 ui('bFurn').onclick = e => { furnOn = !furnOn; e.target.classList.toggle('on', furnOn); refresh(); };
+function setFixtures(on) { fixOn = !!on; try { localStorage.setItem('studio.fixtures', fixOn ? '1' : '0'); } catch (e) {} ui('bFix').classList.toggle('on', fixOn); refresh(); }
+ui('bFix').classList.toggle('on', fixOn); ui('bFix').onclick = () => setFixtures(!fixOn);
+window.__fix = { set: setFixtures, on: () => fixOn, count: id => { let n = 0; LEVELS.find(v => v.L.id === id).fix.traverse(o => { if (o.isMesh && o.material.visible !== false) n++; }); return n; }, kinds: id => [...new Set(LEVELS.find(v => v.L.id === id).fix.children.map(g => g.children.length))].length, visible: id => LEVELS.find(v => v.L.id === id).fix.visible,
+  labels: id => { const out = new Set(); LEVELS.find(v => v.L.id === id).fix.traverse(o => { if (o.isMesh && o.userData.label) out.add(o.userData.label); }); return [...out]; },
+  tvColors: id => { const out = new Set(); LEVELS.find(v => v.L.id === id).fix.traverse(o => { if (o.isMesh && /^TV point|TV box/.test(o.userData.label || '') && o.material !== EM.hit) out.add(o.material.color.getHexString()); }); return [...out]; } };
 ui('bLab').onclick = e => { labelsOn = !labelsOn; e.target.classList.toggle('on', labelsOn); refresh(); };
 ui('bEl').onclick = () => { const p = ui('lpanel'); p.style.display = p.style.display === 'block' ? 'none' : 'block'; };
 for (const cb of document.querySelectorAll('#lpanel input')) cb.onchange = () => { LAY[cb.dataset.l] = cb.checked; elegHidden = false; ui('pick').style.display = 'none'; refresh(); };
@@ -765,6 +775,7 @@ document.addEventListener('pointerlockchange', refresh);
 ui('bAO').onclick = e => { aoOn = !aoOn; e.target.classList.toggle('on', aoOn); };
 let assume = false;
 function applyAssume() {
+  if (window.__fixReady) fixAssume();   // 21f
   for (const o of tagged) if (o.userData.mat0 !== EM.hit) o.material = assume ? STATUS_MAT[o.userData.info.status] : o.userData.mat0;
   ui('bAs').classList.toggle('on', assume);
   const lg = ui('legend');
@@ -873,7 +884,7 @@ canvas.addEventListener('pointerup', e => {
   const sysObjs = Object.keys(LAY).filter(k => LAY[k] && k !== 'rated').flatMap(k => cur.g[k].children);
   let hit = sysObjs.length ? ray.intersectObjects(sysObjs, true).find(ok) : null;
   if (!hit && LAY.rated) hit = ray.intersectObjects(cur.g.rated.children, true).find(ok) || null;
-  const other = ray.intersectObjects([...(furnOn ? cur.furn.children : []), ...cur.walls.children, ...(mode === 'walk' ? cur.ceil.children : [])], true).find(ok);
+  const other = ray.intersectObjects([...(furnOn ? cur.furn.children : []), ...cur.walls.children, ...(cur.fix.visible ? cur.fix.children : []), ...(mode === 'walk' ? cur.ceil.children : [])], true).find(ok);
   if (!hit || (other && other.distance < hit.distance - 0.05)) hit = other || hit;
   if (hit && mode === 'walk' && hit.distance > 6) hit = null;
   const p = ui('pick');
@@ -882,7 +893,7 @@ canvas.addEventListener('pointerup', e => {
     const i = hit.object.userData.info, nm = hit.object.userData.label || '';
     p.innerHTML = `<b>${nm || i.status}</b><br><i>${i.status}</i><br><b>Why:</b> ${i.why}<br><b>Source:</b> ${i.source}<br><b>Would settle it:</b> ${i.fix}`; p.style.display = 'block';
   } else if (hit && hit.object.userData.elec) {
-    const x = hit.object.userData.elec; p.innerHTML = `<b>${hit.object.userData.label}</b><br>${x.hz}<br><span style="color:#666">Source: owner sheet ${x.src}. Not the architect's E001.</span>`; p.style.display = 'block';
+    const x = hit.object.userData.elec; p.innerHTML = `<b>${hit.object.userData.label}</b> ${chip('owner concept')}<br>${x.hz}<br><span style="color:#666">Source: owner sheet ${x.src}. Not the architect's E001. Positions follow the owner sheet (about 4 in). Wall devices are shown on the nearest wall face, so some sit up to about 18 in from where the sheet draws them; the few that sit farther say so in their label.</span>`; p.style.display = 'block';
   } else if (hit) { p.textContent = hit.object.userData.label + ' (position approximate)'; p.style.display = 'block'; } else p.style.display = 'none';
 });
 
@@ -1220,7 +1231,7 @@ function captureStill() {
   if (cmp.on) renderCompare(); else if (aoOn && (mode !== 'walk' || photoOn)) composer.render(); else renderer.render(scene, camera);
   const src = renderer.domElement, fs = Math.max(11, Math.round(src.height * 0.022)), lines = [];
   lines.push([`1501 Douglas · ${cur.L.name} · ${lastShot ? lastShot.name : (mode === 'walk' ? 'eye-level view' : mode === 'top' ? 'top view' : 'dollhouse view')}`, 600, '#fff']);
-  lines.push([`${pick.scope === 'house' ? 'Finishes (whole house)' : 'ADU finishes'}: ${cmp.on ? pickName(pick) + ' | ' + cmp.label : pickName(pick)}${arrChanged(ARR) ? ' · furniture arranged in the studio' : ''} · light: ${studioLight ? 'neutral studio light, not the house lighting' : warmLight ? 'warm 2700K (approximate)' : 'default'}${peopleOn ? ' · people are scale figures' : ''}${photoOn ? ' · photo mode (higher quality; glass, fill and window light approximate)' : ''}`, 400, '#e3e8ec']);
+  lines.push([`${pick.scope === 'house' ? 'Finishes (whole house)' : 'ADU finishes'}: ${cmp.on ? pickName(pick) + ' | ' + cmp.label : pickName(pick)}${arrChanged(ARR) ? ' · furniture arranged in the studio' : ''} · light: ${studioLight ? 'neutral studio light, not the house lighting' : warmLight ? 'warm 2700K (approximate)' : 'default'}${peopleOn ? ' · people are scale figures' : ''}${fixOn && !LAY.elec ? ' · fixtures from the owner lighting and power sheets (positions approximate)' : ''}${photoOn ? ' · photo mode (higher quality; glass, fill and window light approximate)' : ''}`, 400, '#e3e8ec']);
   lines.push([`Concept view from drawing-derived geometry (about ±4 in); not to dimension. Design Studio v0.8, ${new Date().toLocaleDateString()}.`, 400, '#b9c3cc']);
   const lh = Math.round(fs * 1.45), band = lh * lines.length + Math.round(fs * 0.9), c = document.createElement('canvas');
   c.width = src.width; c.height = src.height + band;
@@ -1723,7 +1734,7 @@ for (const lv of LEVELS) lv.root.updateMatrixWorld(true);
 
 // 5. pendants (Electrical layer) in matte black when the hardware is black: separate materials per zone
 const PEND_H = EM.metal.clone(), PEND_A = EM.metal.clone(), PEND_BASE = EM.metal.color.clone();
-for (const lv of LEVELS) lv.g.elec.traverse(o => {
+for (const lv of LEVELS) for (const eg of [lv.g.elec, lv.fix]) eg.traverse(o => {   // 21f: the fixtures view's pendants follow the hardware finish too
   if (!o.isMesh || !(o.geometry instanceof THREE.ConeGeometry)) return;
   const p = new THREE.Vector3(); o.getWorldPosition(p);
   const m = lv === lowerLv && inZone(p.x / S, p.z / S) ? PEND_A : PEND_H;
@@ -2378,9 +2389,9 @@ function fromImg(id, px, py) {
   const z = d.zones[0]; return [(px - z.bx) / z.ax, (py - z.by) / z.ay];
 }
 
-Promise.all(['data/minimap.json', 'data/places.json'].map(u => fetch(u + '?v=2026-11-21e').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); })))
+Promise.all(['data/minimap.json', 'data/places.json'].map(u => fetch(u + '?v=2026-11-21f').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); })))
   .then(([d, P]) => Promise.all(Object.entries(d.levels).map(([id, l]) => new Promise((res, rej) => {
-    const im = new Image(); im.onload = () => { mini.img[id] = im; res(); }; im.onerror = () => rej(new Error(l.img)); im.src = 'data/' + l.img + '?v=2026-11-21e';
+    const im = new Image(); im.onload = () => { mini.img[id] = im; res(); }; im.onerror = () => rej(new Error(l.img)); im.src = 'data/' + l.img + '?v=2026-11-21f';
   }))).then(() => {
     mini.data = d; mini.places = Object.entries(P.places).map(([id, p]) => ({ id, ...p })).filter(p => p.at && lvById(p.level));
     const sel = ui('miniGo');
@@ -2724,6 +2735,19 @@ window.__mini = {
   plan: (id, x, y, r, rect) => planRoute(id, x, y, r, rect), go: (id, x, y, label, room) => goTo(id, x, y, label, room), setOpen: setMiniOpen, stairPts: STAIR_PTS,
   walkOk: (id, x, y) => walkOk(lvById(id), x, y), okAt: (id, x, y) => okAt(lvById(id), x, y), wallDist: (id, x, y) => wallDist(lvById(id), x, y), hit: (id, x, y, r) => hitAt(lvById(id), x, y, r), leaves: id => lvById(id).leaves.map(r => r.slice()),
   tapImg: (px, py) => { const r = mC.getBoundingClientRect(), d = mini.data.levels[mini.view]; return [r.left + px / d.w * r.width, r.top + py / d.h * r.height]; } };
+// 21f: fixtures drawn merged, one mesh per material per level (about 470 meshes became about a dozen draw calls on the first floor)
+const fixParts = new Map();
+for (const v of LEVELS) {
+  v.fix.updateMatrixWorld(true);
+  const byMat = new Map(), orig = [];
+  v.fix.traverse(o => { if (!o.isMesh || o.material === EM.hit) return; orig.push(o); if (!byMat.has(o.material)) byMat.set(o.material, []); byMat.get(o.material).push(o.geometry.clone().applyMatrix4(o.matrixWorld)); });
+  const merged = new THREE.Group();
+  for (const [m, gs] of byMat) { const g = mergeGeometries(gs, false); if (g) merged.add(new THREE.Mesh(g, m)); gs.forEach(q => q.dispose()); }
+  v.fix.add(merged); fixParts.set(v, { orig, merged });
+}
+function fixAssume() { for (const { orig, merged } of fixParts.values()) { merged.visible = !assume; for (const o of orig) o.visible = assume; } }   // the per-device meshes still take taps while hidden (rays ignore visibility)
+fixAssume(); window.__fixReady = true;
+window.__fix.drawn = id => { const p = fixParts.get(LEVELS.find(v => v.L.id === id)); return { merged: p.merged.children.length, devices: p.orig.length }; };
 const clock = new THREE.Clock();
 renderer.setAnimationLoop(() => {
   const dt = Math.min(clock.getDelta(), 0.1);   // walk release 1: slow devices keep real walking speed (moves are sub-stepped)
@@ -2734,6 +2758,6 @@ renderer.setAnimationLoop(() => {
   if (!cmp.on) updateLabels(); else hideLabels();
 });
 </script>
-<script type="module" src="present.js?v=2026-11-21e"></script>
+<script type="module" src="present.js?v=2026-11-21f"></script>
 </body>
 </html>
