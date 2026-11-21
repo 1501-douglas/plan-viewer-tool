@@ -106,7 +106,7 @@
 <div id="legend" style="position:fixed;left:10px;top:58px;background:rgba(255,255,255,.95);border:1px solid #bbb;border-radius:8px;padding:8px 10px;font-size:12px;display:none;max-width:280px;line-height:1.45"></div>
 <div id="warn">This page needs WebGL, which this browser did not provide.</div>
 <div id="note"><button class="x" id="noteX" aria-label="Hide note">×</button>
-  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-20e, walk release 1: movement, plus the Start walking prompt and Exit walk): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
+  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-21a, walk release 1: movement and walk controls): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
 </div>
 
 <script type="importmap">
@@ -125,7 +125,7 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const [M, EL, DS] = await Promise.all(['data/model.json', 'data/elements.json', 'data/design.json'].map(u =>
-  fetch(u + '?v=2026-11-20e').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
+  fetch(u + '?v=2026-11-21a').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
   const w = document.getElementById('warn'); w.textContent = 'Could not load the model data (' + e.message + ').'; w.style.display = 'block'; throw e; });
 const S = 0.0254, EYE = 63, RAD = 9;
 
@@ -2165,19 +2165,21 @@ function setPhoto(on) {
   if (!studioLight) { scene.environment = photoOn ? photoEnv : null; scene.environmentIntensity = 0.2; }
   skyFill.intensity = photoOn ? 0.35 : 0; skyFill.position.set(cur.cx + 8, 6, cur.cz - 6); skyFill.target.position.set(cur.cx, 0, cur.cz);
   renderer.toneMappingExposure = photoOn ? 0.97 : 1;
-  sun.shadow.mapSize.set(photoOn ? 4096 : 2048, photoOn ? 4096 : 2048); if (sun.shadow.map) { sun.shadow.map.dispose(); sun.shadow.map = null; }
-  ao.updateGtaoMaterial({ radius: photoOn ? 0.45 : 0.35, distanceExponent: 1.5, thickness: 1.2, scale: photoOn ? 1.4 : 1.2, samples: photoOn ? 24 : 16 });
-  renderer.setPixelRatio(photoOn ? Math.min(devicePixelRatio * 1.25, 2.5) : (matchMedia('(pointer: coarse)').matches && Math.min(screen.width, screen.height) < 700 ? Math.min(devicePixelRatio, 1.5) : Math.min(devicePixelRatio, 2)));
+  const PH = photoOn && !LOWPOWER, shadowPx = PH ? 4096 : 2048;   // 11/21a: phones keep their live resolution, shadow map and soft-shade samples in photo mode (it measured about 13 x slower per frame without the cap)
+  sun.shadow.mapSize.set(shadowPx, shadowPx); if (sun.shadow.map) { sun.shadow.map.dispose(); sun.shadow.map = null; }
+  ao.updateGtaoMaterial({ radius: photoOn ? 0.45 : 0.35, distanceExponent: 1.5, thickness: 1.2, scale: photoOn ? 1.4 : 1.2, samples: PH ? 24 : 16 });
+  renderer.setPixelRatio(PH ? Math.min(devicePixelRatio * 1.25, 2.5) : (LOWPOWER ? Math.min(devicePixelRatio, 1.5) : Math.min(devicePixelRatio, 2)));
   resize();
 }
 for (const id of ['bL1', 'bL0']) ui(id).addEventListener('click', () => { if (photoOn) { skyFill.position.set(cur.cx + 8, 6, cur.cz - 6); skyFill.target.position.set(cur.cx, 0, cur.cz); } });
-window.__photo = { set: setPhoto, on: () => photoOn, glass: () => glassMeshes.length, fill: () => skyFill.intensity };
+window.__photo = { set: setPhoto, on: () => photoOn, glass: () => glassMeshes.length, fill: () => skyFill.intensity,
+  cfg: () => ({ pixelRatio: renderer.getPixelRatio(), shadow: sun.shadow.mapSize.x, lowPower: LOWPOWER }) };
 
 setMode('doll');
 studioStart();
 
 // ================= walk release 1, part 2 (11/20): Start walking prompt, Exit walk, thumb ring on phones =================
-// Entry and exit only: walking itself (speed, collision, the stair) is unchanged. Pointer lock starts only from a click
+// Entry and exit only: walking itself (speed, collision, the stair) is unchanged from build 2026-11-20d (walk release 1, movement). Pointer lock starts only from a click
 // (Start walking, or a click on the view while walking); room links, shots and tour stops never start it.
 const COARSE = () => matchMedia('(pointer: coarse)').matches;
 document.head.insertAdjacentHTML('beforeend', `<style>
@@ -2322,6 +2324,6 @@ renderer.setAnimationLoop(() => {
   if (!cmp.on) updateLabels(); else hideLabels();
 });
 </script>
-<script type="module" src="present.js?v=2026-11-20e"></script>
+<script type="module" src="present.js?v=2026-11-21a"></script>
 </body>
 </html>
