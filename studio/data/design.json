@@ -675,11 +675,11 @@
    "name": "19. Master bath: 60 in double vanity (owner decision 11/19)",
    "level": "first",
    "x": 590,
-   "y": 238,
-   "eye": 60,
-   "yaw": 1.2,
+   "y": 206,
+   "eye": 62,
+   "yaw": 1.5708,
    "pitch": -0.12,
-   "fov": 80
+   "fov": 75
   },
   {
    "id": "ll-commonhall",

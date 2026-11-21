@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>1501 Douglas: 3D Design Studio v0.7 (whole-house finishes)</title>
+<title>1501 Douglas: 3D Design Studio v0.8</title>
 <style>
   html, body { margin: 0; height: 100%; overflow: hidden; background: #e9e6df; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #222; }
   .rlab { position: fixed; transform: translate(-50%, -50%); background: rgba(255,255,255,.9); border-radius: 8px; padding: 2px 9px; font: 600 12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #1b2a38; pointer-events: none; white-space: nowrap; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,.15); display: none; }
@@ -106,7 +106,7 @@
 <div id="legend" style="position:fixed;left:10px;top:58px;background:rgba(255,255,255,.95);border:1px solid #bbb;border-radius:8px;padding:8px 10px;font-size:12px;display:none;max-width:280px;line-height:1.45"></div>
 <div id="warn">This page needs WebGL, which this browser did not provide.</div>
 <div id="note"><button class="x" id="noteX" aria-label="Hide note">×</button>
-  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.7 (build 2026-11-20b): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
+  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-20c): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
 </div>
 
 <script type="importmap">
@@ -125,7 +125,7 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const [M, EL, DS] = await Promise.all(['data/model.json', 'data/elements.json', 'data/design.json'].map(u =>
-  fetch(u + '?v=2026-11-20b').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
+  fetch(u + '?v=2026-11-20c').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
   const w = document.getElementById('warn'); w.textContent = 'Could not load the model data (' + e.message + ').'; w.style.display = 'block'; throw e; });
 const S = 0.0254, EYE = 63, RAD = 9;
 
@@ -182,7 +182,11 @@ const BRICK = canvasTex((g, n) => {   // modular red brick, running bond, in a 3
     g.fillStyle = `rgb(${Math.round(150 * l)},${Math.round(68 * l)},${Math.round(50 * l)})`; g.fillRect(x + 2, r * ch + 2, bw - 4, ch - 4);
   }
 });
-const texMat = (tx, w, d, tile) => { const m = tx.clone(); m.needsUpdate = true; m.repeat.set(w / tile, d / tile); return new THREE.MeshStandardMaterial({ map: m, roughness: 0.65 }); };
+const LOWPOWER = matchMedia('(pointer: coarse)').matches && Math.min(screen.width, screen.height) < 700;   // phones skip the v0.8 surface detail, as they skip soft shade
+const texMat = (tx, w, d, tile) => { const m = tx.clone(); m.needsUpdate = true; m.repeat.set(w / tile, d / tile); return new THREE.MeshStandardMaterial(LOWPOWER ? { map: m, roughness: 0.65 } : { map: m, roughness: 0.62, bumpMap: m, bumpScale: 0.9 }); };   // v0.8: the map doubles as a fine bump, so seams, grout and mortar read as grooves (generic, not a product)
+{ let sd = 5; const r = () => (sd = (sd * 16807) % 2147483647) / 2147483647;   // v0.8: faint eggshell texture on painted walls, so they don't read as flat plastic
+  const eg = canvasTex((g, n) => { const im = g.createImageData(n, n); for (let i = 0; i < im.data.length; i += 4) { const v = 118 + r() * 20; im.data[i] = im.data[i + 1] = im.data[i + 2] = v; im.data[i + 3] = 255; } g.putImageData(im, 0, 0); }, 256);
+  eg.colorSpace = THREE.NoColorSpace; eg.repeat.set(3, 3); if (!LOWPOWER) MAT.wall.bumpMap = eg; MAT.wall.bumpScale = 0.35; MAT.wall.roughness = 0.93; }
 const KIND = { cab: 0xf2f0ea, tallcab: 0xf2f0ea, appl: 0xd5dde4, range: 0x3a3d40, fridge: 0xc9d0d6, closet: 0xece6f2, wood: 0xa98563,
   bed: 0xf3efe6, head: 0x6d4c41, desk: 0xc9b79c, chair: 0x555b61, chairw: 0x8a8f94, tub: 0xffffff, toilet: 0xffffff, vanity: 0x8b6a4c,
   shower: 0xcfe8f4, bench: 0x9c7b5b, table: 0xb38b63, soft: 0x8fa3b5, sofa: 0x7d8c99, feature: 0x8a6a4f, tv: 0x111111, fire: 0xe8a87c, stair: 0xb9a48c, lock: 0x5f6b73, chasewall: 0xe9e4da };
@@ -418,7 +422,7 @@ const INFO = {
   ratedC: { status: 'drawing-derived', why: 'The architect\'s 11/13 set rates the ceiling over the ADU (FT1, 1 hour, UL L535, STC 50).', source: 'Architect set 11/13 (A001, FT1)', fix: 'Fixtures, boxes and ducts in this ceiling need listed products or dampers; architect confirms.' },
   brick: { status: 'owner concept', why: 'Owner, 11/18: existing red brick, left exposed on both sides (the ADU TV wall and the family room north wall). Extent along the wall is taken from the owner sheets\' exposed-brick note. It is also the separation between the ADU and the family room, so its fire rating rests on the masonry itself; A001\'s WT1 shows furring at masonry, which would cover it.', source: 'Owner 11/18; owner sheets L-2 / L-3 notes', fix: 'Architect confirms the brick wall\'s rating with no furring, and the firestopping at any penetration; field-check its extent.' },
   riser: { status: 'owner concept', why: 'House duct riser chase beside the stair, kitchen side, with the fridge against it (owner decision 11/20, the 10/18 chase). It carries the house supply up and the return down between the common hall ceiling below and the attic, and matches the riser beside the stair on the architect\'s 11/13 M001. The living room feature wall has no chase. Size is the geometry file\'s chase (about 23 in square), a placeholder.', source: 'Owner decision 11/20; owner sheets L-1 Rev 13, SC-1 Rev 10, M001 11/20; architect set 11/13 (M001)', fix: 'Engineer sizes the chase; architect sets fire dampers or a rated enclosure where it leaves the common hall; field-check the floor framing at that corner.' },
-  mbath: { status: 'owner concept', why: 'Owner decision 11/19 (Master_Bath_Record Decision 5): a 60 in double vanity, about 21 in deep, on the bath\'s west wall from the north-west corner; the wall shared with the master bedroom moves about 16 in south so the vanity plus the door swing fit; the linen tower deepened to 24 in in the freed strip (changed 11/20, see below). Toilet stays. Owner decision 11/20: the shower is 72 x 36 with a valve on each end wall (fixed head north; handheld on a slide bar south, over a built-in bench about 36 x 16 in and 18 in high), a new framed wet wall (about 4.5 in) at its south end, and the linen cabinet back to about 12 in deep; 72 + 4.5 + 12 in needs about 88.5 in of bath depth, against about 88 in on the record and about 92 in in the model walls, so the measurement decides it. The bath depth is scaled, not measured.', source: 'Master_Bath_Record (11/19); owner sheets L-1 Rev 13, LP-1 Rev 19, SC-1 Rev 10, Owner P 11/19', fix: 'Measure the bath depth, its west wall length and the master bedroom depth; structural engineer confirms the moved wall is non-bearing; plumber confirms both sink drains.' },
+  mbath: { status: 'owner concept', why: 'Owner decision 11/19 (Master_Bath_Record Decision 5): a 60 in double vanity, about 21 in deep, on the bath\'s west wall from the north-west corner; the wall shared with the master bedroom moves about 16 in south so the vanity plus the door swing fit; the linen tower deepened to 24 in in the freed strip (changed 11/20, see below). Toilet stays. Owner decision 11/20: the shower is 72 x 36 with a valve on each end wall (owner decision, later 11/20: handheld on a slide bar at the north end, over a built-in bench about 36 x 16 in and 18 in high, under the east window; fixed head at the south end), a new framed wet wall (about 4.5 in) at its south end, and the linen cabinet back to about 12 in deep; 72 + 4.5 + 12 in needs about 88.5 in of bath depth, against about 88 in on the record and about 92 in in the model walls, so the measurement decides it. The bath depth is scaled, not measured.', source: 'Master_Bath_Record (11/19); owner sheets L-1 Rev 13, LP-1 Rev 19, SC-1 Rev 10, Owner P 11/19', fix: 'Measure the bath depth, its west wall length and the master bedroom depth; structural engineer confirms the moved wall is non-bearing; plumber confirms both sink drains.' },
   duct: { status: 'owner concept', why: 'House ducts as the owner M sheet draws them (11/20): from the air handler in the lower-level common utility room, flat ducts in the common hall ceiling to the riser under the kitchen chase, and a short branch through the new hall wall into the family room. There is no family room north-wall soffit and no wet bar bulkhead. Sizes and depths are placeholders.', source: 'Owner M sheet 11/20; owner decision 11/20 (riser); owner decisions 11/13 (M5)', fix: 'Engineer sizes the ducts and confirms the hall ceiling clearance (not measured); architect sets fire dampers where ducts leave the common hall.' },
   ratedNew: { status: 'drawing-derived', why: 'DOB (S. Brown, program manager, email 11/05) gave no objection to the common hall on conditions: this new wall between the family room and the common hall is 1-hour rated and its door 45-minute rated, self-closing and latching; the door from the vestibule into the hall has passage hardware only and is never locked. The architect\'s 11/13 set draws the wall and rates it. Position from owner sheets L-3 and SC-2 (the owner\'s 11/01 sketch), within about 4 in.', source: 'DOB email 11/05 (DOB_Guidance_Log); architect set 11/13; owner sheets L-3 Rev 25, SC-2 Rev 20', fix: 'Architect tags the wall type and adds the door to a door schedule; the residential plan reviewer decides.' },
 };
@@ -1155,12 +1159,12 @@ function renderShots() {
   <div class="sub">Reusable eye-level views, saved as numbers in the design data so the same shot can be re-rendered after the design changes. They are the start of the shot list for stills and, later, the walkthrough video.</div>
   <div style="margin-top:6px">${DS.shots.map(s => `<button class="opt${lastShot === s ? ' on' : ''}" data-shot="${s.id}">${esc(s.name)}</button>`).join('')}</div>
   <h4>This view</h4>
-  <button class="opt" id="stillBtn">Capture a still</button><button class="opt" id="poseBtn">Show its camera numbers</button>
+  <button class="opt" id="photoBtn">${photoOn ? 'Photo mode: on' : 'Photo mode: off'}</button><button class="opt" id="stillBtn">Capture a still</button><button class="opt" id="poseBtn">Show its camera numbers</button>
   <pre id="poseOut" class="muted" style="white-space:pre-wrap;display:none"></pre>
   <div class="muted">Stills carry a stamp saying they are concept views from drawing-derived geometry. Each still uses whatever finishes and layers are showing.</div>`;
   el.querySelector('[data-close]').onclick = () => openPanel('spanel');
   el.querySelectorAll('[data-shot]').forEach(b => b.onclick = () => goShot(DS.shots.find(s => s.id === b.dataset.shot)));
-  ui('stillBtn').onclick = captureStill;
+  ui('stillBtn').onclick = captureStill; ui('photoBtn').onclick = () => { setPhoto(!photoOn); renderShots(); };
   ui('poseBtn').onclick = () => {
     const o = ui('poseOut'); o.style.display = 'block';
     if (mode === 'walk') o.textContent = JSON.stringify({ id: 'new-shot', name: 'New shot', level: cur.L.id, x: +walker.x.toFixed(1), y: +walker.y.toFixed(1), eye: walker.eye || EYE, yaw: +walker.yaw.toFixed(3), pitch: +walker.pitch.toFixed(3), fov: camera.fov });
@@ -1169,11 +1173,11 @@ function renderShots() {
 }
 function captureStill() {
   const selWas = selBox.visible; selBox.visible = false;
-  if (cmp.on) renderCompare(); else if (aoOn && mode !== 'walk') composer.render(); else renderer.render(scene, camera);
+  if (cmp.on) renderCompare(); else if (aoOn && (mode !== 'walk' || photoOn)) composer.render(); else renderer.render(scene, camera);
   const src = renderer.domElement, fs = Math.max(11, Math.round(src.height * 0.022)), lines = [];
   lines.push([`1501 Douglas · ${cur.L.name} · ${lastShot ? lastShot.name : (mode === 'walk' ? 'eye-level view' : mode === 'top' ? 'top view' : 'dollhouse view')}`, 600, '#fff']);
-  lines.push([`${pick.scope === 'house' ? 'Finishes (whole house)' : 'ADU finishes'}: ${cmp.on ? pickName(pick) + ' | ' + cmp.label : pickName(pick)}${arrChanged(ARR) ? ' · furniture arranged in the studio' : ''} · light: ${studioLight ? 'neutral studio light, not the house lighting' : warmLight ? 'warm 2700K (approximate)' : 'default'}${peopleOn ? ' · people are scale figures' : ''}`, 400, '#e3e8ec']);
-  lines.push([`Concept view from drawing-derived geometry (about ±4 in); not to dimension. Design Studio v0.7, ${new Date().toLocaleDateString()}.`, 400, '#b9c3cc']);
+  lines.push([`${pick.scope === 'house' ? 'Finishes (whole house)' : 'ADU finishes'}: ${cmp.on ? pickName(pick) + ' | ' + cmp.label : pickName(pick)}${arrChanged(ARR) ? ' · furniture arranged in the studio' : ''} · light: ${studioLight ? 'neutral studio light, not the house lighting' : warmLight ? 'warm 2700K (approximate)' : 'default'}${peopleOn ? ' · people are scale figures' : ''}${photoOn ? ' · photo mode (higher quality; glass, fill and window light approximate)' : ''}`, 400, '#e3e8ec']);
+  lines.push([`Concept view from drawing-derived geometry (about ±4 in); not to dimension. Design Studio v0.8, ${new Date().toLocaleDateString()}.`, 400, '#b9c3cc']);
   const lh = Math.round(fs * 1.45), band = lh * lines.length + Math.round(fs * 0.9), c = document.createElement('canvas');
   c.width = src.width; c.height = src.height + band;
   const g = c.getContext('2d'); g.drawImage(src, 0, 0); g.fillStyle = '#1d2329'; g.fillRect(0, src.height, c.width, band);
@@ -2107,6 +2111,32 @@ function stairStep(dt) {
 window.__stair = () => ({ level: cur.L.id, x: +walker.x.toFixed(1), y: +walker.y.toFixed(1), fz: +(walker.fz || 0).toFixed(1), eye: +(camera.position.y / S).toFixed(1), stack: stackOn, note: stairNote.style.display === 'block' ? stairNote.textContent.slice(0, 60) : '' });
 window.__obsAt = (id, x, y) => LEVELS.find(v => v.L.id === id).obs.filter(([a, b, c, d]) => x > a - RAD && x < c + RAD && y > b - RAD && y < d + RAD);
 
+// ================= v0.8: realistic glass and photo mode (owner realism decision, 11/20) =================
+// Live view: lighter, slightly tinted glass that sorts cleanly. Photo mode: true transmission glass, an environment for
+// reflections and fill, a soft daylight fill, stronger soft shade (also in Walk), sharper shadows and textures. Off by default.
+const glassMeshes = [];
+scene.traverse(o => { if (o.isMesh && (o.material === MAT.glass || o.material === FM.glass)) glassMeshes.push(o); });
+const GLASS_LIVE = new THREE.MeshStandardMaterial({ color: 0xdfeef0, transparent: true, opacity: 0.2, roughness: 0.04, metalness: 0.1, depthWrite: false });
+const GLASS_PHOTO = new THREE.MeshPhysicalMaterial({ color: 0xf2f8f8, transmission: 1, thickness: 0.006, roughness: 0.03, ior: 1.5, specularIntensity: 1 });
+const setGlass = m => { for (const o of glassMeshes) { if (o.userData.mat0 === o.material || !o.userData.mat0) o.userData.mat0 = m; if (!assume) o.material = m; else o.userData.mat0 = m; } };
+setGlass(GLASS_LIVE);
+const skyFill = new THREE.DirectionalLight(0xeef4ff, 0); scene.add(skyFill, skyFill.target);   // soft daylight from the window side in photo mode (approximate; no per-window lights, too heavy for phones)
+let photoOn = false, photoEnv = null;
+function setPhoto(on) {
+  photoOn = !!on;
+  if (photoOn && !photoEnv) { const pm = new THREE.PMREMGenerator(renderer); photoEnv = pm.fromScene(new RoomEnvironment(), 0.04).texture; pm.dispose(); }
+  setGlass(photoOn ? GLASS_PHOTO : GLASS_LIVE);
+  if (!studioLight) { scene.environment = photoOn ? photoEnv : null; scene.environmentIntensity = 0.2; }
+  skyFill.intensity = photoOn ? 0.35 : 0; skyFill.position.set(cur.cx + 8, 6, cur.cz - 6); skyFill.target.position.set(cur.cx, 0, cur.cz);
+  renderer.toneMappingExposure = photoOn ? 0.97 : 1;
+  sun.shadow.mapSize.set(photoOn ? 4096 : 2048, photoOn ? 4096 : 2048); if (sun.shadow.map) { sun.shadow.map.dispose(); sun.shadow.map = null; }
+  ao.updateGtaoMaterial({ radius: photoOn ? 0.45 : 0.35, distanceExponent: 1.5, thickness: 1.2, scale: photoOn ? 1.4 : 1.2, samples: photoOn ? 24 : 16 });
+  renderer.setPixelRatio(photoOn ? Math.min(devicePixelRatio * 1.25, 2.5) : (matchMedia('(pointer: coarse)').matches && Math.min(screen.width, screen.height) < 700 ? Math.min(devicePixelRatio, 1.5) : Math.min(devicePixelRatio, 2)));
+  resize();
+}
+for (const id of ['bL1', 'bL0']) ui(id).addEventListener('click', () => { if (photoOn) { skyFill.position.set(cur.cx + 8, 6, cur.cz - 6); skyFill.target.position.set(cur.cx, 0, cur.cz); } });
+window.__photo = { set: setPhoto, on: () => photoOn, glass: () => glassMeshes.length, fill: () => skyFill.intensity };
+
 setMode('doll');
 studioStart();
 const clock = new THREE.Clock();
@@ -2114,10 +2144,10 @@ renderer.setAnimationLoop(() => {
   const dt = Math.min(clock.getDelta(), 0.05);
   if (mode === 'walk') stepWalk(dt); else controls.update();
   if (cmp.on) renderCompare();
-  else if (aoOn && mode !== 'walk') composer.render(); else renderer.render(scene, camera);
+  else if (aoOn && (mode !== 'walk' || photoOn)) composer.render(); else renderer.render(scene, camera);
   if (!cmp.on) updateLabels(); else hideLabels();
 });
 </script>
-<script type="module" src="present.js?v=2026-11-20b"></script>
+<script type="module" src="present.js?v=2026-11-20c"></script>
 </body>
 </html>
