@@ -494,6 +494,12 @@
    "title": "Drawn stair opening is short for the stair below it",
    "detail": "The first-floor opening is drawn about 82 in long (to y = 123 in). With 14 risers of about 7-3/8 in on 9 in treads, the stair runs about 117 in, so the last 35 in of the run sits under the first-floor floor, where the headroom works out to about 5'-4\" at the opening edge (code minimum 6'-8\"). The house has been used this way, so the opening on site is probably longer, the closet floor over the stair is raised, or the stair differs. The stair walk shows the drawn condition and says so on screen.",
    "settles": "L-06, L-07 (stair rise, run, opening length and headroom)"
+  },
+  {
+   "id": "D11",
+   "title": "Gap in the ADU office / bedroom wall (closed 11/21)",
+   "detail": "The 10/01 geometry file left a 49 in gap in the wall between the ADU office and the bedroom (y 303 to 352). No record puts a door there; the office showed the bedroom TV and dresser through it. Closed on 11/21 with a 4 in wall matching the segments either side, and the bedroom TV point moved back over the dresser. Position drawing-derived, about +/- 4 in.",
+   "settles": "Field-measure the office east wall and the bedroom west wall (site visit)"
   }
  ]
 }
