@@ -2,7 +2,7 @@
 // Opening screen, guided tour, shareable view links and plan-viewer handoff.
 // Presentation only: it moves the camera and applies existing finish picks through window.__studio.
 // It adds no geometry and changes no records.
-const V = '2026-11-20d';   // studio files version
+const V = '2026-11-20e';   // studio files version
 const VIEWER = '../1501-Douglas-Sheet-Viewer.html?v=2026-11-20';
 const K_SEEN = 'douglas.studio.intro.seen', K_PICK = 'douglas.studio.pick.v3';
 const ls = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { v === null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} } };
@@ -55,7 +55,7 @@ const bar = $('bar'), hub = $('bHub');
 hub.insertAdjacentHTML('afterend', '<button id="bTour" title="Guided tour of the model">Tour</button><button id="bHelp" title="What this is and how to use it" aria-label="Help">?</button>');
 
 // ---------- shared helpers ----------
-function hideStudioChrome() { for (const id of ['dpanel', 'spanel', 'rpanel', 'lpanel']) $(id).style.display = 'none'; for (const b of ['bDes', 'bShots', 'bReg']) $(b).classList.remove('on'); $('pick').style.display = 'none'; }
+function hideStudioChrome() { if (ST.walkPrompt) ST.walkPrompt(false); for (const id of ['dpanel', 'spanel', 'rpanel', 'lpanel']) $(id).style.display = 'none'; for (const b of ['bDes', 'bShots', 'bReg']) $(b).classList.remove('on'); $('pick').style.display = 'none'; }
 function goPlace(id) {
   const p = PLACES[id]; if (!p) return false;
   const s = p.shot && ST.shotById(p.shot);
@@ -88,7 +88,7 @@ intro.addEventListener('click', e => {
   const b = e.target.closest('[data-act]'); if (!b && e.target !== intro) return;
   closeIntro(); const a = b ? b.dataset.act : 'explore';
   if (a === 'tour') startTour(0);
-  else if (a === 'adu') { const s = ST.shotById('adu-entry'); if (s) ST.goShot(s); }
+  else if (a === 'adu') { const s = ST.shotById('adu-entry'); if (s) { ST.goShot(s); if (ST.walkPrompt) ST.walkPrompt(true); } }   // an explicit walk: show the controls (the mouse is taken only by Start walking)
   else if (a === 'systems') { ST.setView({ mode: 'doll', level: 'lower' }); setLayers(['hvac', 'rated']); }
 });
 intro.addEventListener('keydown', e => { if (e.key === 'Escape') { e.stopPropagation(); closeIntro(); } e.stopPropagation(); });
@@ -109,7 +109,7 @@ function renderTour() {
   } else {
     const t = STOPS[tourAt];
     tourEl.innerHTML = `<div class="top"><span><span class="tag${tagClass(t.tag)}">${esc(t.tag)}</span> <span class="muted" style="font-size:12px;color:#5a6168">Stop ${tourAt + 1} of ${STOPS.length}</span></span><button class="x" data-t="exit" aria-label="Exit the tour">×</button></div>
-      <h3>${esc(t.title)}</h3><p>${esc(t.text)}</p>${tourAt === 0 ? `<p style="font-size:12px;color:#5a6168">${matchMedia('(pointer: coarse)').matches ? 'Drag on the right half of the screen to look around, on the left half to walk.' : 'Click the view, then use the mouse to look and W A S D to walk.'}</p>` : ''}
+      <h3>${esc(t.title)}</h3><p>${esc(t.text)}</p>${tourAt === 0 ? `<p style="font-size:12px;color:#5a6168">${matchMedia('(pointer: coarse)').matches ? 'Drag on the right half of the screen to look around; slide your thumb on the left half to walk.' : 'Click the view, then use the mouse to look and W A S D to walk.'}</p>` : ''}
       <div class="row"><button class="pBtn" data-t="back"${tourAt === 0 ? ' disabled' : ''}>Back</button><button class="pBtn primary" data-t="next">${tourAt === STOPS.length - 1 ? 'Finish' : 'Next'}</button>
       <a class="plan" href="${viewerLink(t.place)}">See it on the plan</a></div>`;
   }
@@ -133,6 +133,7 @@ tourEl.addEventListener('keydown', e => e.stopPropagation());
 addEventListener('keydown', e => { if (tourAt < 0 || intro.style.display === 'flex' || /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName || '')) return;
   if (e.key === 'Escape') stopTour(); if (e.key === ']' || e.key === 'PageDown') showStop(tourAt + 1); if (e.key === '[' || e.key === 'PageUp') showStop(tourAt - 1); });
 $('bTour').onclick = () => (tourAt >= 0 ? stopTour() : startTour(0));
+addEventListener('studio:walkexit', () => { if (tourAt >= 0) stopTour(); });   // Exit walk also ends the tour
 // the tour steps aside when another panel opens
 for (const id of ['bDes', 'bShots', 'bReg', 'bEl']) $(id).addEventListener('click', () => { if (tourAt >= 0) stopTour(); });
 

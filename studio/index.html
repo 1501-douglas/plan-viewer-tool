@@ -106,7 +106,7 @@
 <div id="legend" style="position:fixed;left:10px;top:58px;background:rgba(255,255,255,.95);border:1px solid #bbb;border-radius:8px;padding:8px 10px;font-size:12px;display:none;max-width:280px;line-height:1.45"></div>
 <div id="warn">This page needs WebGL, which this browser did not provide.</div>
 <div id="note"><button class="x" id="noteX" aria-label="Hide note">×</button>
-  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-20d, walk release 1): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
+  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-20e, walk release 1: movement, plus the Start walking prompt and Exit walk): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
 </div>
 
 <script type="importmap">
@@ -125,7 +125,7 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const [M, EL, DS] = await Promise.all(['data/model.json', 'data/elements.json', 'data/design.json'].map(u =>
-  fetch(u + '?v=2026-11-20d').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
+  fetch(u + '?v=2026-11-20e').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
   const w = document.getElementById('warn'); w.textContent = 'Could not load the model data (' + e.message + ').'; w.style.display = 'block'; throw e; });
 const S = 0.0254, EYE = 63, RAD = 9;
 
@@ -704,7 +704,7 @@ const anyLay = () => Object.values(LAY).some(Boolean);
 let cur = LEVELS[0];
 
 const ui = id => document.getElementById(id), hint = ui('hint');
-let mode = 'doll', labelsOn = true, furnOn = true, elegHidden = false;
+let mode = 'doll', labelsOn = true, furnOn = true, elegHidden = false, walkPrev = null;   // walkPrev: the view Exit walk returns to
 const walker = { x: 0, y: 0, yaw: 0, pitch: 0 };
 function refresh() {
   for (const v of LEVELS) {
@@ -726,8 +726,11 @@ function refresh() {
   } else eg.style.display = 'none';
   ui('xh').style.display = anyLay() && mode === 'walk' && document.pointerLockElement === canvas ? 'block' : 'none';
   ui('bWalk').textContent = cur.L.starts.length > 1 ? 'Walk ' + cur.L.starts[0].name.toLowerCase() : 'Walk';
+  if (window.__walkUi) window.__walkUi();
 }
+function walkMark() { if (mode !== 'walk') walkPrev = { mode, level: cur.L.id, c: camera.position.toArray(), t: controls.target.toArray(), fov: camera.fov }; }   // walk release 1b: remember the view before a walk
 function setMode(m, startIdx = 0) {
+  if (m === 'walk') { if (mode !== 'walk' && !walkPrev) walkMark(); } else walkPrev = null;
   mode = m; stairReset();
   for (const [id, k] of [['bDoll', 'doll'], ['bTop', 'top']]) ui(id).classList.toggle('on', k === m);
   ui('bWalk').classList.toggle('on', m === 'walk' && startIdx === 0); ui('bWalk2').classList.toggle('on', m === 'walk' && startIdx === 1);
@@ -740,7 +743,7 @@ function setMode(m, startIdx = 0) {
   if (m === 'walk') {
     const s = cur.L.starts[startIdx]; camera.fov = 70; Object.assign(walker, { x: s.x, y: s.y, yaw: s.yaw, pitch: 0 });
     const touch = matchMedia('(pointer: coarse)').matches;
-    hint.textContent = touch ? 'Drag on the left half to walk, on the right half to look.' : 'Click the view, then W A S D or arrow keys to walk and the mouse to look. Esc releases the mouse.';
+    hint.textContent = touch ? 'Slide your thumb on the left half to walk (the ring shows it); drag on the right half to look.' : 'Click the view to look with the mouse; W A S D or the arrow keys to walk, Shift to go faster. Esc releases the mouse.';
     hint.style.display = 'block'; setTimeout(() => { if (mode === 'walk') hint.style.display = 'none'; }, 6000);
   } else hint.style.display = 'none';
   fitView(m);
@@ -1174,6 +1177,7 @@ addEventListener('resize', () => { if (cmp.on) updateCmpTags(); });
 // 5. shots: reusable camera views stored as numbers (data/design.json), and stills with an honesty stamp
 let lastShot = null;
 function goShot(s) {
+  walkMark();   // remember the view before the shot, on its own level
   cur = LEVELS.find(v => v.L.id === s.level); setMode('walk', s.level === 'lower' ? 1 : 0); applyAssume();
   Object.assign(walker, { x: s.x, y: s.y, yaw: s.yaw, pitch: s.pitch, eye: s.eye }); camera.fov = walkFov(s.fov); camera.updateProjectionMatrix();
   hint.style.display = 'none'; lastShot = s; renderShots(); updateSelBox();
@@ -1282,6 +1286,7 @@ function studioStart() {
     setWarmLight, setPeople, shotById: id => DS.shots.find(s => s.id === id), project: (x, y, z) => { const v = new THREE.Vector3(x * S, z * S, y * S).project(camera); return [(v.x + 1) / 2 * innerWidth, (1 - v.y) / 2 * innerHeight]; },
     view: () => ({ mode, level: cur.L.id, w: { x: walker.x, y: walker.y, yaw: walker.yaw, pitch: walker.pitch }, c: camera.position.toArray(), t: controls.target.toArray(), shot: lastShot ? lastShot.id : null }),
     setView: v => {
+      if (v.mode === 'walk') walkMark();
       cur = LEVELS.find(l => l.L.id === v.level) || cur; walker.eye = undefined; lastShot = null;
       if (v.mode === 'walk') { setMode('walk', 0); Object.assign(walker, v.w); hint.style.display = 'none'; }
       else { setMode(v.mode === 'top' ? 'top' : 'doll'); if (v.c && v.t) { camera.position.fromArray(v.c); controls.target.fromArray(v.t); controls.update(); } }
@@ -2170,6 +2175,144 @@ window.__photo = { set: setPhoto, on: () => photoOn, glass: () => glassMeshes.le
 
 setMode('doll');
 studioStart();
+
+// ================= walk release 1, part 2 (11/20): Start walking prompt, Exit walk, thumb ring on phones =================
+// Entry and exit only: walking itself (speed, collision, the stair) is unchanged. Pointer lock starts only from a click
+// (Start walking, or a click on the view while walking); room links, shots and tour stops never start it.
+const COARSE = () => matchMedia('(pointer: coarse)').matches;
+document.head.insertAdjacentHTML('beforeend', `<style>
+#walkHud { position: fixed; right: 10px; top: 58px; z-index: 8; display: none; align-items: center; gap: 6px; background: rgba(20,30,40,.8); color: #fff; border-radius: 20px; padding: 4px 4px 4px 12px; font-size: 13px; box-shadow: 0 2px 8px rgba(0,0,0,.2); }
+#walkHud button { border: 1px solid rgba(255,255,255,.55); background: transparent; color: #fff; border-radius: 16px; padding: 6px 12px; font: inherit; font-size: 13px; cursor: pointer; }
+#walkHud button.primary { background: #fff; color: #1f4e79; border-color: #fff; font-weight: 600; }
+#walkHud button:focus-visible, #walkPrompt button:focus-visible { outline: 3px solid #9bbbd9; outline-offset: 2px; }
+#walkPrompt { position: fixed; inset: 0; z-index: 19; background: rgba(20,28,36,.45); display: none; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box; }
+#walkPrompt .card { background: #fff; border-radius: 14px; max-width: 470px; width: 100%; max-height: calc(100vh - 32px); overflow: auto; padding: 18px 18px 14px; box-sizing: border-box; box-shadow: 0 10px 40px rgba(0,0,0,.25); font-size: 14px; line-height: 1.45; color: #1b2a38; }
+#walkPrompt h2 { font-size: 18px; margin: 0 0 8px; }
+#walkPrompt dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; margin: 0 0 10px; }
+#walkPrompt dt { font-weight: 700; white-space: nowrap; } #walkPrompt dd { margin: 0; }
+#walkPrompt kbd { display: inline-block; border: 1px solid #b9c3cc; border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; font: 12px ui-monospace, Menlo, monospace; background: #f6f7f9; }
+#walkPrompt .fine { color: #5a6168; font-size: 12px; margin: 0 0 12px; }
+#walkPrompt .row { display: flex; gap: 8px; flex-wrap: wrap; }
+#walkPrompt .row button { border: 1px solid #bbb; background: #fff; border-radius: 18px; padding: 8px 16px; font: inherit; color: #222; cursor: pointer; }
+#walkPrompt .row button.primary { background: #1f4e79; border-color: #1f4e79; color: #fff; font-weight: 600; }
+#walkRing { position: fixed; left: 24px; top: 0; width: 112px; height: 112px; box-sizing: border-box; border-radius: 50%; border: 2px solid rgba(255,255,255,.92); background: rgba(20,30,40,.24); box-shadow: 0 0 0 1px rgba(0,0,0,.28); z-index: 4; pointer-events: none; display: none; }
+#walkRing .knob { position: absolute; left: 50%; top: 50%; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; background: rgba(255,255,255,.88); box-shadow: 0 1px 4px rgba(0,0,0,.35); }
+#walkRing .lbl { position: absolute; left: -20px; right: -20px; top: 100%; margin-top: 3px; text-align: center; font: 600 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,.8); }
+#walkRing.on .lbl { display: none; } #walkRing.fast { border-color: #ffd27a; } #walkRing.fast .knob { background: #ffd27a; }
+@media (max-width: 700px), (max-height: 500px) {
+  #walkPrompt { align-items: flex-end; padding: 0; } #walkPrompt .card { border-radius: 16px 16px 0 0; max-width: none; padding: 16px 16px calc(14px + env(safe-area-inset-bottom)); }
+  #walkHud { right: 8px; font-size: 12px; padding-left: 10px; } #walkHud button { padding: 6px 10px; font-size: 12.5px; }
+}
+</style>`);
+const wHud = document.createElement('div'); wHud.id = 'walkHud'; wHud.setAttribute('role', 'toolbar'); wHud.setAttribute('aria-label', 'Walk controls');
+wHud.innerHTML = '<span id="wHudLbl"></span><button id="wHudHelp" title="Show the walking controls">Controls</button><button id="wHudExit" class="primary" title="Return to the view you came from">Exit walk</button>';
+const wPrompt = document.createElement('div'); wPrompt.id = 'walkPrompt'; wPrompt.setAttribute('role', 'dialog'); wPrompt.setAttribute('aria-modal', 'true'); wPrompt.setAttribute('aria-labelledby', 'walkPromptH');
+const wRing = document.createElement('div'); wRing.id = 'walkRing'; wRing.setAttribute('aria-hidden', 'true'); wRing.innerHTML = '<div class="knob"></div><div class="lbl">Slide to walk</div>';
+document.body.append(wHud, wPrompt, wRing);
+let promptOn = false, walkHintT = 0;
+function promptHTML() {
+  const rows = COARSE() ? [
+    ['Walk', 'Put your thumb down anywhere on the left half of the screen and slide it. The ring follows your thumb and shows the direction; slide further to go faster.'],
+    ['Look', 'Drag on the right half of the screen.'],
+    ['Stairs', 'Walk onto the stair to change level.'],
+    ['Leave', '<b>Exit walk</b> at the top right returns to the view you came from.']]
+    : [
+    ['Look', 'Move the mouse. Once you start, the pointer is hidden; <kbd>Esc</kbd> gives it back.'],
+    ['Walk', '<kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> or the arrow keys (<kbd>&larr;</kbd> <kbd>&rarr;</kbd> also turn).'],
+    ['Faster', 'Hold <kbd>Shift</kbd>.'],
+    ['Stairs', 'Walk onto the stair to change level.'],
+    ['Leave', 'Press <kbd>Esc</kbd>, then <b>Exit walk</b> at the top right. It returns to the view you came from.']];
+  return `<div class="card"><h2 id="walkPromptH">Walk through the model</h2><dl>${rows.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join('')}</dl>
+  <p class="fine">Walls and furniture stop you where the model draws them (walls about &plusmn;4 in). Getting through an opening here says nothing about its real clear width.</p>
+  <div class="row"><button class="primary" id="wGo">Start walking</button><button id="wNo">Back to the previous view</button></div></div>`;
+}
+function walkPrompt(show = true) {
+  if (show && mode !== 'walk') return false;
+  promptOn = !!show;
+  if (promptOn) {
+    wPrompt.innerHTML = promptHTML(); wPrompt.style.display = 'flex';
+    hint.style.display = 'none'; ui('note').style.display = 'none'; ui('pick').style.display = 'none';
+    ui('wGo').onclick = startWalking; ui('wNo').onclick = () => exitWalk();
+    setTimeout(() => { const b = ui('wGo'); if (b && promptOn) b.focus(); }, 0);
+  } else wPrompt.style.display = 'none';
+  walkUi(); return true;
+}
+function startWalking() {   // the only place, apart from a click on the view itself, that asks for the mouse
+  walkPrompt(false); if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+  if (mode === 'walk' && !COARSE() && canvas.requestPointerLock) { try { const r = canvas.requestPointerLock(); if (r && r.catch) r.catch(() => {}); } catch (e) {} }
+}
+wPrompt.addEventListener('keydown', e => { if (e.key === 'Escape') { e.preventDefault(); exitWalk(); } e.stopPropagation(); });
+wPrompt.addEventListener('click', e => { if (e.target === wPrompt) walkPrompt(false); });   // a tap outside the card just closes it; the walk stays
+function exitWalk() {   // back to the camera, level and view mode from before the walk; finishes, layers, assumptions and furniture are untouched
+  if (mode !== 'walk') { walkPrompt(false); return false; }
+  const p = walkPrev || { mode: 'doll', level: cur.L.id };
+  promptOn = false; wPrompt.style.display = 'none';
+  if (document.pointerLockElement === canvas && document.exitPointerLock) document.exitPointerLock();
+  for (const k in keys) keys[k] = false; moveVec = { x: 0, y: 0 }; touches.clear(); vel.x = vel.y = 0; ringEnd();
+  walker.eye = undefined; lastShot = null;
+  cur = LEVELS.find(v => v.L.id === p.level) || cur;
+  setMode(p.mode === 'top' ? 'top' : 'doll');
+  if (p.c && p.t) { camera.position.fromArray(p.c); controls.target.fromArray(p.t); }
+  if (p.fov) { camera.fov = p.fov; camera.updateProjectionMatrix(); }
+  controls.update(); applyAssume(); refresh(); updateSelBox(); renderShots();
+  dispatchEvent(new CustomEvent('studio:walkexit'));
+  return true;
+}
+ui('wHudExit').onclick = () => exitWalk();
+ui('wHudHelp').onclick = () => walkPrompt(!promptOn);
+for (const id of ['bWalk', 'bWalk2']) ui(id).addEventListener('click', () => walkPrompt(true));   // explicit walk starts show the controls
+function walkUi() {
+  const on = mode === 'walk';
+  wHud.style.display = on ? 'flex' : 'none';
+  if (on) ui('wHudLbl').textContent = 'Walking · ' + cur.L.name;
+  if (!on && promptOn) { promptOn = false; wPrompt.style.display = 'none'; }
+  if (!on && ring.active) ringEnd();
+  layoutWalk();
+}
+// thumb ring (phones): the ring shows where the thumb went down and where it is now. Same rule as before: any touch that
+// starts on the left half walks, full speed at 60 px of travel, faster past 120 px. The ring takes no touches itself.
+const ring = { active: null };
+const placeRing = (cx, cy) => { wRing.style.left = (cx - 56) + 'px'; wRing.style.top = (cy - 56) + 'px'; };
+const knob = (dx, dy) => { const m = Math.hypot(dx, dy), k = m ? Math.min(m, 60) / m * (34 / 60) : 0; wRing.firstChild.style.transform = `translate(${(dx * k).toFixed(1)}px, ${(dy * k).toFixed(1)}px)`; };
+canvas.addEventListener('pointerdown', e => {
+  if (mode !== 'walk' || e.pointerType === 'mouse' || e.clientX >= innerWidth / 2 || ring.active) return;
+  ring.active = { id: e.pointerId, sx: e.clientX, sy: e.clientY }; placeRing(e.clientX, e.clientY); knob(0, 0); wRing.classList.add('on'); wRing.style.display = 'block';
+});
+canvas.addEventListener('pointermove', e => {
+  const a = ring.active; if (!a || e.pointerId !== a.id) return;
+  const dx = e.clientX - a.sx, dy = e.clientY - a.sy; knob(dx, dy); wRing.classList.toggle('fast', Math.hypot(dx, dy) > 120);
+});
+function ringEnd(e) { if (e && e.pointerId !== undefined && (!ring.active || e.pointerId !== ring.active.id)) return; ring.active = null; wRing.classList.remove('on', 'fast'); knob(0, 0); layoutWalk(); }
+canvas.addEventListener('pointerup', ringEnd); canvas.addEventListener('pointercancel', ringEnd);
+// layout: the walk bar sits below the toolbar (and a link banner); the resting ring sits bottom-left above the note or legend,
+// and hides behind the tour card, a bottom sheet, a still or the prompt
+function layoutWalk() {
+  if (mode !== 'walk') { wRing.style.display = 'none'; stairNote.style.bottom = '64px'; return; }
+  let top = ui('bar').getBoundingClientRect().bottom + 8;
+  const pl = document.getElementById('pLink');
+  if (pl && pl.style.display === 'block') { const r = pl.getBoundingClientRect(); if (r.right > innerWidth - 340) top = Math.max(top, r.bottom + 8); }
+  wHud.style.top = Math.round(top) + 'px';
+  if (ring.active) { wRing.style.display = 'block'; return; }
+  const tour = document.getElementById('pTour');
+  const cover = promptOn || (tour && tour.style.display === 'block') || (NARROW() && ALLP.some(k => ui(k).style.display === 'block')) || ui('stillBox').style.display === 'block';
+  if (COARSE() && !cover) {
+    let bottom = 34;
+    for (const id of ['note', 'legend']) { const el = ui(id); if (!el || getComputedStyle(el).display === 'none') continue; const r = el.getBoundingClientRect(); if (r.height && r.left < 160) bottom = Math.max(bottom, innerHeight - r.top + 10); }
+    placeRing(24 + 56, innerHeight - bottom - 18 - 56); knob(0, 0); wRing.style.display = 'block';
+    stairNote.style.bottom = (bottom + 18 + 112 + 10) + 'px';
+  } else { wRing.style.display = 'none'; stairNote.style.bottom = '64px'; }
+}
+addEventListener('resize', layoutWalk);
+setInterval(() => { if (mode === 'walk') layoutWalk(); }, 250);
+document.addEventListener('pointerlockchange', () => {
+  if (document.pointerLockElement === canvas) { hint.style.display = 'none'; return; }
+  if (mode === 'walk' && !promptOn) { hint.textContent = 'Mouse released. Click the view to look around again, or use Exit walk at the top right.'; hint.style.display = 'block';
+    clearTimeout(walkHintT); walkHintT = setTimeout(() => { if (document.pointerLockElement !== canvas) hint.style.display = 'none'; }, 5000); }
+});
+window.__walkUi = walkUi; walkUi();
+Object.assign(window.__studio, { walkPrompt, exitWalk,
+  walkState: () => ({ mode, level: cur.L.id, prompt: promptOn, hud: wHud.style.display === 'flex', ring: wRing.style.display === 'block', ringActive: !!ring.active, ringFast: wRing.classList.contains('fast'),
+    prev: walkPrev ? JSON.parse(JSON.stringify(walkPrev)) : null, locked: document.pointerLockElement === canvas }) });
 const clock = new THREE.Clock();
 renderer.setAnimationLoop(() => {
   const dt = Math.min(clock.getDelta(), 0.1);   // walk release 1: slow devices keep real walking speed (moves are sub-stepped)
@@ -2179,6 +2322,6 @@ renderer.setAnimationLoop(() => {
   if (!cmp.on) updateLabels(); else hideLabels();
 });
 </script>
-<script type="module" src="present.js?v=2026-11-20d"></script>
+<script type="module" src="present.js?v=2026-11-20e"></script>
 </body>
 </html>
