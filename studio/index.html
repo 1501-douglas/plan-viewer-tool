@@ -106,7 +106,7 @@
 <div id="legend" style="position:fixed;left:10px;top:58px;background:rgba(255,255,255,.95);border:1px solid #bbb;border-radius:8px;padding:8px 10px;font-size:12px;display:none;max-width:280px;line-height:1.45"></div>
 <div id="warn">This page needs WebGL, which this browser did not provide.</div>
 <div id="note"><button class="x" id="noteX" aria-label="Hide note">×</button>
-  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-20c): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
+  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-20d, walk release 1): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
 </div>
 
 <script type="importmap">
@@ -125,7 +125,7 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const [M, EL, DS] = await Promise.all(['data/model.json', 'data/elements.json', 'data/design.json'].map(u =>
-  fetch(u + '?v=2026-11-20c').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
+  fetch(u + '?v=2026-11-20d').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
   const w = document.getElementById('warn'); w.textContent = 'Could not load the model data (' + e.message + ').'; w.style.display = 'block'; throw e; });
 const S = 0.0254, EYE = 63, RAD = 9;
 
@@ -468,7 +468,7 @@ const GHOST = new THREE.MeshStandardMaterial({ color: 0xe05a5a, transparent: tru
 function buildLevel(L) {
   const root = new THREE.Group(), walls = new THREE.Group(), furn = new THREE.Group(), labs = new THREE.Group(), ceil = new THREE.Group();
   root.add(walls, furn, labs, ceil); ceil.visible = false;
-  const obs = [], C = L.ceil;
+  const obs = [], segs = [], C = L.ceil;
   let minx = 1e9, miny = 1e9, maxx = -1e9, maxy = -1e9;
   for (const [x, y, w, d] of L.floors) {
     const f = place(box(w, 1, d, texMat(WOOD, w, d, 49)), x, y, w, d, -1, 1); f.receiveShadow = true; f.userData.role = 'floor'; f.userData.rect = [x, y, w, d]; root.add(f);
@@ -511,7 +511,7 @@ function buildLevel(L) {
     g.rotateX(Math.PI / 2); g.translate(0, C * S, 0);
     const m = new THREE.Mesh(g, MAT.wall); m.castShadow = m.receiveShadow = true; walls.add(m);
     const xs = poly.map(p => p[0]), ys = poly.map(p => p[1]);
-    if (Math.max(...xs) - Math.min(...xs) < 50) obs.push([Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)]);
+    for (let i = 0; i < poly.length; i++) { const [x1, y1] = poly[i], [x2, y2] = poly[(i + 1) % poly.length]; if (Math.hypot(x2 - x1, y2 - y1) > 0.4) segs.push([x1, y1, x2, y2]); }   // walk release 1: the angled wall's own edges collide, not its bounding box
   }
   for (const f of L.fixed) {
     const m = solid(f.x, f.y, f.w, f.d, 0, C, /brick/.test(f.label) ? texMat(BRICK, Math.max(f.w, f.d), C, 32) : MAT.wall); m.userData.label = f.label; tag(m, /riser/.test(f.label) ? 'riser' : 'wall'); obs.push([f.x, f.y, f.x + f.w, f.y + f.d]);
@@ -558,7 +558,7 @@ function buildLevel(L) {
     labelEls.push({ el, p: new THREE.Vector3(r.x * S, (C + 16) * S, r.y * S) });
   }
   scene.add(root);
-  return { L, root, walls, furn, labs, ceil, obs, labelEls, cx: (minx + maxx) / 2 * S, cz: (miny + maxy) / 2 * S };
+  return { L, root, walls, furn, labs, ceil, obs, segs, labelEls, cx: (minx + maxx) / 2 * S, cz: (miny + maxy) / 2 * S };
 }
 // ---------- electrical layer (owner LP sheets, 11/07): devices on walls and ceilings, tap for the label
 const EM = {
@@ -793,24 +793,51 @@ canvas.addEventListener('pointerdown', e => {
 });
 canvas.addEventListener('pointermove', e => {
   const t = touches.get(e.pointerId); if (!t) return;
-  if (t.left) moveVec = { x: Math.max(-1, Math.min(1, (e.clientX - t.sx) / 60)), y: Math.max(-1, Math.min(1, (e.clientY - t.sy) / 60)) };
+  if (t.left) { const ddx = e.clientX - t.sx, ddy = e.clientY - t.sy; moveVec = { x: Math.max(-1, Math.min(1, ddx / 60)), y: Math.max(-1, Math.min(1, ddy / 60)), sprint: Math.hypot(ddx, ddy) > 120 }; }   // a long drag sprints
   else { walker.yaw -= (e.clientX - t.lx) * 0.005; walker.pitch = Math.max(-1.2, Math.min(1.2, walker.pitch - (e.clientY - t.ly) * 0.005)); }
   t.lx = e.clientX; t.ly = e.clientY;
 });
 const endTouch = e => { const t = touches.get(e.pointerId); if (t && t.left) moveVec = { x: 0, y: 0 }; touches.delete(e.pointerId); };
 canvas.addEventListener('pointerup', endTouch); canvas.addEventListener('pointercancel', endTouch);
 
-const blocked = (x, y) => cur.obs.some(([a, b, c, d]) => x > a - RAD && x < c + RAD && y > b - RAD && y < d + RAD);
+// ---- walk release 1 (11/20): round walker (18 in across, as before), smooth speed changes, sliding with corner nudging, capped sprint.
+// Collision still comes only from the model: walls, fixed chases, furniture and construction 14 in or taller, and the angled walls' edges.
+// Being able to walk through an opening here says nothing about its real clear width (walls are about +/- 4 in).
+const WALK = { speed: 56, sprint: 1.75, max: 100, accel: 8, decel: 12, nudge: 7 };   // in/s; accel/decel are rates per second
+const vel = { x: 0, y: 0 };
+function hitAt(lv, x, y, r = RAD) {
+  for (const [a, b, c, d] of lv.obs) { const qx = x < a ? a : x > c ? c : x, qy = y < b ? b : y > d ? d : y; if ((x - qx) ** 2 + (y - qy) ** 2 < r * r) return true; }
+  for (const [x1, y1, x2, y2] of lv.segs) { const ex = x2 - x1, ey = y2 - y1, L2 = ex * ex + ey * ey; let t = L2 ? ((x - x1) * ex + (y - y1) * ey) / L2 : 0; t = t < 0 ? 0 : t > 1 ? 1 : t; const px = x1 + t * ex - x, py = y1 + t * ey - y; if (px * px + py * py < r * r) return true; }
+  return false;
+}
+const blocked = (x, y) => hitAt(cur, x, y);
+function moveAxis(ax, d) {   // try the move; if blocked, slide sideways around a corner or door jamb within WALK.nudge in
+  const [x, y] = [walker.x, walker.y], nx = ax === 'x' ? x + d : x, ny = ax === 'y' ? y + d : y;
+  if (!blocked(nx, ny)) { walker.x = nx; walker.y = ny; return true; }
+  for (let k = 1; k <= WALK.nudge; k++) for (const sg of [1, -1]) {
+    const ox = ax === 'y' ? sg * k : 0, oy = ax === 'x' ? sg * k : 0;
+    if (!blocked(nx + ox, ny + oy)) { const st = Math.min(k, Math.abs(d)); const sx = ax === 'y' ? sg * st : 0, sy = ax === 'x' ? sg * st : 0; if (!blocked(x + sx, y + sy)) { walker.x = x + sx; walker.y = y + sy; return true; } return false; }
+  }
+  return false;
+}
 function stepWalk(dt) {
   let f = 0, s = 0;
   if (keys.KeyW || keys.ArrowUp) f += 1; if (keys.KeyS || keys.ArrowDown) f -= 1;
   if (keys.KeyD) s += 1; if (keys.KeyA) s -= 1;
   if (keys.ArrowLeft) walker.yaw += 1.8 * dt; if (keys.ArrowRight) walker.yaw -= 1.8 * dt;
   f -= moveVec.y; s += moveVec.x;
-  const sp = 48 * dt, fx = -Math.sin(walker.yaw), fy = -Math.cos(walker.yaw), rx = Math.cos(walker.yaw), ry = -Math.sin(walker.yaw);
-  const dx = (fx * f + rx * s) * sp, dy = (fy * f + ry * s) * sp;
-  if (!blocked(walker.x + dx, walker.y)) walker.x += dx;
-  if (!blocked(walker.x, walker.y + dy)) walker.y += dy;
+  const mag = Math.hypot(f, s); if (mag > 1) { f /= mag; s /= mag; }   // diagonal keys are no faster
+  const sprint = keys.ShiftLeft || keys.ShiftRight || moveVec.sprint;
+  const top = Math.min(WALK.max, WALK.speed * (sprint ? WALK.sprint : 1));
+  const fx = -Math.sin(walker.yaw), fy = -Math.cos(walker.yaw), rx = Math.cos(walker.yaw), ry = -Math.sin(walker.yaw);
+  const tx = (fx * f + rx * s) * top, ty = (fy * f + ry * s) * top;
+  const k = Math.min(1, dt * (tx * tx + ty * ty > vel.x * vel.x + vel.y * vel.y ? WALK.accel : WALK.decel));
+  vel.x += (tx - vel.x) * k; vel.y += (ty - vel.y) * k;
+  if (Math.abs(vel.x) < 0.5 && !tx) vel.x = 0; if (Math.abs(vel.y) < 0.5 && !ty) vel.y = 0;
+  const dx = vel.x * dt, dy = vel.y * dt, n = Math.max(1, Math.ceil(Math.max(Math.abs(dx), Math.abs(dy)) / 2));   // sub-steps of 2 in or less
+  let okx = true, oky = true;
+  for (let i = 0; i < n; i++) { if (dx) okx = moveAxis('x', dx / n) && okx; if (dy) oky = moveAxis('y', dy / n) && oky; }
+  if (!okx) vel.x *= 0.5; if (!oky) vel.y *= 0.5;   // pressing into a wall bleeds speed instead of storing it
   if (stairStep(dt)) return;
   camera.position.set(walker.x * S, (walker.eye || EYE) * S, walker.y * S);
   camera.rotation.set(walker.pitch, walker.yaw, 0, 'YXZ');
@@ -1249,7 +1276,9 @@ function studioStart() {
     arr: () => ARR, ent: () => [...ENT.keys()], selectKey: k => selectEntry(ENT.get(k)), nudge, turn, resizeSel, removeSel, addPiece, setArr, setStudioLight, obsLen: () => lowerLv.obs.length,
     checksSel: () => sel ? checks(sel) : null, selFoot: () => sel ? footprint(sel, ARR.items[sel.key]) : null,
     counts: () => ({ aduFloors: aduFloors.length, pulls: pulls.children.length, zoneMats: Object.keys(ZM).length }), saved: () => saved,
-    walkTest: (levelId, ax, ay, bx, by) => { const lv = LEVELS.find(v => v.L.id === levelId); const n = Math.ceil(Math.hypot(bx - ax, by - ay)); for (let i = 0; i <= n; i++) { const x = ax + (bx - ax) * i / n, y = ay + (by - ay) * i / n; if (lv.obs.some(([a, b, c, d]) => x > a - RAD && x < c + RAD && y > b - RAD && y < d + RAD)) return [Math.round(x), Math.round(y)]; } return null; },
+    walkTest: (levelId, ax, ay, bx, by) => { const lv = LEVELS.find(v => v.L.id === levelId); const n = Math.ceil(Math.hypot(bx - ax, by - ay)); for (let i = 0; i <= n; i++) { const x = ax + (bx - ax) * i / n, y = ay + (by - ay) * i / n; if (hitAt(lv, x, y)) return [Math.round(x), Math.round(y)]; } return null; },
+    walkHit: (levelId, x, y) => hitAt(LEVELS.find(v => v.L.id === levelId), x, y), walkCfg: WALK, vel: () => ({ ...vel }),
+    walkSim: (k, secs, dt = 1 / 60) => { const out = []; Object.assign(keys, k); for (let t = 0; t < secs; t += dt) { stepWalk(dt); out.push([+walker.x.toFixed(2), +walker.y.toFixed(2), cur.L.id, +(camera.position.y / S).toFixed(2), +Math.hypot(vel.x, vel.y).toFixed(2)]); } for (const c in k) keys[c] = false; return out; },   // test hook: fixed time steps, independent of the frame rate
     setWarmLight, setPeople, shotById: id => DS.shots.find(s => s.id === id), project: (x, y, z) => { const v = new THREE.Vector3(x * S, z * S, y * S).project(camera); return [(v.x + 1) / 2 * innerWidth, (1 - v.y) / 2 * innerHeight]; },
     view: () => ({ mode, level: cur.L.id, w: { x: walker.x, y: walker.y, yaw: walker.yaw, pitch: walker.pitch }, c: camera.position.toArray(), t: controls.target.toArray(), shot: lastShot ? lastShot.id : null }),
     setView: v => {
@@ -2075,7 +2104,7 @@ function setStack(on) {
   for (const m of stairUpper) m.visible = on; bandG.visible = on;
   if (!on) { for (const v of LEVELS) { v.root.position.set(0, 0, 0); v.root.visible = v === cur; } ground.position.y = -0.03; stairNote.style.display = 'none'; }
 }
-function stairReset() { setStack(false); walker.fz = 0; }
+function stairReset() { setStack(false); walker.fz = 0; walker.cd = 0; }
 function stairStep(dt) {
   const onFirst = cur === FIRSTL, lx = walker.x + (onFirst ? STR.dx : 0), ly = walker.y + (onFirst ? STR.dy : 0);
   // change level at the middle of the run
@@ -2094,14 +2123,16 @@ function stairStep(dt) {
   // floor height (relative to the current level) and headroom
   const target = sf === null ? 0 : sf - (onFirst ? STR.ftf : 0);
   walker.fz = walker.fz === undefined ? target : walker.fz + (target - walker.fz) * Math.min(1, dt * 12);
-  let eye = (walker.eye || EYE) + walker.fz, msg = '';
+  let eye = (walker.eye || EYE) + walker.fz, msg = '', cdT = 0, hardTop = Infinity;
   if (sf !== null) {
     const ceilZ = stairCeil(lx, ly) - (onFirst ? STR.ftf : 0), head = ceilZ - target;
-    if (eye > ceilZ - 5) eye = ceilZ - 5;
+    const vm = Math.hypot(vel.x, vel.y) || 1, la = Math.max(RAD, vm * 0.35), ahead = stairCeil(lx + vel.x / vm * la, ly + vel.y / vm * la) - (onFirst ? STR.ftf : 0);   // walk release 1: look one body-radius ahead so the duck under the opening edge eases in
+    cdT = Math.max(0, eye - (Math.min(ceilZ, ahead) - 5)); hardTop = ceilZ - 1;
     msg = head < 80 ? `Headroom here as drawn: about ${stFtIn(head)} (code minimum 6'-8"). Drawing-derived; the real opening is probably longer. See register D10.`
       : `On the stair (assumed: 14 risers of about 7-3/8 in, 9 in treads, top at the north end). See register D6.`;
   } else if (near && !onFirst && ly > STR.yBot && ly < STR.yBot + 40 && lx > STR.x0 - 10 && lx < STR.x1 + 4)
     msg = 'Bottom landing (about 35 in deep as drawn): it opens west into the family room; the new rated door to the common hall is just to the north-west. See register D6.';
+  const cd0 = walker.cd || 0; walker.cd = cd0 + Math.max(-40 * dt, Math.min(60 * dt, cdT - cd0)); eye = Math.min(eye - walker.cd, hardTop);   // duck at most 60 in/s, stand up at most 40 in/s, never through the ceiling
   stairNote.textContent = msg; stairNote.style.display = msg ? 'block' : 'none';
   camera.position.set(walker.x * S, eye * S, walker.y * S);
   camera.rotation.set(walker.pitch, walker.yaw, 0, 'YXZ');
@@ -2141,13 +2172,13 @@ setMode('doll');
 studioStart();
 const clock = new THREE.Clock();
 renderer.setAnimationLoop(() => {
-  const dt = Math.min(clock.getDelta(), 0.05);
+  const dt = Math.min(clock.getDelta(), 0.1);   // walk release 1: slow devices keep real walking speed (moves are sub-stepped)
   if (mode === 'walk') stepWalk(dt); else controls.update();
   if (cmp.on) renderCompare();
   else if (aoOn && (mode !== 'walk' || photoOn)) composer.render(); else renderer.render(scene, camera);
   if (!cmp.on) updateLabels(); else hideLabels();
 });
 </script>
-<script type="module" src="present.js?v=2026-11-20c"></script>
+<script type="module" src="present.js?v=2026-11-20d"></script>
 </body>
 </html>
