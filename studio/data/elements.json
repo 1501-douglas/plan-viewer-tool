@@ -500,6 +500,12 @@
    "title": "Gap in the ADU office / bedroom wall (closed 11/21)",
    "detail": "The 10/01 geometry file left a 49 in gap in the wall between the ADU office and the bedroom (y 303 to 352). No record puts a door there; the office showed the bedroom TV and dresser through it. Closed on 11/21 with a 4 in wall matching the segments either side, and the bedroom TV point moved back over the dresser. Position drawing-derived, about +/- 4 in.",
    "settles": "Field-measure the office east wall and the bedroom west wall (site visit)"
+  },
+  {
+   "id": "D12",
+   "title": "Gap in the Bed 113 / stair landing wall (closed 11/21)",
+   "detail": "The 10/01 geometry file left a 32.5 in gap (y 7.5 to 40) at the north end of the wall between Bed 113 and the top of the stair. No record puts a door there; Bed 113 opens from the hall, and the room showed the stair landing through the gap. Closed on 11/21 with a 4.5 in wall matching the segment below it. The plan viewer walls layer and the owner sheets draw the same gap. Position drawing-derived, about +/- 4 in.",
+   "settles": "Field-measure the Bed 113 west wall and the top of the stair (site visit; worksheet rows L-06 and L-07)"
   }
  ]
 }

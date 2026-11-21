@@ -106,7 +106,7 @@
 <div id="legend" style="position:fixed;left:10px;top:58px;background:rgba(255,255,255,.95);border:1px solid #bbb;border-radius:8px;padding:8px 10px;font-size:12px;display:none;max-width:280px;line-height:1.45"></div>
 <div id="warn">This page needs WebGL, which this browser did not provide.</div>
 <div id="note"><button class="x" id="noteX" aria-label="Hide note">×</button>
-  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-21c, walk release 2: map and tap to move): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
+  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-21d, walk release 2: map and tap to move): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
 </div>
 
 <script type="importmap">
@@ -125,7 +125,7 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const [M, EL, DS] = await Promise.all(['data/model.json', 'data/elements.json', 'data/design.json'].map(u =>
-  fetch(u + '?v=2026-11-21c').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
+  fetch(u + '?v=2026-11-21d').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
   const w = document.getElementById('warn'); w.textContent = 'Could not load the model data (' + e.message + ').'; w.style.display = 'block'; throw e; });
 const S = 0.0254, EYE = 63, RAD = 9;
 
@@ -1804,7 +1804,7 @@ PICK_HOOK_LIST.push(p => {
 
 // 4. master bath wainscot (decision 4): white subway, vertical stack, to 48 in on the walls outside the shower, with a cap; 48 in is a placeholder (the tile length sets it)
 {
-  const L = FIRSTL.L, sh = L.furniture.find(f => f.kind === 'shower' && /60x36/.test(f.label || ''));
+  const L = FIRSTL.L, sh = L.furniture.find(f => f.kind === 'shower' && f.info === 'mbath');   // 21d: by record, not label (the label changed with the 72 x 36 shower on 11/20)
   const room = L.tile.find(t => sh && sh.x >= t.x - 1 && sh.x <= t.x + t.w + 1 && sh.y >= t.y - 1 && sh.y <= t.y + t.d + 1);
   if (room) {
     const r = { x: room.x, y: room.y, w: sh.x - room.x, d: room.d };   // the part of the bath outside the shower
@@ -2370,9 +2370,9 @@ function fromImg(id, px, py) {
   const z = d.zones[0]; return [(px - z.bx) / z.ax, (py - z.by) / z.ay];
 }
 
-Promise.all(['data/minimap.json', 'data/places.json'].map(u => fetch(u + '?v=2026-11-21c').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); })))
+Promise.all(['data/minimap.json', 'data/places.json'].map(u => fetch(u + '?v=2026-11-21d').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); })))
   .then(([d, P]) => Promise.all(Object.entries(d.levels).map(([id, l]) => new Promise((res, rej) => {
-    const im = new Image(); im.onload = () => { mini.img[id] = im; res(); }; im.onerror = () => rej(new Error(l.img)); im.src = 'data/' + l.img + '?v=2026-11-21c';
+    const im = new Image(); im.onload = () => { mini.img[id] = im; res(); }; im.onerror = () => rej(new Error(l.img)); im.src = 'data/' + l.img + '?v=2026-11-21d';
   }))).then(() => {
     mini.data = d; mini.places = Object.entries(P.places).map(([id, p]) => ({ id, ...p })).filter(p => p.at && lvById(p.level));
     const sel = ui('miniGo');
@@ -2645,7 +2645,12 @@ const WHY = {
 function goTo(levelId, x, y, label, room) {
   if (mode !== 'walk') return false;
   const rr = room && mini.data.rooms && mini.data.rooms[room];   // a room from the list: the standing spot nearest its centre, inside the viewer's room outline
-  const r = rr ? planRoute(levelId, x, y, 400, rr.rect) : planRoute(levelId, x, y, 36);
+  let r = rr ? planRoute(levelId, x, y, 400, rr.rect) : planRoute(levelId, x, y, 36);
+  if (!rr && !r.ok && ['solid', 'cut'].includes(r.why) && mini.data.rooms) {   // 21d: a tap on furniture or a closet goes into the room it falls in
+    const inR = Object.entries(mini.data.rooms).filter(([, q]) => q.level === levelId && x >= q.rect[0] && x <= q.rect[2] && y >= q.rect[1] && y <= q.rect[3])
+      .sort((a, b) => (a[1].rect[2] - a[1].rect[0]) * (a[1].rect[3] - a[1].rect[1]) - (b[1].rect[2] - b[1].rect[0]) * (b[1].rect[3] - b[1].rect[1]));
+    for (const [id, q] of inR) { const r2 = planRoute(levelId, x, y, 400, q.rect); if (r2.ok) { r = r2; const pl = mini.places.find(p => p.id === id); label = (pl ? pl.label : q.name) + ' (the open spot nearest your tap)'; break; } }
+  }
   if (!r.ok) { glide = null; miniSay(WHY[rr && r.why === 'solid' ? 'room' : r.why] || WHY.cut, true, 6000); mini.key = ''; return false; }
   glide = { wp: r.wp, i: 1, dest: r.dest, label: label || 'the spot you picked', t: 0, chk: { t: 0, x: walker.x, y: walker.y, lv: cur }, free: false, yaw: null };
   vel.x = vel.y = 0; mini.key = '';
@@ -2714,6 +2719,6 @@ renderer.setAnimationLoop(() => {
   if (!cmp.on) updateLabels(); else hideLabels();
 });
 </script>
-<script type="module" src="present.js?v=2026-11-21c"></script>
+<script type="module" src="present.js?v=2026-11-21d"></script>
 </body>
 </html>
