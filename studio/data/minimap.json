@@ -1,0 +1,269 @@
+{
+ "note": "Minimap plans (walk release 2, 11/21/2026): the plan viewer's 'Walls, doors, room names' layer images, cropped and scaled, and the viewer's room rectangles. Studio plan inches to image pixels: px = ax*x + bx, py = ay*y + by, from the viewer's own sheet transforms; the lower level uses the ADU transform from x = 236.5 in east. Made by make_minimap.py; checked by minimap_test.mjs against the model's walls, doors and stair (the plans themselves are drawing-derived, about +/- 4 in).",
+ "levels": {
+  "first": {
+   "img": "minimap-first.png",
+   "w": 1100,
+   "h": 747,
+   "zones": [
+    {
+     "x0": null,
+     "x1": null,
+     "ax": 1.75654,
+     "bx": 4.811,
+     "ay": 1.75654,
+     "by": 34.654
+    }
+   ],
+   "crop": [
+    0,
+    3,
+    2292,
+    1560
+   ],
+   "scale": 0.47993
+  },
+  "lower": {
+   "img": "minimap-lower.png",
+   "w": 1100,
+   "h": 720,
+   "zones": [
+    {
+     "x0": null,
+     "x1": 236.5,
+     "ax": 1.70738,
+     "bx": 20.259,
+     "ay": 1.70738,
+     "by": 14.66
+    },
+    {
+     "x0": 236.5,
+     "x1": null,
+     "ax": 1.70738,
+     "bx": 20.251,
+     "ay": 1.70738,
+     "by": 11.047
+    }
+   ],
+   "crop": [
+    0,
+    42,
+    2358,
+    1585
+   ],
+   "scale": 0.466497
+  }
+ },
+ "rooms": {
+  "ff-kitchen": {
+   "name": "Kitchen",
+   "level": "first",
+   "rect": [
+    64.4,
+    3.4,
+    194.5,
+    198.6
+   ]
+  },
+  "ff-living": {
+   "name": "Living / dining",
+   "level": "first",
+   "rect": [
+    154.8,
+    196.9,
+    370.5,
+    364.7
+   ]
+  },
+  "ff-foyer": {
+   "name": "Foyer",
+   "level": "first",
+   "rect": [
+    368.8,
+    196.9,
+    423.6,
+    364.7
+   ]
+  },
+  "ff-hall": {
+   "name": "Hall and laundry",
+   "level": "first",
+   "rect": [
+    189.0,
+    113.0,
+    504.1,
+    202.1
+   ]
+  },
+  "ff-bed113": {
+   "name": "Bed 113",
+   "level": "first",
+   "rect": [
+    235.3,
+    3.4,
+    386.0,
+    157.5
+   ]
+  },
+  "ff-hallbath": {
+   "name": "Hall bath",
+   "level": "first",
+   "rect": [
+    391.1,
+    3.4,
+    454.5,
+    116.4
+   ]
+  },
+  "ff-bed132": {
+   "name": "Bed 132",
+   "level": "first",
+   "rect": [
+    454.5,
+    3.4,
+    613.7,
+    154.1
+   ]
+  },
+  "ff-masterbath": {
+   "name": "Master bath",
+   "level": "first",
+   "rect": [
+    502.4,
+    123.3,
+    613.7,
+    249.0
+   ]
+  },
+  "ff-master": {
+   "name": "Master",
+   "level": "first",
+   "rect": [
+    421.9,
+    221.6,
+    615.4,
+    402.4
+   ]
+  },
+  "ff-bed121": {
+   "name": "Bed 121",
+   "level": "first",
+   "rect": [
+    1.4,
+    198.6,
+    153.8,
+    368.2
+   ]
+  },
+  "ll-family": {
+   "name": "Family room",
+   "level": "lower",
+   "rect": [
+    0.0,
+    193.2,
+    374.6,
+    371.2
+   ]
+  },
+  "ll-commonbath": {
+   "name": "Common bath / mudroom",
+   "level": "lower",
+   "rect": [
+    67.8,
+    0.0,
+    144.1,
+    100.0
+   ]
+  },
+  "ll-utility": {
+   "name": "Common utility (west closet)",
+   "level": "lower",
+   "rect": [
+    67.8,
+    98.3,
+    144.1,
+    166.1
+   ]
+  },
+  "ll-wetbar": {
+   "name": "Wet bar",
+   "level": "lower",
+   "rect": [
+    67.8,
+    164.4,
+    144.1,
+    196.6
+   ]
+  },
+  "ll-commonhall": {
+   "name": "Common hall, stair, vestibule",
+   "level": "lower",
+   "rect": [
+    140.7,
+    0.0,
+    242.4,
+    196.6
+   ]
+  },
+  "adu-living": {
+   "name": "Apartment living",
+   "level": "lower",
+   "rect": [
+    236.5,
+    2.5,
+    433.2,
+    193.8
+   ]
+  },
+  "adu-kitchen": {
+   "name": "Apartment kitchen",
+   "level": "lower",
+   "rect": [
+    393.3,
+    2.5,
+    624.2,
+    125.5
+   ]
+  },
+  "adu-bath": {
+   "name": "Apartment bath",
+   "level": "lower",
+   "rect": [
+    524.5,
+    117.3,
+    624.2,
+    184.2
+   ]
+  },
+  "adu-closet": {
+   "name": "Apartment bedroom closet",
+   "level": "lower",
+   "rect": [
+    524.5,
+    184.2,
+    624.2,
+    217.0
+   ]
+  },
+  "adu-office": {
+   "name": "Apartment office",
+   "level": "lower",
+   "rect": [
+    372.8,
+    191.1,
+    486.2,
+    368.7
+   ]
+  },
+  "adu-bedroom": {
+   "name": "Apartment bedroom",
+   "level": "lower",
+   "rect": [
+    484.9,
+    214.3,
+    624.2,
+    411.0
+   ]
+  }
+ }
+}

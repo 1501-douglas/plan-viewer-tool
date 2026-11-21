@@ -106,7 +106,7 @@
 <div id="legend" style="position:fixed;left:10px;top:58px;background:rgba(255,255,255,.95);border:1px solid #bbb;border-radius:8px;padding:8px 10px;font-size:12px;display:none;max-width:280px;line-height:1.45"></div>
 <div id="warn">This page needs WebGL, which this browser did not provide.</div>
 <div id="note"><button class="x" id="noteX" aria-label="Hide note">×</button>
-  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-21b, walk release 1: movement and walk controls): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
+  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-21c, walk release 2: map and tap to move): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
 </div>
 
 <script type="importmap">
@@ -125,7 +125,7 @@ import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const [M, EL, DS] = await Promise.all(['data/model.json', 'data/elements.json', 'data/design.json'].map(u =>
-  fetch(u + '?v=2026-11-21b').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
+  fetch(u + '?v=2026-11-21c').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
   const w = document.getElementById('warn'); w.textContent = 'Could not load the model data (' + e.message + ').'; w.style.display = 'block'; throw e; });
 const S = 0.0254, EYE = 63, RAD = 9;
 
@@ -468,7 +468,7 @@ const GHOST = new THREE.MeshStandardMaterial({ color: 0xe05a5a, transparent: tru
 function buildLevel(L) {
   const root = new THREE.Group(), walls = new THREE.Group(), furn = new THREE.Group(), labs = new THREE.Group(), ceil = new THREE.Group();
   root.add(walls, furn, labs, ceil); ceil.visible = false;
-  const obs = [], segs = [], C = L.ceil;
+  const obs = [], segs = [], leaves = [], C = L.ceil;
   let minx = 1e9, miny = 1e9, maxx = -1e9, maxy = -1e9;
   for (const [x, y, w, d] of L.floors) {
     const f = place(box(w, 1, d, texMat(WOOD, w, d, 49)), x, y, w, d, -1, 1); f.receiveShadow = true; f.userData.role = 'floor'; f.userData.rect = [x, y, w, d]; root.add(f);
@@ -534,6 +534,7 @@ function buildLevel(L) {
       g.add(place(box(x1 - x0, C - DH, t, MAT.wall), x0, y0, x1 - x0, t, DH, C - DH));
       const fy = sy > 0 ? y0 + t : y0 - d.leaf;
       g.add(place(box(1.4, DH - 1, d.leaf, DOORM), sx > 0 ? d.x : d.x - 1.4, fy, 1.4, d.leaf, 0.5, DH - 1));
+      leaves.push([sx > 0 ? d.x : d.x - 1.4, fy, (sx > 0 ? d.x : d.x - 1.4) + 1.4, fy + d.leaf]);
       const hy = sy > 0 ? fy + d.leaf - 3 : fy + 3; g.add(place(box(3.2, 1, 1, HANDLE), (sx > 0 ? d.x : d.x - 1.4) - 0.9, hy, 3.2, 1, 36, 1));
       for (const xx of [x0 - 3, x1]) trim.add(place(box(3, DH + 1, t + 1.5, TRIM), xx, y0 - 0.75, 3, t + 1.5, 0, DH + 1));
       trim.add(place(box(x1 - x0 + 6, 3, t + 1.5, TRIM), x0 - 3, y0 - 0.75, x1 - x0 + 6, t + 1.5, DH, 3));
@@ -542,6 +543,7 @@ function buildLevel(L) {
       g.add(place(box(t, C - DH, y1 - y0, MAT.wall), x0, y0, t, y1 - y0, DH, C - DH));
       const fx = sx > 0 ? x0 + t : x0 - d.leaf;
       g.add(place(box(d.leaf, DH - 1, 1.4, DOORM), fx, sy > 0 ? d.y : d.y - 1.4, d.leaf, 1.4, 0.5, DH - 1));
+      leaves.push([fx, sy > 0 ? d.y : d.y - 1.4, fx + d.leaf, (sy > 0 ? d.y : d.y - 1.4) + 1.4]);
       const hx = sx > 0 ? fx + d.leaf - 3 : fx + 3; g.add(place(box(1, 1, 3.2, HANDLE), hx, (sy > 0 ? d.y : d.y - 1.4) - 0.9, 1, 3.2, 36, 1));
       for (const yy of [y0 - 3, y1]) trim.add(place(box(t + 1.5, DH + 1, 3, TRIM), x0 - 0.75, yy, t + 1.5, 3, 0, DH + 1));
       trim.add(place(box(t + 1.5, 3, y1 - y0 + 6, TRIM), x0 - 0.75, y0 - 3, t + 1.5, y1 - y0 + 6, DH, 3));
@@ -558,7 +560,7 @@ function buildLevel(L) {
     labelEls.push({ el, p: new THREE.Vector3(r.x * S, (C + 16) * S, r.y * S) });
   }
   scene.add(root);
-  return { L, root, walls, furn, labs, ceil, obs, segs, labelEls, cx: (minx + maxx) / 2 * S, cz: (miny + maxy) / 2 * S };
+  return { L, root, walls, furn, labs, ceil, obs, segs, leaves, labelEls, cx: (minx + maxx) / 2 * S, cz: (miny + maxy) / 2 * S };
 }
 // ---------- electrical layer (owner LP sheets, 11/07): devices on walls and ceilings, tap for the label
 const EM = {
@@ -704,7 +706,7 @@ const anyLay = () => Object.values(LAY).some(Boolean);
 let cur = LEVELS[0];
 
 const ui = id => document.getElementById(id), hint = ui('hint');
-let mode = 'doll', labelsOn = true, furnOn = true, elegHidden = false, walkPrev = null;   // walkPrev: the view Exit walk returns to
+let mode = 'doll', labelsOn = true, furnOn = true, elegHidden = false, walkPrev = null, glide = null;   // glide: a tap-to-move in progress (walk release 2)   // walkPrev: the view Exit walk returns to
 const walker = { x: 0, y: 0, yaw: 0, pitch: 0 };
 function refresh() {
   for (const v of LEVELS) {
@@ -731,7 +733,7 @@ function refresh() {
 function walkMark() { if (mode !== 'walk') walkPrev = { mode, level: cur.L.id, c: camera.position.toArray(), t: controls.target.toArray(), fov: camera.fov }; }   // walk release 1b: remember the view before a walk
 function setMode(m, startIdx = 0) {
   if (m === 'walk') { if (mode !== 'walk' && !walkPrev) walkMark(); } else walkPrev = null;
-  mode = m; stairReset();
+  mode = m; stairReset(); glide = null;
   for (const [id, k] of [['bDoll', 'doll'], ['bTop', 'top']]) ui(id).classList.toggle('on', k === m);
   ui('bWalk').classList.toggle('on', m === 'walk' && startIdx === 0); ui('bWalk2').classList.toggle('on', m === 'walk' && startIdx === 1);
   lamp.intensity = m === 'walk' ? 6 : 0; controls.enabled = m !== 'walk'; ui('pick').style.display = 'none';
@@ -829,13 +831,16 @@ function stepWalk(dt) {
   if (keys.KeyD) s += 1; if (keys.KeyA) s -= 1;
   if (keys.ArrowLeft) walker.yaw += 1.8 * dt; if (keys.ArrowRight) walker.yaw -= 1.8 * dt;
   f -= moveVec.y; s += moveVec.x;
+  if (glide && (f || s || keys.ArrowLeft || keys.ArrowRight)) glideStop('took');   // walk release 2: any walking input takes over
   const mag = Math.hypot(f, s); if (mag > 1) { f /= mag; s /= mag; }   // diagonal keys are no faster
   const sprint = keys.ShiftLeft || keys.ShiftRight || moveVec.sprint;
   const top = Math.min(WALK.max, WALK.speed * (sprint ? WALK.sprint : 1));
   const fx = -Math.sin(walker.yaw), fy = -Math.cos(walker.yaw), rx = Math.cos(walker.yaw), ry = -Math.sin(walker.yaw);
   const tx = (fx * f + rx * s) * top, ty = (fy * f + ry * s) * top;
+  const glv = glide ? glideVel(dt) : null;
+  if (glv) { vel.x = glv[0]; vel.y = glv[1]; } else {
   const k = Math.min(1, dt * (tx * tx + ty * ty > vel.x * vel.x + vel.y * vel.y ? WALK.accel : WALK.decel));
-  vel.x += (tx - vel.x) * k; vel.y += (ty - vel.y) * k;
+  vel.x += (tx - vel.x) * k; vel.y += (ty - vel.y) * k; }
   if (Math.abs(vel.x) < 0.5 && !tx) vel.x = 0; if (Math.abs(vel.y) < 0.5 && !ty) vel.y = 0;
   const dx = vel.x * dt, dy = vel.y * dt, n = Math.max(1, Math.ceil(Math.max(Math.abs(dx), Math.abs(dy)) / 2));   // sub-steps of 2 in or less
   let okx = true, oky = true;
@@ -2217,12 +2222,14 @@ function promptHTML() {
     ['Walk', 'Put your thumb down anywhere on the left half of the screen and slide it. The ring follows your thumb and shows the direction; slide further to go faster.'],
     ['Look', 'Drag on the right half of the screen.'],
     ['Stairs', 'Walk onto the stair to change level.'],
+    ['Map', 'The plan at the top right shows where you are and which way you face. Tap a spot on it, or pick a room under it, to glide there; slide your thumb to take over. <b>Map</b> in the walk bar folds it away.'],
     ['Leave', '<b>Exit walk</b> at the top right returns to the view you came from.']]
     : [
     ['Look', 'Move the mouse. Once you start, the pointer is hidden; <kbd>Esc</kbd> gives it back.'],
     ['Walk', '<kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> or the arrow keys (<kbd>&larr;</kbd> <kbd>&rarr;</kbd> also turn).'],
     ['Faster', 'Hold <kbd>Shift</kbd>.'],
     ['Stairs', 'Walk onto the stair to change level.'],
+    ['Map', 'The plan at the top right shows where you are and which way you face. Press <kbd>Esc</kbd> to free the mouse, then click a spot on it or pick a room under it to glide there; any walking key takes over. <b>Map</b> in the walk bar folds it away.'],
     ['Leave', 'Press <kbd>Esc</kbd>, then <b>Exit walk</b> at the top right. It returns to the view you came from.']];
   return `<div class="card"><h2 id="walkPromptH">Walk through the model</h2><dl>${rows.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join('')}</dl>
   <p class="fine">Walls and furniture stop you where the model draws them (walls about &plusmn;4 in). Getting through an opening here says nothing about its real clear width.</p>
@@ -2289,6 +2296,7 @@ canvas.addEventListener('pointerup', ringEnd); canvas.addEventListener('pointerc
 // layout: the walk bar sits below the toolbar (and a link banner); the resting ring sits bottom-left above the note or legend,
 // and hides behind the tour card, a bottom sheet, a still or the prompt
 function layoutWalk() {
+  if (window.__miniReady) layoutMini();   // walk release 2
   if (mode !== 'walk') { wRing.style.display = 'none'; stairNote.style.bottom = '64px'; return; }
   let top = ui('bar').getBoundingClientRect().bottom + 8;
   const pl = document.getElementById('pLink');
@@ -2315,15 +2323,397 @@ window.__walkUi = walkUi; walkUi();
 Object.assign(window.__studio, { walkPrompt, exitWalk,
   walkState: () => ({ mode, level: cur.L.id, prompt: promptOn, hud: wHud.style.display === 'flex', ring: wRing.style.display === 'block', ringActive: !!ring.active, ringFast: wRing.classList.contains('fast'),
     prev: walkPrev ? JSON.parse(JSON.stringify(walkPrev)) : null, locked: document.pointerLockElement === canvas }) });
+
+// ================= walk release 2 (11/21): live minimap and tap-to-move =================
+// Plans: the plan viewer's "Walls, doors, room names" layer images (data/minimap-*.png), placed with the viewer's own
+// sheet transforms (data/minimap.json). The marker is the walker's position and facing. Tap-to-move plans on a 3 in grid
+// over the walk collision model, inside the drawn floors, with the drawn (open) door leaves as obstacles. The camera only
+// glides along a route whose every point passes the walk collision check; otherwise nothing moves and the map says the
+// place can't be reached. Free walking is unchanged, and any walking input takes over from a glide.
+document.head.insertAdjacentHTML('beforeend', `<style>
+#mini { position: fixed; right: 10px; top: 0; z-index: 4; display: none; background: rgba(255,255,255,.96); border: 1px solid #bbb; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,.18); overflow: hidden; font: 12px/1.3 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: #222; }
+#mini .mh { display: flex; align-items: center; gap: 4px; padding: 4px 4px 4px 8px; border-bottom: 1px solid #e3e3e3; height: 18px; }
+#mini .mh b { flex: 1 1 auto; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#mini .mh button { border: 1px solid #ccc; background: #fff; border-radius: 12px; padding: 1px 8px; font-size: 12px; color: #222; line-height: 16px; }
+#mini .mh button.on { background: #1f4e79; color: #fff; border-color: #1f4e79; }
+#mini .mh #miniX { border: 0; font-size: 17px; padding: 0 4px; color: #555; }
+#mini canvas { display: block; touch-action: none; cursor: crosshair; }
+#mini .mf { padding: 4px 6px; border-top: 1px solid #e3e3e3; height: 22px; }
+#mini select { width: 100%; height: 22px; border: 1px solid #ccc; background: #fff; border-radius: 11px; font-size: 12px; color: #222; padding: 0 6px; }
+#miniMsg { padding: 0 8px 6px; color: #333; display: none; }
+#miniMsg.err { color: #a00; }
+#walkHud #wHudMap.on { background: #fff; color: #1f4e79; border-color: #fff; }
+</style>`);
+const mEl = document.createElement('div'); mEl.id = 'mini'; mEl.setAttribute('role', 'region'); mEl.setAttribute('aria-label', 'Plan map');
+mEl.innerHTML = '<div class="mh"><b id="miniLbl">Map</b><button id="miniL1" title="Show the first-floor plan">First</button><button id="miniL0" title="Show the lower-level plan">Lower</button><button id="miniX" title="Hide the map" aria-label="Hide the map">&times;</button></div>' +
+  '<canvas id="miniC" aria-label="Plan of the level. The blue dot is you and the wedge is where you face. Tap a spot to walk there."></canvas>' +
+  '<div class="mf"><select id="miniGo" aria-label="Go to a room"><option value="">Go to a room&hellip;</option></select></div><div id="miniMsg" role="status" aria-live="polite"></div>';
+document.body.appendChild(mEl);
+const mapBtn = document.createElement('button'); mapBtn.id = 'wHudMap'; mapBtn.title = 'Show or hide the plan map'; mapBtn.textContent = 'Map';
+wHud.insertBefore(mapBtn, ui('wHudExit'));
+const mC = ui('miniC'), mX = mC.getContext('2d'), mMsg = ui('miniMsg');
+const mini = { ready: false, on: false, data: null, img: {}, view: null, lastCur: null, places: [], key: '', msgT: 0 };
+const MKEY = 'studio.miniOpen';
+let miniOpen = (() => { try { const v = localStorage.getItem(MKEY); if (v !== null) return v === '1'; } catch (e) {} return innerHeight >= 500; })();   // short landscape phones start with it folded
+function setMiniOpen(on) { miniOpen = !!on; try { localStorage.setItem(MKEY, miniOpen ? '1' : '0'); } catch (e) {} layoutMini(); }
+mapBtn.onclick = () => setMiniOpen(!miniOpen);
+ui('miniX').onclick = () => setMiniOpen(false);
+ui('miniL1').onclick = () => { mini.view = 'first'; layoutMini(); };
+ui('miniL0').onclick = () => { mini.view = 'lower'; layoutMini(); };
+
+// studio plan inches <-> plan image pixels (per level; the lower level has a family room side and an ADU side)
+const zoneOf = (d, x) => d.zones.find(z => (z.x0 == null || x >= z.x0) && (z.x1 == null || x < z.x1)) || d.zones[0];
+function toImg(id, x, y) { const z = zoneOf(mini.data.levels[id], x); return [z.ax * x + z.bx, z.ay * y + z.by]; }
+function fromImg(id, px, py) {
+  const d = mini.data.levels[id];
+  for (const z of d.zones) { const x = (px - z.bx) / z.ax, y = (py - z.by) / z.ay; if ((z.x0 == null || x >= z.x0) && (z.x1 == null || x < z.x1)) return [x, y]; }
+  const z = d.zones[0]; return [(px - z.bx) / z.ax, (py - z.by) / z.ay];
+}
+
+Promise.all(['data/minimap.json', 'data/places.json'].map(u => fetch(u + '?v=2026-11-21c').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); })))
+  .then(([d, P]) => Promise.all(Object.entries(d.levels).map(([id, l]) => new Promise((res, rej) => {
+    const im = new Image(); im.onload = () => { mini.img[id] = im; res(); }; im.onerror = () => rej(new Error(l.img)); im.src = 'data/' + l.img + '?v=2026-11-21c';
+  }))).then(() => {
+    mini.data = d; mini.places = Object.entries(P.places).map(([id, p]) => ({ id, ...p })).filter(p => p.at && lvById(p.level));
+    const sel = ui('miniGo');
+    for (const lv of LEVELS) {
+      const og = document.createElement('optgroup'); og.label = lv.L.name;
+      for (const p of mini.places.filter(p => p.level === lv.L.id)) og.appendChild(new Option(p.label, p.id));
+      sel.appendChild(og);
+    }
+    mini.ready = true; layoutMini();
+  }))
+  .catch(e => { mapBtn.style.display = 'none'; console.warn('Minimap not available: ' + e.message); });
+
+ui('miniGo').onchange = e => {
+  const p = mini.places.find(q => q.id === e.target.value); e.target.value = ''; e.target.blur();
+  if (p) goTo(p.level, p.at[0], p.at[1], p.label, p.id);
+};
+mC.addEventListener('click', e => {
+  if (!mini.ready || mode !== 'walk') return;
+  const r = mC.getBoundingClientRect(), d = mini.data.levels[mini.view];
+  const [x, y] = fromImg(mini.view, (e.clientX - r.left) / r.width * d.w, (e.clientY - r.top) / r.height * d.h);
+  goTo(mini.view, x, y, null);
+});
+
+function miniSay(text, err = false, ms = 0) {
+  clearTimeout(mini.msgT); mMsg.textContent = text || ''; mMsg.classList.toggle('err', !!err); mMsg.style.display = text ? 'block' : 'none';
+  if (text && ms) mini.msgT = setTimeout(() => { mMsg.style.display = 'none'; layoutMini(); }, ms);
+  layoutMini();
+}
+
+// layout: below the walk bar at the top right; never over the toolbar, the walk bar, the note or a key, and folded away
+// behind the walk prompt, the tour card, panels, the item label, stills and the compare view
+function layoutMini() {
+  if (!mini.ready) { mEl.style.display = 'none'; return; }
+  const walk = mode === 'walk';
+  mapBtn.classList.toggle('on', walk && miniOpen);
+  mapBtn.setAttribute('aria-pressed', walk && miniOpen ? 'true' : 'false');
+  const tour = document.getElementById('pTour');
+  const cover = promptOn || (tour && tour.style.display === 'block') || ALLP.some(k => ui(k).style.display === 'block') ||
+    ui('stillBox').style.display === 'block' || ui('pick').style.display === 'block' || cmp.on;
+  if (!walk || !miniOpen || cover) { mEl.style.display = 'none'; mini.on = false; return; }
+  if (cur !== mini.lastCur) { mini.view = cur.L.id; mini.lastCur = cur; }
+  if (!mini.view) mini.view = cur.L.id;
+  const d = mini.data.levels[mini.view], asp = d.h / d.w, narrow = NARROW();
+  const maxW = narrow ? (innerWidth < innerHeight ? Math.min(innerWidth * 0.5, 210) : Math.min(innerWidth * 0.24, 210)) : 290;   // landscape phones: leave most of the right half for looking around
+  const top = Math.round(wHud.getBoundingClientRect().bottom + 6);
+  let bottom = innerHeight - 8;
+  for (const id of ['note', 'elegend', 'legend', 'stairNote']) {
+    const el = ui(id); if (!el || getComputedStyle(el).display === 'none') continue;
+    const r = el.getBoundingClientRect(); if (r.height && r.right > innerWidth - maxW - 24 && r.bottom > top) bottom = Math.min(bottom, r.top - 8);
+  }
+  const chrome = 27 + 31 + (mMsg.style.display === 'block' ? mMsg.offsetHeight || 34 : 0) + 2;
+  const w = Math.floor(Math.min(maxW, (bottom - top - chrome) / asp));
+  if (w < 120) { mEl.style.display = 'none'; mini.on = false; return; }
+  const h = Math.round(w * asp), dpr = Math.min(2, devicePixelRatio || 1);
+  mEl.style.top = top + 'px'; mEl.style.width = w + 'px'; mEl.style.display = 'block';
+  if (mC.width !== Math.round(w * dpr) || mC.height !== Math.round(h * dpr)) { mC.width = Math.round(w * dpr); mC.height = Math.round(h * dpr); }
+  mC.style.width = w + 'px'; mC.style.height = h + 'px';
+  const here = cur.L.id === mini.view;
+  ui('miniLbl').textContent = here ? 'You: ' + cur.L.name : lvById(mini.view).L.name + ' plan';
+  ui('miniL1').classList.toggle('on', mini.view === 'first'); ui('miniL0').classList.toggle('on', mini.view === 'lower');
+  mini.on = true; mini.key = ''; drawMini();
+}
+addEventListener('resize', layoutMini);
+
+function drawMini() {
+  if (!mini.on) return;
+  const id = mini.view, d = mini.data.levels[id], here = cur.L.id === id, W = mC.width, H = mC.height, k = W / d.w, dpr = W / parseFloat(mC.style.width);
+  const key = [id, W, H, here ? walker.x.toFixed(1) + ',' + walker.y.toFixed(1) + ',' + walker.yaw.toFixed(2) : '', glide ? glide.i + ',' + glide.wp.length : ''].join('|');
+  if (key === mini.key) return; mini.key = key;
+  mX.setTransform(1, 0, 0, 1, 0, 0); mX.fillStyle = '#fff'; mX.fillRect(0, 0, W, H); mX.drawImage(mini.img[id], 0, 0, W, H);
+  const P = (x, y) => toImg(id, x, y).map(v => v * k);
+  if (glide) {   // the planned route on this plan and the destination
+    mX.save(); mX.strokeStyle = '#e07b00'; mX.lineWidth = 2.5 * dpr; mX.setLineDash([5 * dpr, 4 * dpr]); mX.beginPath();
+    let started = false;
+    if (here) { const [px, py] = P(walker.x, walker.y); mX.moveTo(px, py); started = true; }
+    for (let j = glide.i; j < glide.wp.length; j++) { const q = glide.wp[j]; if (q.lv !== id) continue; const [px, py] = P(q.x, q.y); if (started) mX.lineTo(px, py); else { mX.moveTo(px, py); started = true; } }
+    mX.stroke(); mX.restore();
+    if (glide.dest[0] === id) { const [px, py] = P(glide.dest[1], glide.dest[2]); mX.fillStyle = '#e07b00'; mX.strokeStyle = '#fff'; mX.lineWidth = 2 * dpr; mX.beginPath(); mX.arc(px, py, 5 * dpr, 0, Math.PI * 2); mX.fill(); mX.stroke(); }
+  }
+  if (here) {   // you: position and facing
+    const [px, py] = P(walker.x, walker.y), a = Math.atan2(-Math.cos(walker.yaw), -Math.sin(walker.yaw));
+    mX.fillStyle = 'rgba(31,111,209,.28)'; mX.beginPath(); mX.moveTo(px, py); mX.arc(px, py, 26 * dpr, a - 0.55, a + 0.55); mX.closePath(); mX.fill();
+    mX.fillStyle = '#1f6fd1'; mX.strokeStyle = '#fff'; mX.lineWidth = 2 * dpr; mX.beginPath(); mX.arc(px, py, 5.5 * dpr, 0, Math.PI * 2); mX.fill(); mX.stroke();
+    mini.marker = [px / k, py / k, a];
+  } else mini.marker = null;
+}
+function miniTick() {
+  if (arrTurn) {   // ease into the open view; any walking or looking ends it
+    if (mode !== 'walk' || glide || Math.abs(walker.yaw - arrTurn.was) > 1e-6 || Object.values(keys).some(Boolean) || moveVec.x || moveVec.y) arrTurn = null;
+    else { const now = performance.now(), dt = Math.min(0.1, (now - (arrTurn.t || now)) / 1000); arrTurn.t = now; const d = Math.atan2(Math.sin(arrTurn.yaw - walker.yaw), Math.cos(arrTurn.yaw - walker.yaw)); walker.yaw += d * Math.min(1, dt * 4); arrTurn.was = walker.yaw; if (Math.abs(d) < 0.01) arrTurn = null; }
+  }
+  if (!mini.ready) return;
+  if (mode === 'walk' && cur !== mini.lastCur) layoutMini();   // the plan follows you onto the other level (on the stair)
+  if (mini.on) drawMini();
+}
+
+// ---- tap-to-move: route planning
+const CELL = 3, RP = RAD + 0.75, STR_CX = (STR.x0 + STR.x1) / 2;
+const toLowF = (lv, x, y) => lv === FIRSTL ? [x + STR.dx, y + STR.dy] : [x, y];
+function stairBan(lv, x, y) { const [lx, ly] = toLowF(lv, x, y); return lx > STR.x0 - 3 && lx < STR.x1 + 3 && ly > STR.yTop - (lv === FIRSTL ? 0 : 2) && ly < STR.yBot; }   // the stair is only crossed on its centre line
+let skipLeaves = null;   // door leaves (level:index) a fallback route may pass; see planRoute
+const leafOn = (lv, i) => !skipLeaves || !skipLeaves.has(lv.L.id + ':' + i);
+function leafHit(lv, x, y, r) { for (let i = 0; i < lv.leaves.length; i++) { if (!leafOn(lv, i)) continue; const [a, b, c, d] = lv.leaves[i]; const qx = x < a ? a : x > c ? c : x, qy = y < b ? b : y > d ? d : y; if ((x - qx) ** 2 + (y - qy) ** 2 < r * r) return true; } return false; }
+const inFloor = (lv, x, y) => lv.L.floors.some(([a, b, w, d]) => x >= a && x <= a + w && y >= b && y <= b + d);
+const okAt = (lv, x, y) => inFloor(lv, x, y) && !stairBan(lv, x, y) && !hitAt(lv, x, y, RP) && !leafHit(lv, x, y, RP);
+const walkOk = (lv, x, y) => !hitAt(lv, x, y, RAD) && !leafHit(lv, x, y, RAD);   // the walk collision check, plus the drawn door leaves
+const gridCache = new Map();   // grids per level, door-leaf set and furniture arrangement (moving furniture changes lv.obs)
+function gridOf(lv) {
+  let sig = lv.obs.length; for (const r of lv.obs) sig = (sig * 31 + r[0] * 7 + r[1] * 13 + r[2] * 17 + r[3] * 19) % 1e9;
+  const key = lv.L.id + '|' + sig + '|' + lv.leaves.map((_, i) => leafOn(lv, i) ? 1 : 0).join('');
+  if (gridCache.has(key)) return gridCache.get(key);
+  if (gridCache.size > 12) gridCache.clear();
+  const G = gridBuild(lv); gridCache.set(key, G); return G;
+}
+function gridBuild(lv) {
+  const F = lv.L.floors, x0 = Math.min(...F.map(f => f[0])), y0 = Math.min(...F.map(f => f[1]));
+  const nx = Math.ceil((Math.max(...F.map(f => f[0] + f[2])) - x0) / CELL), ny = Math.ceil((Math.max(...F.map(f => f[1] + f[3])) - y0) / CELL);
+  const cx = i => x0 + (i + 0.5) * CELL, cy = j => y0 + (j + 0.5) * CELL, free = new Uint8Array(nx * ny), R2 = RP * RP;
+  for (let j = 0; j < ny; j++) for (let i = 0; i < nx; i++) free[j * nx + i] = inFloor(lv, cx(i), cy(j)) && !stairBan(lv, cx(i), cy(j)) ? 1 : 0;
+  const span = (a, c) => [Math.max(0, Math.floor((a - RP - x0) / CELL - 1)), Math.min(nx - 1, Math.ceil((c + RP - x0) / CELL + 1))];
+  const spanY = (b, d) => [Math.max(0, Math.floor((b - RP - y0) / CELL - 1)), Math.min(ny - 1, Math.ceil((d + RP - y0) / CELL + 1))];
+  for (const [a, b, c, d] of [...lv.obs, ...lv.leaves.filter((_, i) => leafOn(lv, i))]) {
+    const [i0, i1] = span(a, c), [j0, j1] = spanY(b, d);
+    for (let j = j0; j <= j1; j++) for (let i = i0; i <= i1; i++) { const x = cx(i), y = cy(j), qx = x < a ? a : x > c ? c : x, qy = y < b ? b : y > d ? d : y; if ((x - qx) ** 2 + (y - qy) ** 2 < R2) free[j * nx + i] = 0; }
+  }
+  for (const [x1, y1, x2, y2] of lv.segs) {
+    const [i0, i1] = span(Math.min(x1, x2), Math.max(x1, x2)), [j0, j1] = spanY(Math.min(y1, y2), Math.max(y1, y2)), ex = x2 - x1, ey = y2 - y1, L2 = ex * ex + ey * ey;
+    for (let j = j0; j <= j1; j++) for (let i = i0; i <= i1; i++) { const x = cx(i), y = cy(j); let t = L2 ? ((x - x1) * ex + (y - y1) * ey) / L2 : 0; t = t < 0 ? 0 : t > 1 ? 1 : t; if ((x1 + t * ex - x) ** 2 + (y1 + t * ey - y) ** 2 < R2) free[j * nx + i] = 0; }
+  }
+  return { nx, ny, free, cx, cy, cell: (x, y) => [Math.floor((x - x0) / CELL), Math.floor((y - y0) / CELL)] };
+}
+const NB = [[1, 0, 1], [-1, 0, 1], [0, 1, 1], [0, -1, 1], [1, 1, Math.SQRT2], [1, -1, Math.SQRT2], [-1, 1, Math.SQRT2], [-1, -1, Math.SQRT2]];
+function* nbrs(G, n) {   // 8 neighbours; a diagonal step needs both side cells free (no corner cutting)
+  const i = n % G.nx, j = (n / G.nx) | 0;
+  for (const [di, dj, c] of NB) {
+    const a = i + di, b = j + dj; if (a < 0 || b < 0 || a >= G.nx || b >= G.ny) continue;
+    const m = b * G.nx + a; if (!G.free[m]) continue;
+    if (di && dj && (!G.free[j * G.nx + a] || !G.free[b * G.nx + i])) continue;
+    yield [m, c];
+  }
+}
+function flood(G, s) { const seen = new Uint8Array(G.free.length), q = [s]; seen[s] = 1; for (let h = 0; h < q.length; h++) for (const [m] of nbrs(G, q[h])) if (!seen[m]) { seen[m] = 1; q.push(m); } return seen; }
+function nearCell(G, x, y, maxR, mask, rect) {
+  const [ci, cj] = G.cell(x, y), rc = Math.ceil(maxR / CELL) + 1; let best = -1, bd = maxR * maxR;
+  for (let j = cj - rc; j <= cj + rc; j++) for (let i = ci - rc; i <= ci + rc; i++) {
+    if (i < 0 || j < 0 || i >= G.nx || j >= G.ny) continue; const n = j * G.nx + i;
+    if (!G.free[n] || (mask && !mask[n])) continue;
+    if (rect && (G.cx(i) < rect[0] || G.cx(i) > rect[2] || G.cy(j) < rect[1] || G.cy(j) > rect[3])) continue;
+    const dd = (G.cx(i) - x) ** 2 + (G.cy(j) - y) ** 2; if (dd <= bd) { bd = dd; best = n; }
+  }
+  return best;
+}
+function astar(G, s, g) {
+  const N = G.free.length, gs = new Float64Array(N).fill(Infinity), par = new Int32Array(N).fill(-1), done = new Uint8Array(N);
+  const gi = g % G.nx, gj = (g / G.nx) | 0, hf = n => { const dx = Math.abs(n % G.nx - gi), dy = Math.abs(((n / G.nx) | 0) - gj); return dx + dy + (Math.SQRT2 - 2) * Math.min(dx, dy); };
+  const hp = [], up = (f, n) => { hp.push([f, n]); let c = hp.length - 1; while (c) { const p = (c - 1) >> 1; if (hp[p][0] <= hp[c][0]) break; [hp[p], hp[c]] = [hp[c], hp[p]]; c = p; } };
+  const pop = () => { const t = hp[0], l = hp.pop(); if (hp.length) { hp[0] = l; let c = 0; for (;;) { const a = 2 * c + 1, b = a + 1; let m = c; if (a < hp.length && hp[a][0] < hp[m][0]) m = a; if (b < hp.length && hp[b][0] < hp[m][0]) m = b; if (m === c) break; [hp[m], hp[c]] = [hp[c], hp[m]]; c = m; } } return t; };
+  gs[s] = 0; up(hf(s), s);
+  while (hp.length) {
+    const [, n] = pop(); if (done[n]) continue; done[n] = 1; if (n === g) break;
+    for (const [m, c] of nbrs(G, n)) { const v = gs[n] + c; if (v < gs[m]) { gs[m] = v; par[m] = n; up(v + hf(m), m); } }
+  }
+  if (!done[g]) return null;
+  const out = []; for (let n = g; n !== -1; n = par[n]) out.push([G.cx(n % G.nx), G.cy((n / G.nx) | 0)]); return out.reverse();
+}
+const segClear = (lv, a, b, ok) => { const L = Math.hypot(b[0] - a[0], b[1] - a[1]), n = Math.max(1, Math.ceil(L / 1)); for (let q = 0; q <= n; q++) { const t = q / n; if (!ok(lv, a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t)) return false; } return true; };
+function smooth(lv, pts) {   // keep the farthest corner you can see in a straight, clear line
+  const out = [pts[0]]; let i = 0;
+  while (i < pts.length - 1) { let j = i + 1; while (j + 1 < pts.length && segClear(lv, pts[i], pts[j + 1], okAt)) j++; out.push(pts[j]); i = j; }
+  return out;
+}
+// one level: from a point to a point; returns the corner points, or a reason
+function wallClear(lv, a, b) {   // no wall between two points (furniture ignored)
+  const n = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1])));
+  for (let k = 0; k <= n; k++) {
+    const x = a[0] + (b[0] - a[0]) * k / n, y = a[1] + (b[1] - a[1]) * k / n;
+    if (lv.L.walls.some(w => x > w.x && x < w.x + w.w && y > w.y && y < w.y + w.d)) return false;
+    for (const [x1, y1, x2, y2] of lv.segs) { const ex = x2 - x1, ey = y2 - y1, L2 = ex * ex + ey * ey; let t = L2 ? ((x - x1) * ex + (y - y1) * ey) / L2 : 0; t = t < 0 ? 0 : t > 1 ? 1 : t; if ((x1 + t * ex - x) ** 2 + (y1 + t * ey - y) ** 2 < 1) return false; }
+  }
+  return true;
+}
+let FACE = false;
+function faceCell(lv, G, seen, rect, to) {   // a room too full to stand in (a wet bar, a closet): stand in front of it, within 2 ft, in plain view of it
+  const E = 24, [i0, j0] = G.cell(rect[0] - E, rect[1] - E), [i1, j1] = G.cell(rect[2] + E, rect[3] + E), c = [];
+  for (let j = Math.max(0, j0); j <= Math.min(G.ny - 1, j1); j++) for (let i = Math.max(0, i0); i <= Math.min(G.nx - 1, i1); i++) {
+    const n = j * G.nx + i; if (!G.free[n] || !seen[n]) continue;
+    const x = G.cx(i), y = G.cy(j), qx = Math.min(rect[2], Math.max(rect[0], x)), qy = Math.min(rect[3], Math.max(rect[1], y)), d = Math.hypot(x - qx, y - qy);
+    const ix = Math.min(rect[2] - 6, Math.max(rect[0] + 6, x)), iy = Math.min(rect[3] - 6, Math.max(rect[1] + 6, y));   // look 6 in into the room, past its wall
+    c.push([d, Math.hypot(x - to[0], y - to[1]), n, x, y, ix, iy]);
+  }
+  c.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  for (const [d, , n, x, y, qx, qy] of c) if (d <= E && wallClear(lv, [x, y], [qx, qy])) return n;
+  return -1;
+}
+function legOn(lv, from, to, toR = 36, rect = null) {
+  const G = gridOf(lv), s = nearCell(G, from[0], from[1], 12);
+  if (s < 0) return { why: 'start' };
+  const seen = flood(G, s); let g = nearCell(G, to[0], to[1], toR, seen, rect);
+  if (g < 0 && rect && FACE) g = faceCell(lv, G, seen, rect, to);
+  if (g < 0) return { why: nearCell(G, to[0], to[1], toR, null, rect) >= 0 ? 'cut' : 'solid' };
+  const cells = astar(G, s, g); if (!cells) return { why: 'cut' };
+  const pts = smooth(lv, cells); return { pts: [from, ...pts], end: pts[pts.length - 1] };
+}
+const STAIR_PTS = {   // the stair's centre line: top landing and bottom landing, and just past the level change on each side
+  topF: [STR_CX - STR.dx, STR.yTop - 12 - STR.dy], midDownF: [STR_CX - STR.dx, STR_MID + 10 - STR.dy], midDownL: [STR_CX, STR_MID + 10],
+  botL: [STR_CX, STR.yBot + 12], midUpL: [STR_CX, STR_MID - 10], midUpF: [STR_CX - STR.dx, STR_MID - 10 - STR.dy] };
+function planCore(levelId, x, y, toR = 36, rect = null) {
+  const to = lvById(levelId); if (!to) return { ok: false, why: 'level' };
+  if (stairFloor(...toLowF(cur, walker.x, walker.y)) !== null) return { ok: false, why: 'onstair' };
+  const tag = (lv, pts) => pts.map(([px, py]) => ({ lv: lv.L.id, x: px, y: py }));
+  let wp, dest;
+  if (to === cur) {
+    const r = legOn(cur, [walker.x, walker.y], [x, y], toR, rect); if (!r.pts) return { ok: false, why: r.why };
+    wp = tag(cur, r.pts); dest = r.end;
+  } else {
+    const down = cur === FIRSTL, S1 = STAIR_PTS;
+    const a = legOn(cur, [walker.x, walker.y], down ? S1.topF : S1.botL, 6); if (!a.pts) return { ok: false, why: a.why === 'start' ? 'start' : 'stair' };
+    const b = legOn(to, down ? S1.botL : S1.topF, [x, y], toR, rect); if (!b.pts) return { ok: false, why: b.why === 'start' ? 'stair' : b.why };
+    wp = down ? [...tag(cur, a.pts), ...tag(cur, [S1.topF, S1.midDownF]), ...tag(to, [S1.midDownL]), ...tag(to, b.pts)]
+      : [...tag(cur, a.pts), ...tag(cur, [S1.botL, S1.midUpL]), ...tag(to, [S1.midUpF]), ...tag(to, b.pts)];
+    dest = b.end;
+  }
+  for (let j = 1; j < wp.length; j++) {   // every point of the route, 1 in apart, must pass the walk collision check
+    const p = wp[j - 1], q = wp[j]; if (p.lv !== q.lv) continue;
+    if (!segClear(lvById(p.lv), [p.x, p.y], [q.x, q.y], walkOk)) return { ok: false, why: 'check' };
+  }
+  return { ok: true, wp, dest: [levelId, dest[0], dest[1]], len: wp.reduce((s, q, j) => s + (j && q.lv === wp[j - 1].lv ? Math.hypot(q.x - wp[j - 1].x, q.y - wp[j - 1].y) : 0), 0) };
+}
+// The model draws every door open. Routes go around the drawn leaves where they hang; only when that leaves no way at
+// all is the route planned again without them, and the map says the route passes a drawn door leaf (the walk collision
+// check itself has never included door leaves).
+function crossed(wp) {   // the door leaves a route passes within the walker's radius
+  const out = [];
+  for (let j = 1; j < wp.length; j++) {
+    const p = wp[j - 1], q = wp[j]; if (p.lv !== q.lv) continue; const lv = lvById(p.lv), n = Math.max(1, Math.ceil(Math.hypot(q.x - p.x, q.y - p.y)));
+    for (let k = 0; k <= n; k++) { const x1 = p.x + (q.x - p.x) * k / n, y1 = p.y + (q.y - p.y) * k / n;
+      lv.leaves.forEach(([a, b, c, d], i) => { const qx = x1 < a ? a : x1 > c ? c : x1, qy = y1 < b ? b : y1 > d ? d : y1, key = p.lv + ':' + i; if ((x1 - qx) ** 2 + (y1 - qy) ** 2 < RAD * RAD && !out.includes(key)) out.push(key); }); }
+  }
+  return out;
+}
+function planRoute(levelId, x, y, toR = 36, rect = null) {
+  // in order: around the drawn door leaves; through as few of them as possible; then, for a room too full to stand in,
+  // in front of it (around the leaves, then through as few as possible)
+  let first = null, solid = false;
+  for (const face of rect ? [false, true] : [false]) {
+    FACE = face; skipLeaves = null;
+    let r = planCore(levelId, x, y, toR, rect);
+    if (r.ok || ['onstair', 'level'].includes(r.why)) { FACE = false; return r; }
+    first = first || r;
+    skipLeaves = new Set(LEVELS.flatMap(lv => lv.leaves.map((_, i) => lv.L.id + ':' + i)));
+    let r2 = planCore(levelId, x, y, toR, rect);
+    if (r2.ok) {
+      skipLeaves = new Set(crossed(r2.wp));   // put back each drawn leaf the route can do without
+      for (const k of [...skipLeaves]) { skipLeaves.delete(k); const r3 = planCore(levelId, x, y, toR, rect); if (r3.ok) r2 = r3; else skipLeaves.add(k); }
+      r2 = planCore(levelId, x, y, toR, rect); r2.leaves = [...skipLeaves]; r2.face = face; skipLeaves = null; FACE = false; return r2;
+    }
+    if (r2.why === 'solid') solid = true;
+  }
+  skipLeaves = null; FACE = false;
+  return solid ? { ok: false, why: 'solid' } : first;
+}
+const WHY = {
+  onstair: 'Step off the stair first, then pick a place.',
+  start: 'Step a little away from the wall or furniture, then try again.',
+  solid: "That spot is inside a wall, furniture or outside the floors in the model. Nothing moved.",
+  room: "There's no clear spot to stand in that room in the model (furniture fills it). Nothing moved.",
+  cut: "Can't get there from here in the model: walls, furniture and the drawn door leaves leave no way through. Nothing moved.",
+  stair: "Can't reach the stair from here in the model. Nothing moved.",
+  check: "Can't find a clear route there in the model. Nothing moved.", level: 'Unknown level.' };
+function goTo(levelId, x, y, label, room) {
+  if (mode !== 'walk') return false;
+  const rr = room && mini.data.rooms && mini.data.rooms[room];   // a room from the list: the standing spot nearest its centre, inside the viewer's room outline
+  const r = rr ? planRoute(levelId, x, y, 400, rr.rect) : planRoute(levelId, x, y, 36);
+  if (!r.ok) { glide = null; miniSay(WHY[rr && r.why === 'solid' ? 'room' : r.why] || WHY.cut, true, 6000); mini.key = ''; return false; }
+  glide = { wp: r.wp, i: 1, dest: r.dest, label: label || 'the spot you picked', t: 0, chk: { t: 0, x: walker.x, y: walker.y, lv: cur }, free: false, yaw: null };
+  vel.x = vel.y = 0; mini.key = '';
+  miniSay(`Going to ${glide.label}. ` + (r.leaves && r.leaves.length ? 'The way passes where the model draws a door standing open. ' : '') + (COARSE() ? 'Slide your thumb to take over.' : 'Any walking key takes over.'));
+  return true;
+}
+let arrTurn = null;   // after arriving: arrTurn to the most open view from the spot (longest clear line at eye level, 24 directions)
+function openYaw(lv, x, y) {
+  let best = walker.yaw, bd = -1;
+  for (let k = 0; k < 24; k++) {
+    const a = walker.yaw + k * Math.PI / 12, dx = -Math.sin(a), dy = -Math.cos(a); let d = 0;
+    while (d < 300 && inFloor(lv, x + dx * (d + 3), y + dy * (d + 3)) && !hitAt(lv, x + dx * (d + 3), y + dy * (d + 3), 4)) d += 3;   // inside the house only (not out through a door)
+    if (d > bd + 6) { bd = d; best = a; }   // ties keep the direction nearer the way you were facing
+  }
+  return best;
+}
+function glideStop(why) {
+  const g = glide; glide = null; vel.x = vel.y = 0; mini.key = '';
+  if (!g) return;
+  if (why === 'arrived') { miniSay(`Arrived: ${g.label}.`, false, 4000); arrTurn = { yaw: openYaw(cur, walker.x, walker.y), was: walker.yaw }; }
+  else if (why === 'blocked') miniSay('Stopped: something in the model blocks the way here.', true, 6000);
+  else miniSay('', false);
+}
+const GLIDE = { speed: 70, stair: 42, ramp: 0.5, brake: 30 };   // in/s; ease in over 0.5 s, ease out over the last 30 in
+function glideVel(dt) {
+  const g = glide;
+  while (g.i < g.wp.length && g.wp[g.i].lv !== cur.L.id) g.i++;   // after the level change on the stair
+  if (g.i >= g.wp.length) { glideStop('arrived'); return null; }
+  let q = g.wp[g.i], dx = q.x - walker.x, dy = q.y - walker.y, dist = Math.hypot(dx, dy);
+  const last = g.i === g.wp.length - 1, edge = !last && g.wp[g.i + 1].lv !== q.lv;   // edge: the point past the level change; keep going until the level switches
+  let v = GLIDE.speed * Math.min(1, (g.t + dt) / GLIDE.ramp);
+  if (stairFloor(...toLowF(cur, walker.x, walker.y)) !== null) v = Math.min(v, GLIDE.stair);
+  let rest = dist; for (let j = g.i + 1; j < g.wp.length; j++) if (g.wp[j].lv === g.wp[j - 1].lv) rest += Math.hypot(g.wp[j].x - g.wp[j - 1].x, g.wp[j].y - g.wp[j - 1].y);
+  v *= Math.max(0.18, Math.min(1, rest / GLIDE.brake));
+  if (!last && dist < (edge ? 0.75 : Math.max(3, v * dt * 1.5))) { g.i++; return glideVel(dt); }
+  if (last && dist < 0.75) { glideStop('arrived'); return null; }
+  if (last || edge) v = Math.min(v, dist / dt);
+  g.t += dt;
+  if (g.t - g.chk.t > 1.2) {   // stuck check: less than 4 in of progress in 1.2 s on the same level
+    if (g.chk.lv === cur && Math.hypot(walker.x - g.chk.x, walker.y - g.chk.y) < 4) { glideStop('blocked'); return null; }
+    g.chk = { t: g.t, x: walker.x, y: walker.y, lv: cur };
+  }
+  if (g.yaw !== null && Math.abs(walker.yaw - g.yaw) > 1e-6) g.free = true;   // you looked around: stop steering the view
+  if (!g.free) {
+    const ty = Math.atan2(-dx, -dy), d = Math.atan2(Math.sin(ty - walker.yaw), Math.cos(ty - walker.yaw));
+    walker.yaw += d * Math.min(1, dt * 5); walker.pitch += (0 - walker.pitch) * Math.min(1, dt * 3); g.yaw = walker.yaw;
+  }
+  return [dx / dist * v, dy / dist * v];
+}
+window.__miniReady = true;
+window.__mini = {
+  state: () => ({ ready: mini.ready, on: mini.on, open: miniOpen, view: mini.view, msg: mMsg.style.display === 'block' ? mMsg.textContent : '', err: mMsg.classList.contains('err'),
+    rect: mEl.style.display === 'block' ? (r => [r.left, r.top, r.right, r.bottom])(mEl.getBoundingClientRect()) : null, marker: mini.marker || null,
+    glide: glide ? { i: glide.i, n: glide.wp.length, label: glide.label, dest: glide.dest, free: glide.free } : null }),
+  toImg: (id, x, y) => toImg(id, x, y), fromImg: (id, px, py) => fromImg(id, px, py), data: () => mini.data, places: () => mini.places,
+  plan: (id, x, y, r, rect) => planRoute(id, x, y, r, rect), go: (id, x, y, label, room) => goTo(id, x, y, label, room), setOpen: setMiniOpen, stairPts: STAIR_PTS,
+  walkOk: (id, x, y) => walkOk(lvById(id), x, y), okAt: (id, x, y) => okAt(lvById(id), x, y), hit: (id, x, y, r) => hitAt(lvById(id), x, y, r), leaves: id => lvById(id).leaves.map(r => r.slice()),
+  tapImg: (px, py) => { const r = mC.getBoundingClientRect(), d = mini.data.levels[mini.view]; return [r.left + px / d.w * r.width, r.top + py / d.h * r.height]; } };
 const clock = new THREE.Clock();
 renderer.setAnimationLoop(() => {
   const dt = Math.min(clock.getDelta(), 0.1);   // walk release 1: slow devices keep real walking speed (moves are sub-stepped)
   if (mode === 'walk') stepWalk(dt); else controls.update();
+  miniTick();
   if (cmp.on) renderCompare();
   else if (aoOn && (mode !== 'walk' || photoOn)) composer.render(); else renderer.render(scene, camera);
   if (!cmp.on) updateLabels(); else hideLabels();
 });
 </script>
-<script type="module" src="present.js?v=2026-11-21b"></script>
+<script type="module" src="present.js?v=2026-11-21c"></script>
 </body>
 </html>
