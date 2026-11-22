@@ -2753,9 +2753,59 @@ window.__fix.drawn = id => { const p = fixParts.get(LEVELS.find(v => v.L.id === 
 // only the camera moves. It pulls in rather than pass through a wall, and keeps shots and tour stops first person.
 const TPK = 'studio.tp';
 const TP = { on: (() => { try { return localStorage.getItem(TPK) !== '0'; } catch (e) { return false; } })(), dist: 72, up: 26, cur: 72 };
-const tpMat = new THREE.MeshStandardMaterial({ color: 0x3f7fc6, roughness: 0.8, transparent: true, opacity: 1 });
-const tpFig = figure({ pose: 'stand', h: 69, x: 0, y: 0, yaw: 0, label: 'You' }, tpMat); tpFig.visible = false; scene.add(tpFig);
-tpFig.traverse(o => { if (o.isMesh) o.castShadow = false; });
+// the walker: a jointed, clothed scale figure (about 5 ft 9 in), generic, not a person; animated by a walk cycle
+const tpMats = { top: new THREE.MeshStandardMaterial({ color: 0x55697d, roughness: 0.9 }), pants: new THREE.MeshStandardMaterial({ color: 0x2e333b, roughness: 0.85 }),
+  shoe: new THREE.MeshStandardMaterial({ color: 0x1c1c1c, roughness: 0.6 }), skin: new THREE.MeshStandardMaterial({ color: 0xcfc4b4, roughness: 0.75 }) };
+for (const m of Object.values(tpMats)) m.transparent = true;
+const tpMat = { set opacity(v) { for (const m of Object.values(tpMats)) { m.opacity = v; m.depthWrite = v > 0.99; } }, get opacity() { return tpMats.top.opacity; } };
+const IN = S, tpFig = new THREE.Group(); tpFig.visible = false; scene.add(tpFig);
+const seg = (parent, r1, r2, len, m) => { const g = new THREE.Group(); parent.add(g); const c = new THREE.Mesh(new THREE.CylinderGeometry(r1 * IN, r2 * IN, len * IN, 14), m); c.position.y = -len / 2 * IN; c.castShadow = true; g.add(c);
+  const j = new THREE.Mesh(new THREE.SphereGeometry(r1 * IN, 12, 8), m); j.castShadow = true; g.add(j); return g; };
+const ball = (parent, r, m, x = 0, y = 0, z = 0, sx = 1, sy = 1, sz = 1) => { const b = new THREE.Mesh(new THREE.SphereGeometry(r * IN, 16, 12), m); b.scale.set(sx, sy, sz); b.position.set(x * IN, y * IN, z * IN); b.castShadow = true; parent.add(b); return b; };
+const TPB = { hip: 35.5 };
+const pelvis = new THREE.Group(); pelvis.position.y = TPB.hip * IN; tpFig.add(pelvis);
+ball(pelvis, 6.2, tpMats.pants, 0, 1, 0, 1.15, 0.75, 0.8);
+const torso = new THREE.Group(); torso.position.y = 2 * IN; pelvis.add(torso);
+{ const t = new THREE.Mesh(new THREE.CylinderGeometry(7.2 * IN, 6.0 * IN, 18 * IN, 18), tpMats.top); t.scale.z = 0.62; t.position.y = 9.5 * IN; t.castShadow = true; torso.add(t);
+  ball(torso, 7.2, tpMats.top, 0, 18.5, 0, 1, 0.45, 0.62); }
+const neck = new THREE.Group(); neck.position.y = 20.5 * IN; torso.add(neck);
+{ const n = new THREE.Mesh(new THREE.CylinderGeometry(2.1 * IN, 2.4 * IN, 4 * IN, 12), tpMats.skin); n.position.y = 1.5 * IN; neck.add(n); ball(neck, 4.4, tpMats.skin, 0, 7.4, 0.2, 0.9, 1.08, 1); }
+const limb = (side) => {
+  const hip = new THREE.Group(); hip.position.set(side * 3.9 * IN, 0, 0); pelvis.add(hip);
+  const thigh = seg(hip, 3.3, 2.5, 17, tpMats.pants); const knee = new THREE.Group(); knee.position.y = -17 * IN; thigh.add(knee);
+  const shin = seg(knee, 2.4, 1.8, 16, tpMats.pants); const ankle = new THREE.Group(); ankle.position.y = -16 * IN; shin.add(ankle);
+  const foot = new THREE.Mesh(new THREE.BoxGeometry(3.6 * IN, 2.6 * IN, 10.5 * IN), tpMats.shoe); foot.position.set(0, -1.3 * IN, -3.2 * IN); foot.castShadow = true; ankle.add(foot);
+  const sh = new THREE.Group(); sh.position.set(side * 7.8 * IN, 17.5 * IN, 0); torso.add(sh);
+  const upper = seg(sh, 2.2, 1.8, 11.5, tpMats.top); const elbow = new THREE.Group(); elbow.position.y = -11.5 * IN; upper.add(elbow);
+  const fore = seg(elbow, 1.7, 1.3, 10, tpMats.skin); ball(fore, 1.8, tpMats.skin, 0, -11, 0, 0.8, 1.25, 0.55);
+  return { thigh, knee: knee, shin, ankle, sh: upper, elbow, side };
+};
+const tpL = limb(-1), tpR = limb(1);
+const shadowTex = (() => { const c = document.createElement('canvas'); c.width = c.height = 64; const g = c.getContext('2d'), gr = g.createRadialGradient(32, 32, 2, 32, 32, 31); gr.addColorStop(0, 'rgba(0,0,0,0.45)'); gr.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c); })();
+const tpShadow = new THREE.Mesh(new THREE.PlaneGeometry(26 * IN, 20 * IN), new THREE.MeshBasicMaterial({ map: shadowTex, transparent: true, depthWrite: false }));
+tpShadow.rotation.x = -Math.PI / 2; tpShadow.position.y = 0.25 * IN; tpFig.add(tpShadow);
+tpFig.traverse(o => { if (o.isMesh) { o.userData.label = 'You (scale figure, about 5 ft 9 in)'; } });
+const TPA = { phase: 0, amp: 0, yaw: 0, t: performance.now() };
+function tpAnimate(dt) {   // walk cycle from the walker's real speed: legs, knees and feet step, arms swing opposite, the body bobs
+  const spd = Math.hypot(vel.x, vel.y), dyaw = Math.abs(Math.atan2(Math.sin(walker.yaw - TPA.yaw), Math.cos(walker.yaw - TPA.yaw))); TPA.yaw = walker.yaw;
+  const target = Math.min(1, spd / 45) + Math.min(0.35, dyaw / Math.max(dt, 1e-3) * 0.12);   // turning in place shuffles a little
+  TPA.amp += (target - TPA.amp) * Math.min(1, dt * 6);
+  TPA.phase += (spd * dt / 50 + Math.min(0.5, dyaw * 0.9)) * Math.PI * 2;   // one full cycle (two steps) per about 50 in
+  const a = TPA.amp, ph = TPA.phase, run = Math.min(1, Math.max(0, (spd - 60) / 40));
+  for (const L of [tpL, tpR]) {
+    const p = ph + (L.side < 0 ? 0 : Math.PI), sw = Math.sin(p), fwd = Math.cos(p);
+    const th = a * (0.42 + 0.15 * run) * sw;                         // thigh swing
+    const kn = -a * (0.12 + (0.75 + 0.4 * run) * Math.max(0, fwd));   // knee bends while the leg swings through
+    L.thigh.rotation.x = th; L.knee.rotation.x = kn; L.ankle.rotation.x = -(th + kn) * 0.85 + a * 0.15 * Math.max(0, -fwd);   // foot stays near level, toe-off at the back
+    L.sh.rotation.x = -a * (0.38 + 0.2 * run) * sw; L.sh.rotation.z = L.side * 0.07;   // arms swing opposite the legs, hanging a little away from the body
+    L.elbow.rotation.x = 0.22 + a * (0.25 + 0.5 * run) * Math.max(0, -sw);
+  }
+  const breathe = Math.sin(performance.now() / 1300) * 0.004;
+  pelvis.position.y = (TPB.hip - a * 0.9 * (1 - Math.abs(Math.cos(ph)))) * IN;   // lowest as the feet pass, highest at mid-stride
+  pelvis.rotation.y = a * 0.09 * Math.sin(ph); torso.rotation.y = -a * 0.14 * Math.sin(ph); torso.rotation.x = -a * (0.05 + 0.08 * run) + breathe;
+  pelvis.rotation.z = a * 0.035 * Math.cos(ph); neck.rotation.x = a * 0.05;
+  tpShadow.scale.set(1 + a * 0.25, 1 + a * 0.35, 1);
+}
 const tpRay = new THREE.Raycaster();
 const tpTall = new Map(LEVELS.map(lv => [lv, lv.L.furniture.filter(f => !f.r && f.h >= 70).map(f => [f.x, f.y, f.x + f.w, f.y + f.d])]));
 function tpBlocked(lv, x, y) {
@@ -2768,12 +2818,14 @@ wHud.insertBefore(tpBtn, ui('wHudMap'));
 function tpSet(on) { TP.on = !!on; try { localStorage.setItem(TPK, TP.on ? '1' : '0'); } catch (e) {} tpBtn.classList.toggle('on', TP.on); tpBtn.setAttribute('aria-pressed', String(TP.on)); TP.cur = 0; }
 tpBtn.onclick = () => tpSet(!TP.on); tpSet(TP.on);
 document.head.insertAdjacentHTML('beforeend', '<style>#walkHud #wHudTP.on { background: #fff; color: #1f4e79; border-color: #fff; }</style>');
-function tpApply() {
+function tpApply(dt) {
+  if (dt === undefined) { const now = performance.now(); dt = Math.min(0.1, (now - TPA.t) / 1000); TPA.t = now; }
   const atShot = lastShot && Math.hypot(walker.x - lastShot.x, walker.y - lastShot.y) < 1;   // shots and tour stops keep their framing
   const show = TP.on && mode === 'walk' && !atShot;
   tpFig.visible = show; if (!show) { TP.cur = 0; return; }
   const fz = walker.fz || 0, eye = camera.position.y / S;   // eye as the walk set it (ducks on the stair)
   tpFig.position.set(walker.x * S, fz * S, walker.y * S); tpFig.rotation.y = walker.yaw;
+  tpAnimate(dt);
   const fx = -Math.sin(walker.yaw), fy = -Math.cos(walker.yaw), pitch = Math.max(-0.7, Math.min(0.5, walker.pitch));
   let d = 0; while (d < TP.dist && !tpBlocked(cur, walker.x - fx * (d + 2), walker.y - fy * (d + 2))) d += 2;
   { // 3D check: walls, door headers over openings, window frames; the plan check above can't see a header
@@ -2791,10 +2843,11 @@ function tpApply() {
   const ahead = 110 - tight * 50;
   TP.ceil = ceilZ;
   camera.position.set(cx * S, cz * S, cy * S);
+  if (TP.debugCam) { const d = TP.debugCam.rel ? TP.debugCam.rel.map((v, i) => v + [walker.x, walker.y, fz][i % 3]) : TP.debugCam; camera.position.set(d[0] * S, d[2] * S, d[1] * S); camera.lookAt(d[3] * S, d[5] * S, d[4] * S); return; }
   camera.lookAt((walker.x + fx * ahead) * S, (eye - 10 - tight * 22 + pitch * ahead) * S, (walker.y + fy * ahead) * S);   // aim well ahead, so the figure sits low in the frame and the room fills the rest
   tpMat.opacity = TP.cur < 22 ? Math.max(0, (TP.cur - 12) / 10) : 1; tpMat.depthWrite = tpMat.opacity > 0.99; tpFig.visible = tpMat.opacity > 0.02;   // no room at all behind: plain first person
 }
-window.__tp = { set: tpSet, on: () => TP.on, cam: () => ({ d: TP.cur, x: camera.position.x / S, y: camera.position.z / S, z: camera.position.y / S, lvl: cur.L.id, ceil: TP.ceil, fig: tpFig.visible, op: tpMat.opacity }), tick: tpApply };
+window.__tp = { set: tpSet, on: () => TP.on, cam: () => ({ d: TP.cur, x: camera.position.x / S, y: camera.position.z / S, z: camera.position.y / S, lvl: cur.L.id, ceil: TP.ceil, fig: tpFig.visible, op: tpMat.opacity }), tick: dt => tpApply(dt ?? 1 / 60), debugCam: v => { TP.debugCam = v; }, anim: () => ({ amp: TPA.amp, phase: TPA.phase }) };
 const clock = new THREE.Clock();
 renderer.setAnimationLoop(() => {
   const dt = Math.min(clock.getDelta(), 0.1);   // walk release 1: slow devices keep real walking speed (moves are sub-stepped)
