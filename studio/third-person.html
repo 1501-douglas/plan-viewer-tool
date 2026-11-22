@@ -2752,7 +2752,7 @@ window.__fix.drawn = id => { const p = fixParts.get(LEVELS.find(v => v.L.id === 
 // Camera behind and a little above the walker, as in third-person games. Collision, the stair and the map are unchanged;
 // only the camera moves. It pulls in rather than pass through a wall, and keeps shots and tour stops first person.
 const TPK = 'studio.tp';
-const TP = { on: (() => { try { return localStorage.getItem(TPK) !== '0'; } catch (e) { return false; } })(), dist: 72, up: 26, cur: 72 };
+const TP = { on: (() => { try { return localStorage.getItem(TPK) !== '0'; } catch (e) { return false; } })(), dist: 56, side: 16, up: 7, cur: 56, t: 0 };
 // the walker: a jointed, clothed scale figure (about 5 ft 9 in), generic, not a person; animated by a walk cycle
 const tpMats = { top: new THREE.MeshStandardMaterial({ color: 0x55697d, roughness: 0.9 }), pants: new THREE.MeshStandardMaterial({ color: 0x2e333b, roughness: 0.85 }),
   shoe: new THREE.MeshStandardMaterial({ color: 0x1c1c1c, roughness: 0.6 }), skin: new THREE.MeshStandardMaterial({ color: 0xcfc4b4, roughness: 0.75 }) };
@@ -2787,7 +2787,7 @@ tpShadow.rotation.x = -Math.PI / 2; tpShadow.position.y = 0.25 * IN; tpFig.add(t
 tpFig.traverse(o => { if (o.isMesh) { o.userData.label = 'You (scale figure, about 5 ft 9 in)'; } });
 const TPA = { phase: 0, amp: 0, yaw: 0, t: performance.now() };
 function tpAnimate(dt) {   // walk cycle from the walker's real speed: legs, knees and feet step, arms swing opposite, the body bobs
-  const spd = Math.hypot(vel.x, vel.y), dyaw = Math.abs(Math.atan2(Math.sin(walker.yaw - TPA.yaw), Math.cos(walker.yaw - TPA.yaw))); TPA.yaw = walker.yaw;
+  const by = TP.body ?? walker.yaw, spd = Math.hypot(vel.x, vel.y), dyaw = Math.abs(Math.atan2(Math.sin(by - TPA.yaw), Math.cos(by - TPA.yaw))); TPA.yaw = by;
   const target = Math.min(1, spd / 45) + Math.min(0.35, dyaw / Math.max(dt, 1e-3) * 0.12);   // turning in place shuffles a little
   TPA.amp += (target - TPA.amp) * Math.min(1, dt * 6);
   TPA.phase += (spd * dt / 50 + Math.min(0.5, dyaw * 0.9)) * Math.PI * 2;   // one full cycle (two steps) per about 50 in
@@ -2822,30 +2822,47 @@ function tpApply(dt) {
   if (dt === undefined) { const now = performance.now(); dt = Math.min(0.1, (now - TPA.t) / 1000); TPA.t = now; }
   const atShot = lastShot && Math.hypot(walker.x - lastShot.x, walker.y - lastShot.y) < 1;   // shots and tour stops keep their framing
   const show = TP.on && mode === 'walk' && !atShot;
-  tpFig.visible = show; if (!show) { TP.cur = 0; return; }
+  tpFig.visible = show; if (!show) { TP.cur = 0; TP.t = 0; TP.body = undefined; return; }
   const fz = walker.fz || 0, eye = camera.position.y / S;   // eye as the walk set it (ducks on the stair)
-  tpFig.position.set(walker.x * S, fz * S, walker.y * S); tpFig.rotation.y = walker.yaw;
+  // the body faces the way it moves, as in GTA; the camera can look around it without turning it
+  const spd = Math.hypot(vel.x, vel.y);
+  if (TP.body === undefined) TP.body = walker.yaw;
+  if (spd > 6) { const tgt = Math.atan2(-vel.x, -vel.y), dd = Math.atan2(Math.sin(tgt - TP.body), Math.cos(tgt - TP.body)); TP.body += dd * Math.min(1, dt * 9); }
+  tpFig.position.set(walker.x * S, fz * S, walker.y * S); tpFig.rotation.y = TP.body;
   tpAnimate(dt);
-  const fx = -Math.sin(walker.yaw), fy = -Math.cos(walker.yaw), pitch = Math.max(-0.7, Math.min(0.5, walker.pitch));
-  let d = 0; while (d < TP.dist && !tpBlocked(cur, walker.x - fx * (d + 2), walker.y - fy * (d + 2))) d += 2;
-  { // 3D check: walls, door headers over openings, window frames; the plan check above can't see a header
-    const hx = walker.x, hy = walker.y, back = Math.max(d, 1), bz = Math.min(eye + TP.up + 30, cur.L.ceil - 5);
-    tpRay.set(new THREE.Vector3(hx * S, eye * S, hy * S), new THREE.Vector3(-fx * back, bz - eye, -fy * back).normalize()); tpRay.far = Math.hypot(back, bz - eye) * S;
-    const h = tpRay.intersectObjects(cur.walls.children, true)[0];
-    if (h) d = Math.max(0, h.distance / S * back / Math.hypot(back, bz - eye) - 8);
-  }
-  TP.cur = d < TP.cur ? d : TP.cur + (d - TP.cur) * 0.12;   // pull in at once, ease back out
-  const cx = walker.x - fx * TP.cur, cy = walker.y - fy * TP.cur;
+  // over-the-shoulder camera: behind, to the right and a little above the shoulders; it orbits with the view
+  const yaw = walker.yaw, pitch = Math.max(-0.75, Math.min(0.55, walker.pitch));
+  const fx = -Math.sin(yaw), fy = -Math.cos(yaw), rx = Math.cos(yaw), ry = -Math.sin(yaw);
+  const pv = [walker.x, walker.y, eye - 4];
+  const arm = side => {   // how far out along an arm the camera can sit: walls, chases, angled walls, tall pieces, outside the floors, then a 3D ray for headers
+    const o = [-fx * TP.dist * Math.cos(pitch) + rx * side, -fy * TP.dist * Math.cos(pitch) + ry * side, TP.up - TP.dist * Math.sin(pitch)], L = Math.hypot(o[0], o[1], o[2]);
+    let t = 1; for (let k = 1; k <= 40; k++) { const q = k / 40; if (tpBlocked(cur, pv[0] + o[0] * q, pv[1] + o[1] * q)) { t = (k - 1) / 40; break; } }
+    tpRay.set(new THREE.Vector3(pv[0] * S, pv[2] * S, pv[1] * S), new THREE.Vector3(o[0], o[2], o[1]).normalize()); tpRay.far = L * S;
+    const h = tpRay.intersectObjects(cur.walls.children, true)[0]; if (h) t = Math.min(t, Math.max(0, (h.distance / S - 6) / L));
+    return { o, L, t, h, reach: t * L };
+  };
+  // over the right shoulder where there is room; where the shoulder side is blocked (narrow halls, the stairwell) slide in behind, as games do
+  const A = arm(TP.side), B = TP.side ? arm(0) : A, pick = B.reach > A.reach * 1.4 + 6 ? B : A;
+  TP.sideCur = (TP.sideCur ?? TP.side) + ((pick === A ? TP.side : 0) - (TP.sideCur ?? TP.side)) * Math.min(1, dt * 5);
+  const S0 = Math.abs(TP.sideCur - TP.side) < 0.5 ? A : Math.abs(TP.sideCur) < 0.5 ? B : arm(TP.sideCur);
+  const off = S0.o, len = S0.L, h = S0.h; let t = S0.t;
+  if (t < TP.t) {   // pull in fast but smoothly (about 0.15 s); snap only if the smoothed spot would be in or behind a wall
+    const ts = TP.t + (t - TP.t) * Math.min(1, dt * 12), sx = pv[0] + off[0] * ts, sy = pv[1] + off[1] * ts;
+    const clear = inFloor(cur, sx, sy) && wallDist(cur, sx, sy) >= 5 && !(h && h.distance / S - 2 < ts * len);
+    TP.t = clear ? ts : t;
+  } else TP.t += (t - TP.t) * Math.min(1, dt * 3);   // ease back out
+  const cx = pv[0] + off[0] * TP.t, cy = pv[1] + off[1] * TP.t;
   const onLow = toLowF(cur, cx, cy), sf = stairFloor(onLow[0], onLow[1]);
   const ceilZ = sf !== null ? stairCeil(onLow[0], onLow[1]) - (cur === FIRSTL ? STR.ftf : 0) : cur.L.ceil;
-  const tight = Math.max(0, Math.min(1, (48 - TP.cur) / 30));   // little room behind: rise toward the ceiling and look down over the shoulders, as games do
-  const cz = Math.max(eye, Math.min(eye + TP.up - pitch * 24 + tight * 30, ceilZ - 5));
-  const ahead = 110 - tight * 50;
-  TP.ceil = ceilZ;
+  const cz = Math.min(pv[2] + off[2] * TP.t, ceilZ - 5);
+  TP.ceil = ceilZ; TP.cur = Math.hypot(cx - walker.x, cy - walker.y);
   camera.position.set(cx * S, cz * S, cy * S);
   if (TP.debugCam) { const d = TP.debugCam.rel ? TP.debugCam.rel.map((v, i) => v + [walker.x, walker.y, fz][i % 3]) : TP.debugCam; camera.position.set(d[0] * S, d[2] * S, d[1] * S); camera.lookAt(d[3] * S, d[5] * S, d[4] * S); return; }
-  camera.lookAt((walker.x + fx * ahead) * S, (eye - 10 - tight * 22 + pitch * ahead) * S, (walker.y + fy * ahead) * S);   // aim well ahead, so the figure sits low in the frame and the room fills the rest
-  tpMat.opacity = TP.cur < 22 ? Math.max(0, (TP.cur - 12) / 10) : 1; tpMat.depthWrite = tpMat.opacity > 0.99; tpFig.visible = tpMat.opacity > 0.02;   // no room at all behind: plain first person
+  camera.rotation.set(walker.pitch - 0.1, yaw, 0, 'YXZ');   // the view aims where you look, a touch below level
+  const near = TP.t * len;
+  TP.hide = TP.hide ? near < 24 : near < 14;   // hysteresis: hide under 14 in, show again past 24 in, so it doesn't blink in doorways
+  TP.op = (TP.op ?? 1) + ((TP.hide ? 0 : near < 30 ? 0.35 + 0.65 * (near - 14) / 16 : 1) - (TP.op ?? 1)) * Math.min(1, dt * 8);
+  tpMat.opacity = Math.max(0, Math.min(1, TP.op)); tpFig.visible = tpMat.opacity > 0.03;   // no room at all: plain first person
 }
 window.__tp = { set: tpSet, on: () => TP.on, cam: () => ({ d: TP.cur, x: camera.position.x / S, y: camera.position.z / S, z: camera.position.y / S, lvl: cur.L.id, ceil: TP.ceil, fig: tpFig.visible, op: tpMat.opacity }), tick: dt => tpApply(dt ?? 1 / 60), debugCam: v => { TP.debugCam = v; }, anim: () => ({ amp: TPA.amp, phase: TPA.phase }) };
 const clock = new THREE.Clock();
