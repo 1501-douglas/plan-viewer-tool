@@ -107,7 +107,7 @@
 <div id="legend" style="position:fixed;left:10px;top:58px;background:rgba(255,255,255,.95);border:1px solid #bbb;border-radius:8px;padding:8px 10px;font-size:12px;display:none;max-width:280px;line-height:1.45"></div>
 <div id="warn">This page needs WebGL, which this browser did not provide.</div>
 <div id="note"><button class="x" id="noteX" aria-label="Hide note">×</button>
-  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-21f, walk release 2: map and tap to move; fixtures on by default): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
+  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-22c: the 11/22 room-by-room design directions on both levels, window treatments as design layers, the Bed 113 door record corrected; the ADU living room layer and the peninsula south-end seating test kept): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld; 11/22: the room-by-room design directions, from owner sheets L-1 Rev 17, L-2 Rev 12 and L-3 Rev 27), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
 </div>
 
 <script type="importmap">
@@ -127,7 +127,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
 const [M, EL, DS] = await Promise.all(['data/model.json', 'data/elements.json', 'data/design.json'].map(u =>
-  fetch(u + '?v=2026-11-21f').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
+  fetch(u + '?v=2026-11-22c').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
   const w = document.getElementById('warn'); w.textContent = 'Could not load the model data (' + e.message + ').'; w.style.display = 'block'; throw e; });
 const S = 0.0254, EYE = 63, RAD = 9;
 
@@ -406,7 +406,8 @@ const INFO = {
   furnL: { status: 'owner concept', why: 'Position and size from the owner layout sheets, not the architect set. Room sizes behind it are ±4 in.', source: 'Owner sheets L-1 / L-2 / L-3, 10/19 base', fix: 'Confirm against the current owner sheets; measure room clear sizes.' },
   famApprox: { status: 'assumed', why: 'Arrangement placed by Claude from the 11/07 open-room decision (W7) and the seating study. The current L-3 was not available.', source: 'Owner decisions 11/07; Family_Room_Seating_Study (10/21)', fix: 'Compare with owner sheet L-3 Rev 22, or the owner places it.' },
   mechApprox: { status: 'assumed', why: 'Common utility room (the west closet, off the common hall): the house air handler (2-ton with a 5 kW heat kit, per the architect\'s set) and the one heat pump water heater for the whole house. Positions follow owner sheets L-3 Rev 25 and M001 11/20; sizes are placeholders. Nothing here serves the ADU, which has its own ductless unit.', source: 'Owner decisions 11/13 (M5, W1); owner sheets L-3 Rev 25, M001 11/20; architect set 11/13', fix: 'Mechanical engineer sizes the equipment and checks the closet fit and service space.' },
-  optionA: { status: 'owner concept', why: 'Option A and the 11/18 storage ideas. Not on the architect\'s set and not sent.', source: 'HP2_Relocation (11/05); ADU_Design_Record (11/18)', fix: 'Owner confirms, then the architect draws it.' },
+  design1122: { status: 'owner concept', why: 'Owner design direction from the 11/22 room-by-room review, at the positions tested then. A design direction, not a construction approval; sizes are placeholders until the actual furniture is chosen.', source: 'House_Decision_Register_2026-11-22.md; Interior_Design_Review.md; Interior_Design_Review_First_Floor.md', fix: 'Check the actual furniture dimensions; field measurements refine the positions.' },
+optionA: { status: 'owner concept', why: 'Option A and the 11/18 storage ideas. Not on the architect\'s set and not sent.', source: 'HP2_Relocation (11/05); ADU_Design_Record (11/18)', fix: 'Owner confirms, then the architect draws it.' },
   closetDoor: { status: 'assumed', why: 'The geometry file recorded closet doors only as gaps, so these fronts are placeholders. Door type follows the owner sheet notes where they give one.', source: 'Owner sheet notes (bypass doors at Bed 113, Bed 121 and Bed 132; master closets to match built-ins); ADU design record', fix: 'Choose the door type and size per closet; measure each opening.' },
   pocket: { status: 'owner concept', why: '3 ft pocket door plus a 2 ft fixed panel into the ADU office, from the owner sheet. The pocket wall and header are drawn to make the opening read; their sizes are placeholders.', source: 'Owner sheet L-2 (10/19 base)', fix: 'Architect draws the opening; pocket frame size from the door chosen.' },
   elec: { status: 'owner concept', why: 'Device positions come from the owner lighting and power sheets, not the architect\'s E001. Mounting heights are typical values, not specified: outlets 16 in, switches 48 in, thermostat and sensors 60 in, TV boxes per the sheet notes. Wall devices are moved onto the nearest wall face in this model, so some sit up to about 18 in from where the sheet draws them; the few that sit farther (up to about 2 ft) say so in their label.', source: 'Owner sheets LP-1 Rev 18, LP-2 Rev 22 (Option A, 11/05 layout), LP-3 Rev 33 (open family room), all 11/07', fix: 'The architect\'s E001 and the electrician; confirm each box at the framed walkthrough before rough-in.' },
@@ -1039,7 +1040,9 @@ function applyPick(p) {
   if (DS.features) {
     for (const [cat, groups] of Object.entries(FEAT)) for (const [key, g] of Object.entries(groups)) g.visible = p[cat] === key;
     const hide = new Set(); for (const [cat, opts] of Object.entries(DS.features.hides || {})) for (const l of (opts[p[cat]] || [])) hide.add(l);
-    for (const g of lowerLv.furn.children) if (g.userData.f && g.userData.f.label && (hide.has(g.userData.f.label) || g.userData.hiddenBy)) { g.userData.hiddenBy = hide.has(g.userData.f.label); g.visible = !g.userData.hiddenBy; }
+    const hid = f => hide.has(f.label) || hide.has(f.label + '@' + Math.round(f.cx ?? f.x));   // 11/22a: label@x picks one piece among same-named ones
+    for (const g of lowerLv.furn.children) if (g.userData.f && g.userData.f.label && (hid(g.userData.f) || g.userData.hiddenBy)) { g.userData.hiddenBy = hid(g.userData.f); g.visible = !g.userData.hiddenBy; }
+    globalThis.__featHide = hide;
   }
   if (typeof PICK_HOOK_LIST !== 'undefined') for (const h of PICK_HOOK_LIST) h(p);
   if (p.trim === 'base') { ZM.trim.color.set(0xffffff); ZM.door.color.set(0xf7f5f0); ZM.trim2.color.set(0xf3f0ea); }
@@ -1049,11 +1052,13 @@ function applyPick(p) {
 // 3b. concept feature sets (design.json "features"): pieces shown only when their option is picked
 const FEAT = {};
 if (DS.features) {
-  const fm = { walnut: FM.walnut, cab: FM.cabinet, fire: FM.fire, gap0: null, black: mat(0x232323, { roughness: 0.6 }), raceway: mat(0x8a4a3a, { roughness: 0.8 }), gap: mat(0x1a1a1a, { roughness: 1 }) };
+  const fm = { walnut: FM.walnut, cab: FM.cabinet, fire: FM.fire, gap0: null, black: mat(0x232323, { roughness: 0.6 }), raceway: mat(0x8a4a3a, { roughness: 0.8 }), gap: mat(0x1a1a1a, { roughness: 1 }),
+    shade: new THREE.MeshStandardMaterial({ color: 0xefe8dc, roughness: 0.97, transparent: true, opacity: 0.9 }), cassette: mat(0xf2efe8, { roughness: 0.5 }), curtain: mat(0xe6ddcf, { roughness: 1 }),
+    glow: new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xfff0c8, emissiveIntensity: 2.5, roughness: 0.4 }), counter: FM.counter };   // 11/22a design layer; 11/22b counter top for the 3b test
   for (const [cat, groups] of Object.entries(DS.features)) {
     if (cat === 'info' || cat === 'hides' || cat === 'infoBy') continue; FEAT[cat] = {};
     for (const [key, items] of Object.entries(groups)) {
-      const grp = new THREE.Group(); grp.visible = false; lowerLv.furn.add(grp); FEAT[cat][key] = grp;
+      const grp = new THREE.Group(); grp.visible = false; ((items[0] && items[0].level === 'first') ? FIRST : lowerLv).furn.add(grp); FEAT[cat][key] = grp;   // 11/22c: first-floor feature groups
       for (const it of items) {
         const g = new THREE.Group(), m = fm[it.mat] || FM.oak;
         if (it.type === 'console') {   // floating box with a shadow reveal under it and a door seam line
@@ -1130,7 +1135,7 @@ function renderDesign() {
   ui('lightWarm').onclick = () => { setStudioLight(false); setWarmLight(true); renderDesign(); };
   ui('pplBtn').onclick = () => { setPeople(!peopleOn); renderDesign(); };
   renderArrange();
-  el.querySelectorAll('[data-scheme]').forEach(b => b.onclick = () => setPick({ ...schemeById(b.dataset.scheme).pick, tvwall: pick.tvwall, famuse: pick.famuse, brick: pick.brick, staging: pick.staging, foyer: pick.foyer }));
+  el.querySelectorAll('[data-scheme]').forEach(b => b.onclick = () => setPick({ ...schemeById(b.dataset.scheme).pick, ...Object.fromEntries(CATS.filter(k => !FINISH.includes(k)).map(k => [k, pick[k]])) }));
   el.querySelectorAll('select[data-cat]').forEach(s => s.onchange = () => setPick({ ...pick, [s.dataset.cat]: s.value }));
   ui('cmpSel').onchange = e => setCompare(e.target.value);
   ui('saveBtn').onclick = () => {
@@ -1893,6 +1898,7 @@ function peopleSync(a) {
       if (e.lv !== fg.lv || e.added || isIdentity(a.items[e.key])) continue;
       const [x, y, w, d] = fRect(e.f); if (fg.p.x >= x - 4 && fg.p.x <= x + w + 4 && fg.p.y >= y - 4 && fg.p.y <= y + d + 4 && e.f.h >= 14) { hide = true; break; }
     }
+    if (!hide && fg.lv === lowerLv) for (const g of lowerLv.furn.children) { const f = g.userData.f; if (!g.userData.hiddenBy || !f || f.h < 14) continue; const [x, y, w, d] = fRect(f); if (fg.p.x >= x - 4 && fg.p.x <= x + w + 4 && fg.p.y >= y - 4 && fg.p.y <= y + d + 4) { hide = true; break; } }   // 11/22a
     fg.g.visible = !hide;
   }
 }
@@ -1998,26 +2004,24 @@ art(LVF, 'S', 360.5, 338, 48, 24, 32, 1, 'Art on the living room south wall (sta
 stLamp(LVF, 316, 266, 0, 'Floor lamp by the sofa (staging; switched lamp outlet 9L)', true);
 plant(LVF, 184, 346, 'Plant in the living room corner (staging)', 50);
 wallPanel(LVF, 'S', 360.5, 255.75, 70, 106, 14, LINEN, 'Linen roman shade on the living room window (staging)', 2);
-rug(LVF, 238, 200, 66, 66, RUG2, 'Rug under the dining table (staging)');
+rug(LVF, 178, 240, 96, 120, RUG2, 'Rug about 8 x 10 ft under the sofa front and coffee table; dining table on the bare floor (owner 11/22; staging)');
 pillow(LVF, 293, 284, 19, 5, 16, 14, PILLOW[0]); pillow(LVF, 293, 336, 19, 5, 16, 14, PILLOW[1]);
 for (const [i, x] of [[0, 255], [1, 283], [2, 311]]) art(LVF, 'S', 195, x, 54, 18, 24, i + 2, 'Hall gallery art (staging)', i === 1 ? FRAME_O : FRAME_B);
-wallPanel(LVF, 'W', 458.5, 314, 40, 24, 38, MIRROR, 'Mirror over the master dresser (staging)', 1);
-rug(LVF, 489, 322, 96, 72, RUGM, 'Rug under the master bed (staging)');
+rug(LVF, 477, 280, 120, 96, RUGM, 'Rug 8 x 10 ft crosswise under the master bed (owner 11/22; staging)');
 stLamp(LVF, 495.7, 385, 24, 'Table lamp (staging)'); stLamp(LVF, 578.6, 385, 24, 'Table lamp (staging)');
 art(LVF, 'W', 453, 58, 52, 36, 24, 3, 'Art over the Bed 132 headboard (staging)', FRAME_O);
-rug(LVF, 470, 30, 84, 60, RUGM, 'Rug under the Bed 132 bed (staging)');
+rug(LVF, 482, 12, 72, 108, RUGM, 'Rug 6 x 9 ft crosswise under the Bed 132 bed (owner 11/22; staging)');
+rug(LVF, 40, 232, 72, 108, RUGM, 'Rug 6 x 9 ft crosswise in Bed 121 (owner 11/22; staging)');
+rug(LVF, 247, 50, 96, 60, RUGM, 'Rug 5 x 8 ft crosswise in Bed 113 (owner 11/22; staging)');
 art(LVF, 'N', 226, 48, 50, 30, 22, 4, 'Art in Bed 121 (staging)');
 // lower level: ADU and family room
 roundMirror(LVL, 'W', 243, 108, 62, 26, 'Round mirror over the ADU entry bench (staging)');
 stLamp(LVL, 279, 103, 0, 'Floor lamp by the ADU sofa (staging; switched lamp outlet A1L)', true);
 plant(LVL, 253, 172, 'Plant by the ADU TV wall (staging)', 46);
 pillow(LVL, 300, 83, 19, 16, 5, 14, PILLOW[0]); pillow(LVL, 344, 83, 19, 16, 5, 14, PILLOW[1]);
-stLamp(LVL, 605.5, 252, 24, 'Table lamp (staging)'); stLamp(LVL, 605.5, 352, 24, 'Table lamp (staging)');
 art(LVL, 'S', 364.5, 410, 48, 30, 24, 0, 'Art in the ADU office (staging)', FRAME_O);
-stLamp(LVL, 384, 290, 0, 'Floor lamp by the office lounge chair (staging)', true);
 art(LVL, 'S', 366, 150, 48, 40, 30, 2, 'Art on the family room south wall (staging)');
-stLamp(LVL, 62, 246, 0, 'Floor lamp by the family room chair (staging)', true);
-plant(LVL, 30, 205, 'Plant in the family room corner (staging)', 50);
+stLamp(LVL, 48, 206, 0, 'Floor lamp by the family room chair (staging)', true);
 wallPanel(LVL, 'N', 2, 309, 66, 72, 16, LINEN, 'Linen roman shade on the ADU living window (staging)', 2);
 
 // foyer options (first floor): A as planned (shoe cabinet and hooks), B console + round mirror + lamp + runner, C drop-zone bench with hooks and shelf
@@ -2038,7 +2042,7 @@ putS(LVF, place(box(30, 0.35, 110, RUGM), 389, 208, 28, 110, 0.1, 0.35), 'Runner
 
 PICK_HOOK_LIST.push(p => {
   const on = (p.staging || 'on') === 'on';
-  for (const g of stageRoot.values()) g.visible = on;
+  for (const g of stageRoot.values()) { g.visible = on; for (const c of g.children) { let lb = ''; c.traverse(o => { if (!lb && o.isMesh) lb = o.userData.label || ''; }); c.visible = !(globalThis.__featHide && globalThis.__featHide.has(lb)); } }   // 11/22a: a design-layer option can stand in for one staging piece
   const f = p.foyer || 'A';
   FOY.B.visible = f === 'B'; FOY.C.visible = f === 'C';
   if (shoeCab) { shoeCab.visible = f === 'A'; shoeCab.userData.hiddenBy = f !== 'A'; }
@@ -2389,9 +2393,9 @@ function fromImg(id, px, py) {
   const z = d.zones[0]; return [(px - z.bx) / z.ax, (py - z.by) / z.ay];
 }
 
-Promise.all(['data/minimap.json', 'data/places.json'].map(u => fetch(u + '?v=2026-11-21f').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); })))
+Promise.all(['data/minimap.json', 'data/places.json'].map(u => fetch(u + '?v=2026-11-22c').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); })))
   .then(([d, P]) => Promise.all(Object.entries(d.levels).map(([id, l]) => new Promise((res, rej) => {
-    const im = new Image(); im.onload = () => { mini.img[id] = im; res(); }; im.onerror = () => rej(new Error(l.img)); im.src = 'data/' + l.img + '?v=2026-11-21f';
+    const im = new Image(); im.onload = () => { mini.img[id] = im; res(); }; im.onerror = () => rej(new Error(l.img)); im.src = 'data/' + l.img + '?v=2026-11-22c';
   }))).then(() => {
     mini.data = d; mini.places = Object.entries(P.places).map(([id, p]) => ({ id, ...p })).filter(p => p.at && lvById(p.level));
     const sel = ui('miniGo');
@@ -2748,6 +2752,9 @@ for (const v of LEVELS) {
 function fixAssume() { for (const { orig, merged } of fixParts.values()) { merged.visible = !assume; for (const o of orig) o.visible = assume; } }   // the per-device meshes still take taps while hidden (rays ignore visibility)
 fixAssume(); window.__fixReady = true;
 window.__fix.drawn = id => { const p = fixParts.get(LEVELS.find(v => v.L.id === id)); return { merged: p.merged.children.length, devices: p.orig.length }; };
+window.__design = { feats: () => Object.fromEntries(Object.entries(FEAT).map(([c, g]) => [c, Object.fromEntries(Object.entries(g).map(([k, v]) => [k, v.visible]))])),
+  stageVisible: label => { let r = null; for (const g of stageRoot.values()) for (const c of g.children) c.traverse(o => { if (o.isMesh && o.userData.label === label) r = c.visible && g.visible; }); return r; },
+  furnVisible: (label, x) => { const g = lowerLv.furn.children.find(g => g.userData.f && g.userData.f.label === label && (x === undefined || Math.round(g.userData.f.cx ?? g.userData.f.x) === x)); return g ? g.visible : null; } };
 const clock = new THREE.Clock();
 renderer.setAnimationLoop(() => {
   const dt = Math.min(clock.getDelta(), 0.1);   // walk release 1: slow devices keep real walking speed (moves are sub-stepped)
@@ -2758,6 +2765,6 @@ renderer.setAnimationLoop(() => {
   if (!cmp.on) updateLabels(); else hideLabels();
 });
 </script>
-<script type="module" src="present.js?v=2026-11-21f"></script>
+<script type="module" src="present.js?v=2026-11-22c"></script>
 </body>
 </html>

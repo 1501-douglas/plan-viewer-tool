@@ -4,7 +4,8 @@
   "direction": "Warm modern (owner brief, 11/18): warm whites and soft neutrals, sand and taupe, natural wood, natural-looking stone, matte or low-sheen finishes, restrained black or bronze hardware, simple trim.",
   "defaultScheme": "W",
   "defaultExtra": {
-   "tvwall": "B"
+   "tvwall": "B",
+   "foyer": "B"
   }
  },
  "zones": {
@@ -357,12 +358,85 @@
      "color": "#f4f2ec"
     },
     "B": {
-     "name": "B: slim console, round mirror, lamp, runner",
+     "name": "B: slim console, round mirror, lamp, runner (owner choice 11/22)",
      "color": "#6e4f3a"
     },
     "C": {
      "name": "C: drop-zone bench, hooks and shelf",
      "color": "#c9a77c"
+    }
+   }
+  },
+  "aduwin": {
+   "label": "ADU living window (design layer)",
+   "items": {
+    "roller": {
+     "name": "Roller shade, inside mount, light-filtering (owner choice 11/22)",
+     "color": "#efe8dc"
+    },
+    "staged": {
+     "name": "Roman shade (old staging placeholder)",
+     "color": "#e9e1d2"
+    }
+   }
+  },
+  "adulayout": {
+   "label": "ADU living layout (test)",
+   "items": {
+    "sheet": {
+     "name": "As on the owner sheet",
+     "color": "#c9c2b8"
+    },
+    "f5": {
+     "name": "F5: 78 in sofa about 12 in west (owner preferred direction, 11/22)",
+     "color": "#a9b2ba"
+    },
+    "table": {
+     "name": "F5 + 30 in round table instead of the stools (test: about 34 in path, not approved)",
+     "color": "#b88d63"
+    },
+    "end": {
+     "name": "F5 + seating at the peninsula south end (option 3b test)",
+     "color": "#8d9c7a"
+    }
+   }
+  },
+  "adulight": {
+   "label": "ADU living reading light (design layer)",
+   "items": {
+    "lamp": {
+     "name": "Floor lamp (staging)",
+     "color": "#f6efe2"
+    },
+    "spot": {
+     "name": "Ceiling reading spot over the sofa end (concept, not on LP-2)",
+     "color": "#fff0c8"
+    }
+   }
+  },
+  "ffwin": {
+   "label": "First-floor window treatments (design layer)",
+   "items": {
+    "decided": {
+     "name": "As decided 11/22 (shades and curtains)",
+     "color": "#e8e0d2"
+    },
+    "none": {
+     "name": "Hidden",
+     "color": "#ffffff"
+    }
+   }
+  },
+  "llwin": {
+   "label": "Lower-level curtains (design layer)",
+   "items": {
+    "decided": {
+     "name": "As decided 11/22 (ADU bedroom, family room)",
+     "color": "#e8e0d2"
+    },
+    "none": {
+     "name": "Hidden",
+     "color": "#ffffff"
     }
    }
   }
@@ -864,6 +938,36 @@
      "sofa 90 x 38",
      "coffee table (family room)"
     ]
+   },
+   "aduwin": {
+    "roller": [
+     "Linen roman shade on the ADU living window (staging)"
+    ]
+   },
+   "adulayout": {
+    "f5": [
+     "sofa (sleeper optional)"
+    ],
+    "table": [
+     "sofa (sleeper optional)",
+     "stool@392"
+    ],
+    "end": [
+     "sofa (sleeper optional)",
+     "peninsula",
+     "peninsula overhang",
+     "stool@392"
+    ]
+   },
+   "adulight": {
+    "spot": [
+     "Floor lamp by the ADU sofa (staging; switched lamp outlet A1L)"
+    ]
+   },
+   "ffwin": {
+    "decided": [
+     "Linen roman shade on the living room window (staging)"
+    ]
    }
   },
   "famuse": {
@@ -1020,7 +1124,606 @@
     "why": "Hypothetical layout (Claude, 11/19), kept for future reference; not an owner decision and not a current use. Governing rule, owner decision W8 (11/07): the family room is not a sleeping room until an escape window is installed. The layout uses the W7b and W8 provisions (wall-bed blocking, switched outlets, capped TV box). It stays part of the house with no cooking appliance: R-1-B allows one accessory apartment per lot, and the ADU is it. The hall door is conceptual only, not approved construction.",
     "source": "Owner decisions W7, W7b, W8 (11/07); DC zoning Subtitle U 253 (one accessory apartment); IRC R310 (escape openings)",
     "fix": "Only if the owner pursues it: escape window and well (architect), a door to the common hall, wall bed product and its open depth."
+   },
+   "aduwin": {
+    "status": "owner concept",
+    "why": "Owner choice 11/22 for the ADU living window: an inside-mount, light-filtering, soft-textured roller shade rather than curtains, so the glass stays clear (about 6 in of wall to the west; the subpanel and the wall unit to the east). Floor-to-ceiling curtains stay the default elsewhere. Design layer (visual concept, not on the electrical or architectural plans).",
+    "source": "Owner, 11/22; Interior_Design_Review.md A2",
+    "fix": "Choose the product; measure the window opening (worksheet L-33)."
+   },
+   "adulayout": {
+    "status": "assumed",
+    "why": "Layout test, visual only. F5 (ADU design record): a 78 in sofa about 12 in west to open the main path; owner preferred direction 11/22, not final. The table option puts a 30 in round table with two chairs in front of the chimney in place of the stools; the main entry-to-kitchen path is then about 34 in (36 in is the usual comfortable width), so it is not approved. The 3b option moves the seating to the peninsula south end: base about 32 in with a 12 in overhang, two stools facing north. The main path is then about 36 in, the same as tucking the west-side stools; the stool backs sit about 17 in from the chimney, two stools are tight on a 36 in end (about 24 in each is usual), and it changes the kitchen layout, so it would go to the architect and the cabinet plan. With the west-side stools in use the path is about 20 to 24 in in every layout. Model figures, about +/- 4 in. Design layer (visual concept, not on the electrical or architectural plans).",
+    "source": "Interior_Design_Review.md A6 and the option 3 test (11/22); ADU_Design_Record.md F5",
+    "fix": "Owner chooses between the south-end seating (3b) and tucked west-side stools; measure the room at the site visit."
+   },
+   "adulight": {
+    "status": "assumed",
+    "why": "Design concept, visual only: a surface-mounted ceiling reading spot over the sofa end in place of the staging floor lamp. Not on LP-2. Surface fastening on the 1-hour rated ceiling needs the architect's confirmation; a recessed fixture would need a detail that keeps the listed assembly. The studio's fixtures are not light sources, so it does not show real light levels; test the room at night before deciding (owner, 11/22). Design layer (visual concept, not on the electrical or architectural plans).",
+    "source": "Interior_Design_Review.md A1 (11/22)",
+    "fix": "Night check on site; the electrician picks the fixture; the architect confirms the ceiling fastening."
+   },
+   "ffwin": {
+    "status": "owner concept",
+    "why": "Owner design directions from the 11/22 room-by-room review: inside-mount blackout shades in Bed 113, the Bed 132 east window, behind the master and Bed 121 beds, the Bed 121 south window and the living room south window (sconces kept); floor-to-ceiling blackout curtains on the Bed 132 north window and the master east window (with a sheer). The kitchen window (shade or nothing) is still open and not shown. Design layer only: not on the electrical or architectural plans.",
+    "source": "Owner, 11/22; Interior_Design_Review_First_Floor.md (BT5, BD5, MB7, BR5, LV4); House_Decision_Register_2026-11-22.md",
+    "fix": "Choose products; measure each opening and sill in the field; confirm window operation and the escape openings stay clear."
+   },
+   "llwin": {
+    "status": "owner concept",
+    "why": "Owner design directions 11/22: ADU bedroom, floor-to-ceiling blackout curtains with a sheer on both windows, on wall-mounted rods just under the rated ceiling (no ceiling track); family room, floor-to-ceiling curtains on both windows. Stack sides as modeled; the east-window stack is shown south of the window so it stays clear of the B3 media shelf. Design layer only.",
+    "source": "Owner, 11/22; Interior_Design_Review.md (R4, R5, F4); House_Decision_Register_2026-11-22.md",
+    "fix": "Choose products; measure the openings; keep the ADU bedroom escape window approach clear."
    }
+  },
+  "aduwin": {
+   "roller": [
+    {
+     "type": "box",
+     "x": 273.5,
+     "y": 6.0,
+     "w": 71,
+     "d": 2.5,
+     "z": 82.0,
+     "h": 2.2,
+     "mat": "cassette",
+     "label": "Roller shade cassette, inside the window opening (owner choice 11/22; product not selected)"
+    },
+    {
+     "type": "box",
+     "x": 274.5,
+     "y": 7.0,
+     "w": 69,
+     "d": 0.4,
+     "z": 66.0,
+     "h": 16.0,
+     "mat": "shade",
+     "label": "Roller shade, light-filtering, soft texture, shown about a third down (owner choice 11/22; product not selected)"
+    }
+   ],
+   "staged": []
+  },
+  "adulayout": {
+   "sheet": [],
+   "f5": [
+    {
+     "type": "furn",
+     "label": "78 in sofa, about 12 in west (F5, owner preferred direction 11/22; design layer)",
+     "parts": [
+      {
+       "kind": "sofa",
+       "x": 279,
+       "y": 74.1,
+       "w": 78,
+       "d": 34.7,
+       "h": 32,
+       "z": 0,
+       "label": "78 in sofa, about 12 in west (F5 test, design layer)"
+      },
+      {
+       "kind": "tv",
+       "x": 300,
+       "y": 190.5,
+       "w": 40,
+       "d": 0.01,
+       "h": 0.01,
+       "z": 0,
+       "label": ""
+      }
+     ]
+    }
+   ],
+   "table": [
+    {
+     "type": "furn",
+     "label": "78 in sofa, about 12 in west (F5 test, design layer)",
+     "parts": [
+      {
+       "kind": "sofa",
+       "x": 279,
+       "y": 74.1,
+       "w": 78,
+       "d": 34.7,
+       "h": 32,
+       "z": 0,
+       "label": "78 in sofa, about 12 in west (F5 test, design layer)"
+      },
+      {
+       "kind": "tv",
+       "x": 300,
+       "y": 190.5,
+       "w": 40,
+       "d": 0.01,
+       "h": 0.01,
+       "z": 0,
+       "label": ""
+      }
+     ]
+    },
+    {
+     "type": "furn",
+     "label": "30 in round table in front of the chimney, in place of the stools (test, not approved: about 34 in main path)",
+     "parts": [
+      {
+       "kind": "table",
+       "r": 15,
+       "cx": 405,
+       "cy": 116,
+       "h": 30,
+       "label": "30 in round table (test)"
+      },
+      {
+       "kind": "chairw",
+       "x": 396,
+       "y": 77,
+       "w": 18,
+       "d": 18,
+       "h": 34,
+       "z": 0,
+       "label": "Dining chair (test)"
+      },
+      {
+       "kind": "chairw",
+       "x": 396,
+       "y": 137,
+       "w": 18,
+       "d": 18,
+       "h": 34,
+       "z": 0,
+       "label": "Dining chair (test)"
+      },
+      {
+       "kind": "tv",
+       "x": 300,
+       "y": 190.5,
+       "w": 40,
+       "d": 0.01,
+       "h": 0.01,
+       "z": 0,
+       "label": ""
+      }
+     ]
+    }
+   ],
+   "end": [
+    {
+     "type": "furn",
+     "label": "78 in sofa, about 12 in west (F5, owner preferred direction 11/22)",
+     "parts": [
+      {
+       "kind": "sofa",
+       "x": 279,
+       "y": 74.1,
+       "w": 78,
+       "d": 34.7,
+       "h": 32,
+       "z": 0,
+       "label": "78 in sofa, about 12 in west (F5, owner preferred direction 11/22)"
+      },
+      {
+       "kind": "tv",
+       "x": 300,
+       "y": 190.5,
+       "w": 40,
+       "d": 0.01,
+       "h": 0.01,
+       "z": 0,
+       "label": ""
+      }
+     ]
+    },
+    {
+     "type": "furn",
+     "label": "Peninsula base about 32 in long (option 3b test)",
+     "parts": [
+      {
+       "kind": "cab",
+       "x": 410.8,
+       "y": 30.7,
+       "w": 23.8,
+       "d": 32.1,
+       "h": 36,
+       "z": 0,
+       "label": "peninsula base (3b test)"
+      }
+     ]
+    },
+    {
+     "type": "box",
+     "x": 398.5,
+     "y": 30.7,
+     "w": 36.1,
+     "d": 44.1,
+     "z": 34.5,
+     "h": 1.5,
+     "mat": "counter",
+     "label": "Peninsula top with a 12 in seating overhang at the south end (option 3b test)"
+    },
+    {
+     "type": "furn",
+     "label": "Two stools at the south end, facing north (option 3b test)",
+     "parts": [
+      {
+       "kind": "chair",
+       "r": 6.6,
+       "cx": 405,
+       "cy": 85.8,
+       "h": 26,
+       "label": "stool (3b test)"
+      },
+      {
+       "kind": "chair",
+       "r": 6.6,
+       "cx": 428,
+       "cy": 85.8,
+       "h": 26,
+       "label": "stool (3b test)"
+      },
+      {
+       "kind": "tv",
+       "x": 300,
+       "y": 190.5,
+       "w": 40,
+       "d": 0.01,
+       "h": 0.01,
+       "z": 0,
+       "label": ""
+      }
+     ]
+    }
+   ]
+  },
+  "adulight": {
+   "lamp": [],
+   "spot": [
+    {
+     "type": "box",
+     "x": 291,
+     "y": 88,
+     "w": 4.5,
+     "d": 4.5,
+     "z": 87.5,
+     "h": 5.5,
+     "mat": "black",
+     "label": "Reading spot, surface-mounted on the ceiling, aimed at the sofa end (design concept, not on LP-2)"
+    },
+    {
+     "type": "box",
+     "x": 291.75,
+     "y": 88.75,
+     "w": 3,
+     "d": 3,
+     "z": 87.2,
+     "h": 0.3,
+     "mat": "glow",
+     "label": "Reading spot lens (design concept, not on LP-2)"
+    }
+   ]
+  },
+  "ffwin": {
+   "decided": [
+    {
+     "type": "box",
+     "x": 270.0,
+     "y": 3.5,
+     "w": 69.5,
+     "d": 2.5,
+     "z": 82.0,
+     "h": 2.2,
+     "mat": "cassette",
+     "level": "first",
+     "label": "Shade cassette, inside the opening: Bed 113 north window (owner 11/22, BT5)"
+    },
+    {
+     "type": "box",
+     "x": 270.5,
+     "y": 5.0,
+     "w": 68.5,
+     "d": 0.4,
+     "z": 66.0,
+     "h": 16.0,
+     "mat": "shade",
+     "level": "first",
+     "label": "Blackout roller shade, inside mount, shown about a third down: Bed 113 north window (owner 11/22, BT5)"
+    },
+    {
+     "type": "box",
+     "x": 470.0,
+     "y": 7.5,
+     "w": 74.5,
+     "d": 1.0,
+     "z": 92.5,
+     "h": 1.0,
+     "mat": "black",
+     "level": "first",
+     "label": "Curtain rod near the ceiling: Bed 132 north window (owner 11/22, BD5)"
+    },
+    {
+     "type": "box",
+     "x": 472.0,
+     "y": 8.0,
+     "w": 12,
+     "d": 3.5,
+     "z": 1.0,
+     "h": 91.0,
+     "mat": "curtain",
+     "level": "first",
+     "label": "Blackout curtain stack: Bed 132 north window (owner 11/22, BD5)"
+    },
+    {
+     "type": "box",
+     "x": 530.5,
+     "y": 8.0,
+     "w": 12,
+     "d": 3.5,
+     "z": 1.0,
+     "h": 91.0,
+     "mat": "curtain",
+     "level": "first",
+     "label": "Blackout curtain stack: Bed 132 north window (owner 11/22, BD5)"
+    },
+    {
+     "type": "box",
+     "x": 608.0,
+     "y": 44.5,
+     "w": 2.5,
+     "d": 68.0,
+     "z": 82.0,
+     "h": 2.2,
+     "mat": "cassette",
+     "level": "first",
+     "label": "Shade cassette, inside the opening: Bed 132 east window (owner 11/22, BD5)"
+    },
+    {
+     "type": "box",
+     "x": 609.0,
+     "y": 45.0,
+     "w": 0.4,
+     "d": 67.0,
+     "z": 66.0,
+     "h": 16.0,
+     "mat": "shade",
+     "level": "first",
+     "label": "Blackout roller shade, inside mount, shown about a third down: Bed 132 east window (owner 11/22, BD5)"
+    },
+    {
+     "type": "box",
+     "x": 483.5,
+     "y": 395.0,
+     "w": 71.0,
+     "d": 2.5,
+     "z": 82.0,
+     "h": 2.2,
+     "mat": "cassette",
+     "level": "first",
+     "label": "Shade cassette, inside the opening: master south window, behind the bed (owner 11/22, MB7)"
+    },
+    {
+     "type": "box",
+     "x": 484.0,
+     "y": 395.6,
+     "w": 70.0,
+     "d": 0.4,
+     "z": 66.0,
+     "h": 16.0,
+     "mat": "shade",
+     "level": "first",
+     "label": "Blackout roller shade, inside mount, shown about a third down: master south window, behind the bed (owner 11/22, MB7)"
+    },
+    {
+     "type": "box",
+     "x": 605.5,
+     "y": 279.0,
+     "w": 1.0,
+     "d": 99.0,
+     "z": 92.5,
+     "h": 1.0,
+     "mat": "black",
+     "level": "first",
+     "label": "Curtain rod near the ceiling: master east window, blackout with a sheer layer (owner 11/22, MB7)"
+    },
+    {
+     "type": "box",
+     "x": 602.5,
+     "y": 281.0,
+     "w": 3.5,
+     "d": 12,
+     "z": 1.0,
+     "h": 91.0,
+     "mat": "curtain",
+     "level": "first",
+     "label": "Blackout curtain and sheer stack: master east window, blackout with a sheer layer (owner 11/22, MB7)"
+    },
+    {
+     "type": "box",
+     "x": 602.5,
+     "y": 364.0,
+     "w": 3.5,
+     "d": 12,
+     "z": 1.0,
+     "h": 91.0,
+     "mat": "curtain",
+     "level": "first",
+     "label": "Blackout curtain and sheer stack: master east window, blackout with a sheer layer (owner 11/22, MB7)"
+    },
+    {
+     "type": "box",
+     "x": 3.5,
+     "y": 236.0,
+     "w": 2.5,
+     "d": 70.0,
+     "z": 82.0,
+     "h": 2.2,
+     "mat": "cassette",
+     "level": "first",
+     "label": "Shade cassette, inside the opening: Bed 121 west window, behind the bed (owner 11/22, BR5)"
+    },
+    {
+     "type": "box",
+     "x": 4.6,
+     "y": 236.5,
+     "w": 0.4,
+     "d": 69.0,
+     "z": 66.0,
+     "h": 16.0,
+     "mat": "shade",
+     "level": "first",
+     "label": "Blackout roller shade, inside mount, shown about a third down: Bed 121 west window, behind the bed (owner 11/22, BR5)"
+    },
+    {
+     "type": "box",
+     "x": 68.5,
+     "y": 360.5,
+     "w": 71.0,
+     "d": 2.5,
+     "z": 82.0,
+     "h": 2.2,
+     "mat": "cassette",
+     "level": "first",
+     "label": "Shade cassette, inside the opening: Bed 121 south window, the escape window, kept operable (owner 11/22, BR5)"
+    },
+    {
+     "type": "box",
+     "x": 69.0,
+     "y": 361.1,
+     "w": 70.0,
+     "d": 0.4,
+     "z": 66.0,
+     "h": 16.0,
+     "mat": "shade",
+     "level": "first",
+     "label": "Blackout roller shade, inside mount, shown about a third down: Bed 121 south window, the escape window, kept operable (owner 11/22, BR5)"
+    },
+    {
+     "type": "box",
+     "x": 203.0,
+     "y": 360.5,
+     "w": 105.5,
+     "d": 2.5,
+     "z": 82.0,
+     "h": 2.2,
+     "mat": "cassette",
+     "level": "first",
+     "label": "Shade cassette, inside the opening: living room south window, sconces kept (owner 11/22, LV4)"
+    },
+    {
+     "type": "box",
+     "x": 203.5,
+     "y": 361.1,
+     "w": 104.5,
+     "d": 0.4,
+     "z": 66.0,
+     "h": 16.0,
+     "mat": "shade",
+     "level": "first",
+     "label": "Blackout roller shade, inside mount, shown about a third down: living room south window, sconces kept (owner 11/22, LV4)"
+    }
+   ],
+   "none": []
+  },
+  "llwin": {
+   "decided": [
+    {
+     "type": "box",
+     "x": 613.0,
+     "y": 290.5,
+     "w": 1.0,
+     "d": 86.5,
+     "z": 89.5,
+     "h": 1.0,
+     "mat": "black",
+     "label": "Curtain rod, wall-mounted just under the ceiling: ADU bedroom east window (owner 11/22)"
+    },
+    {
+     "type": "box",
+     "x": 610.0,
+     "y": 363.5,
+     "w": 3.5,
+     "d": 12.0,
+     "z": 1.0,
+     "h": 88.0,
+     "mat": "curtain",
+     "label": "Blackout curtain and sheer, stacked south of the east window, clear of the media shelf (owner 11/22; stack side as modeled)"
+    },
+    {
+     "type": "box",
+     "x": 491.5,
+     "y": 400.0,
+     "w": 83.0,
+     "d": 1.0,
+     "z": 89.5,
+     "h": 1.0,
+     "mat": "black",
+     "label": "Curtain rod, wall-mounted just under the ceiling: ADU bedroom south window (owner 11/22)"
+    },
+    {
+     "type": "box",
+     "x": 560.5,
+     "y": 397.0,
+     "w": 12.0,
+     "d": 3.5,
+     "z": 1.0,
+     "h": 88.0,
+     "mat": "curtain",
+     "label": "Blackout curtain and sheer, one-way stack east of the south window (owner 11/22)"
+    },
+    {
+     "type": "box",
+     "x": 7.5,
+     "y": 220.0,
+     "w": 1.0,
+     "d": 92.0,
+     "z": 89.5,
+     "h": 1.0,
+     "mat": "black",
+     "label": "Curtain rod: family room west window (owner 11/22)"
+    },
+    {
+     "type": "box",
+     "x": 6.5,
+     "y": 222.0,
+     "w": 3.5,
+     "d": 12.0,
+     "z": 1.0,
+     "h": 88.0,
+     "mat": "curtain",
+     "label": "Curtain stack north of the family room west window (owner 11/22)"
+    },
+    {
+     "type": "box",
+     "x": 192.0,
+     "y": 360.5,
+     "w": 137.5,
+     "d": 1.0,
+     "z": 89.5,
+     "h": 1.0,
+     "mat": "black",
+     "label": "Curtain rod: family room south window (owner 11/22)"
+    },
+    {
+     "type": "box",
+     "x": 194.0,
+     "y": 356.5,
+     "w": 12.0,
+     "d": 3.5,
+     "z": 1.0,
+     "h": 88.0,
+     "mat": "curtain",
+     "label": "Curtain stack: family room south window (owner 11/22)"
+    },
+    {
+     "type": "box",
+     "x": 315.5,
+     "y": 356.5,
+     "w": 12.0,
+     "d": 3.5,
+     "z": 1.0,
+     "h": 88.0,
+     "mat": "curtain",
+     "label": "Curtain stack: family room south window (owner 11/22)"
+    }
+   ],
+   "none": []
   }
  },
  "people": {
@@ -1058,7 +1761,7 @@
    {
     "level": "lower",
     "x": 442,
-    "y": 280,
+    "y": 270,
     "yaw": -1.5707963267948966,
     "pose": "seat",
     "seat": 18,
