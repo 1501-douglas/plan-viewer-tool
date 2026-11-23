@@ -107,7 +107,7 @@
 <div id="legend" style="position:fixed;left:10px;top:58px;background:rgba(255,255,255,.95);border:1px solid #bbb;border-radius:8px;padding:8px 10px;font-size:12px;display:none;max-width:280px;line-height:1.45"></div>
 <div id="warn">This page needs WebGL, which this browser did not provide.</div>
 <div id="note"><button class="x" id="noteX" aria-label="Hide note">×</button>
-  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-22c: the 11/22 room-by-room design directions on both levels, window treatments as design layers, the Bed 113 door record corrected; the ADU living room layer and the peninsula south-end seating test kept): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld; 11/22: the room-by-room design directions, from owner sheets L-1 Rev 17, L-2 Rev 12 and L-3 Rev 27), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
+  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-22d: third person in Walk, one tap on the walk bar; build 22c: the 11/22 room-by-room design directions on both levels, window treatments as design layers, the Bed 113 door record corrected; the ADU living room layer and the peninsula south-end seating test kept): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld; 11/22: the room-by-room design directions, from owner sheets L-1 Rev 17, L-2 Rev 12 and L-3 Rev 27), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
 </div>
 
 <script type="importmap">
@@ -127,7 +127,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
 const [M, EL, DS] = await Promise.all(['data/model.json', 'data/elements.json', 'data/design.json'].map(u =>
-  fetch(u + '?v=2026-11-22c').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
+  fetch(u + '?v=2026-11-22d').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
   const w = document.getElementById('warn'); w.textContent = 'Could not load the model data (' + e.message + ').'; w.style.display = 'block'; throw e; });
 const S = 0.0254, EYE = 63, RAD = 9;
 
@@ -1053,7 +1053,7 @@ function applyPick(p) {
 const FEAT = {};
 if (DS.features) {
   const fm = { walnut: FM.walnut, cab: FM.cabinet, fire: FM.fire, gap0: null, black: mat(0x232323, { roughness: 0.6 }), raceway: mat(0x8a4a3a, { roughness: 0.8 }), gap: mat(0x1a1a1a, { roughness: 1 }),
-    shade: new THREE.MeshStandardMaterial({ color: 0xefe8dc, roughness: 0.97, transparent: true, opacity: 0.9 }), cassette: mat(0xf2efe8, { roughness: 0.5 }), curtain: mat(0xe6ddcf, { roughness: 1 }),
+    shade: new THREE.MeshStandardMaterial({ color: 0xefe8dc, roughness: 0.97, transparent: true, opacity: 0.9 }), cassette: mat(0xf2efe8, { roughness: 0.5 }), curtain: mat(0xe6ddcf, { roughness: 1 }), nickel: mat(0xb9b9b4, { roughness: 0.35, metalness: 0.8 }), mirror: new THREE.MeshStandardMaterial({ color: 0xdfe6ea, roughness: 0.05, metalness: 0.9 }), film: new THREE.MeshStandardMaterial({ color: 0xf4f6f6, roughness: 0.4, transparent: true, opacity: 0.55 }), chkok: new THREE.MeshBasicMaterial({ color: 0x2e9e57 }), chkwarn: new THREE.MeshBasicMaterial({ color: 0xe0a100 }), chkbad: new THREE.MeshBasicMaterial({ color: 0xd2382f }),
     glow: new THREE.MeshStandardMaterial({ color: 0xffffff, emissive: 0xfff0c8, emissiveIntensity: 2.5, roughness: 0.4 }), counter: FM.counter };   // 11/22a design layer; 11/22b counter top for the 3b test
   for (const [cat, groups] of Object.entries(DS.features)) {
     if (cat === 'info' || cat === 'hides' || cat === 'infoBy') continue; FEAT[cat] = {};
@@ -2022,6 +2022,7 @@ pillow(LVL, 300, 83, 19, 16, 5, 14, PILLOW[0]); pillow(LVL, 344, 83, 19, 16, 5, 
 art(LVL, 'S', 364.5, 410, 48, 30, 24, 0, 'Art in the ADU office (staging)', FRAME_O);
 art(LVL, 'S', 366, 150, 48, 40, 30, 2, 'Art on the family room south wall (staging)');
 stLamp(LVL, 48, 206, 0, 'Floor lamp by the family room chair (staging)', true);
+rug(LVL, 247.5, 211, 108, 144, RUG2, 'Rug about 9 x 12 ft under the sofa front and coffee table (owner 11/22; staging)');
 wallPanel(LVL, 'N', 2, 309, 66, 72, 16, LINEN, 'Linen roman shade on the ADU living window (staging)', 2);
 
 // foyer options (first floor): A as planned (shoe cabinet and hooks), B console + round mirror + lamp + runner, C drop-zone bench with hooks and shelf
@@ -2243,7 +2244,7 @@ let promptOn = false, walkHintT = 0;
 function promptHTML() {
   const rows = COARSE() ? [
     ['Walk', 'Put your thumb down anywhere on the left half of the screen and slide it. The ring follows your thumb and shows the direction; slide further to go faster.'],
-    ['Look', 'Drag on the right half of the screen.'],
+    ['Look', 'Drag on the right half of the screen. Pinch with two fingers to bring the camera closer or farther.'],
     ['Stairs', 'Walk onto the stair to change level.'],
     ['Map', 'The plan at the top right shows where you are and which way you face. Tap a spot on it, or pick a room under it, to glide there; slide your thumb to take over. <b>Map</b> in the walk bar folds it away.'],
     ['Leave', '<b>Exit walk</b> at the top right returns to the view you came from.']]
@@ -2251,6 +2252,7 @@ function promptHTML() {
     ['Look', 'Move the mouse. Once you start, the pointer is hidden; <kbd>Esc</kbd> gives it back.'],
     ['Walk', '<kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> or the arrow keys (<kbd>&larr;</kbd> <kbd>&rarr;</kbd> also turn).'],
     ['Faster', 'Hold <kbd>Shift</kbd>.'],
+    ['Zoom', 'Scroll the mouse wheel to bring the camera closer or farther.'],
     ['Stairs', 'Walk onto the stair to change level.'],
     ['Map', 'The plan at the top right shows where you are and which way you face. Press <kbd>Esc</kbd> to free the mouse, then click a spot on it or pick a room under it to glide there; any walking key takes over. <b>Map</b> in the walk bar folds it away.'],
     ['Leave', 'Press <kbd>Esc</kbd>, then <b>Exit walk</b> at the top right. It returns to the view you came from.']];
@@ -2393,9 +2395,9 @@ function fromImg(id, px, py) {
   const z = d.zones[0]; return [(px - z.bx) / z.ax, (py - z.by) / z.ay];
 }
 
-Promise.all(['data/minimap.json', 'data/places.json'].map(u => fetch(u + '?v=2026-11-22c').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); })))
+Promise.all(['data/minimap.json', 'data/places.json'].map(u => fetch(u + '?v=2026-11-22d').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); })))
   .then(([d, P]) => Promise.all(Object.entries(d.levels).map(([id, l]) => new Promise((res, rej) => {
-    const im = new Image(); im.onload = () => { mini.img[id] = im; res(); }; im.onerror = () => rej(new Error(l.img)); im.src = 'data/' + l.img + '?v=2026-11-22c';
+    const im = new Image(); im.onload = () => { mini.img[id] = im; res(); }; im.onerror = () => rej(new Error(l.img)); im.src = 'data/' + l.img + '?v=2026-11-22d';
   }))).then(() => {
     mini.data = d; mini.places = Object.entries(P.places).map(([id, p]) => ({ id, ...p })).filter(p => p.at && lvById(p.level));
     const sel = ui('miniGo');
@@ -2755,16 +2757,171 @@ window.__fix.drawn = id => { const p = fixParts.get(LEVELS.find(v => v.L.id === 
 window.__design = { feats: () => Object.fromEntries(Object.entries(FEAT).map(([c, g]) => [c, Object.fromEntries(Object.entries(g).map(([k, v]) => [k, v.visible]))])),
   stageVisible: label => { let r = null; for (const g of stageRoot.values()) for (const c of g.children) c.traverse(o => { if (o.isMesh && o.userData.label === label) r = c.visible && g.visible; }); return r; },
   furnVisible: (label, x) => { const g = lowerLv.furn.children.find(g => g.userData.f && g.userData.f.label === label && (x === undefined || Math.round(g.userData.f.cx ?? g.userData.f.x) === x)); return g ? g.visible : null; } };
+// ================= third-person walk view (test page 11/21; on the main page from build 2026-11-22d) =================
+// Camera behind and a little above the walker, as in third-person games. Collision, the stair and the map are unchanged;
+// only the camera moves. It pulls in rather than pass through a wall, and keeps shots and tour stops first person.
+const TPK = 'studio.tp';
+const TP = { on: (() => { try { return localStorage.getItem(TPK) === '1'; } catch (e) { return false; } })()   /* 22d main page: first person unless chosen */, dist: 56, side: 16, up: 7, cur: 56, t: 0 };
+// the walker: a jointed, clothed scale figure (about 5 ft 9 in), generic, not a person; animated by a walk cycle
+const tpMats = { top: new THREE.MeshStandardMaterial({ color: 0x55697d, roughness: 0.9 }), pants: new THREE.MeshStandardMaterial({ color: 0x2e333b, roughness: 0.85 }),
+  shoe: new THREE.MeshStandardMaterial({ color: 0x1c1c1c, roughness: 0.6 }), skin: new THREE.MeshStandardMaterial({ color: 0xcfc4b4, roughness: 0.75 }) };
+for (const m of Object.values(tpMats)) m.transparent = true;
+const tpMat = { set opacity(v) { for (const m of Object.values(tpMats)) { m.opacity = v; m.depthWrite = v > 0.99; } }, get opacity() { return tpMats.top.opacity; } };
+const IN = S, tpFig = new THREE.Group(); tpFig.visible = false; scene.add(tpFig);
+const seg = (parent, r1, r2, len, m) => { const g = new THREE.Group(); parent.add(g); const c = new THREE.Mesh(new THREE.CylinderGeometry(r1 * IN, r2 * IN, len * IN, 14), m); c.position.y = -len / 2 * IN; c.castShadow = true; g.add(c);
+  const j = new THREE.Mesh(new THREE.SphereGeometry(r1 * IN, 12, 8), m); j.castShadow = true; g.add(j); return g; };
+const ball = (parent, r, m, x = 0, y = 0, z = 0, sx = 1, sy = 1, sz = 1) => { const b = new THREE.Mesh(new THREE.SphereGeometry(r * IN, 16, 12), m); b.scale.set(sx, sy, sz); b.position.set(x * IN, y * IN, z * IN); b.castShadow = true; parent.add(b); return b; };
+const TPB = { hip: 35.5 };
+const pelvis = new THREE.Group(); pelvis.position.y = TPB.hip * IN; tpFig.add(pelvis);
+ball(pelvis, 6.2, tpMats.pants, 0, 1, 0, 1.15, 0.75, 0.8);
+const torso = new THREE.Group(); torso.position.y = 2 * IN; pelvis.add(torso);
+{ const t = new THREE.Mesh(new THREE.CylinderGeometry(7.2 * IN, 6.0 * IN, 18 * IN, 18), tpMats.top); t.scale.z = 0.62; t.position.y = 9.5 * IN; t.castShadow = true; torso.add(t);
+  ball(torso, 7.2, tpMats.top, 0, 18.5, 0, 1, 0.45, 0.62); }
+const neck = new THREE.Group(); neck.position.y = 20.5 * IN; torso.add(neck);
+{ const n = new THREE.Mesh(new THREE.CylinderGeometry(2.1 * IN, 2.4 * IN, 4 * IN, 12), tpMats.skin); n.position.y = 1.5 * IN; neck.add(n); ball(neck, 4.4, tpMats.skin, 0, 7.4, 0.2, 0.9, 1.08, 1); }
+const limb = (side) => {
+  const hip = new THREE.Group(); hip.position.set(side * 3.9 * IN, 0, 0); pelvis.add(hip);
+  const thigh = seg(hip, 3.3, 2.5, 17, tpMats.pants); const knee = new THREE.Group(); knee.position.y = -17 * IN; thigh.add(knee);
+  const shin = seg(knee, 2.4, 1.8, 16, tpMats.pants); const ankle = new THREE.Group(); ankle.position.y = -16 * IN; shin.add(ankle);
+  const foot = new THREE.Mesh(new THREE.BoxGeometry(3.6 * IN, 2.6 * IN, 10.5 * IN), tpMats.shoe); foot.position.set(0, -1.3 * IN, -3.2 * IN); foot.castShadow = true; ankle.add(foot);
+  const sh = new THREE.Group(); sh.position.set(side * 7.8 * IN, 17.5 * IN, 0); torso.add(sh);
+  const upper = seg(sh, 2.2, 1.8, 11.5, tpMats.top); const elbow = new THREE.Group(); elbow.position.y = -11.5 * IN; upper.add(elbow);
+  const fore = seg(elbow, 1.7, 1.3, 10, tpMats.skin); ball(fore, 1.8, tpMats.skin, 0, -11, 0, 0.8, 1.25, 0.55);
+  return { thigh, knee: knee, shin, ankle, sh: upper, elbow, side };
+};
+const tpL = limb(-1), tpR = limb(1);
+const shadowTex = (() => { const c = document.createElement('canvas'); c.width = c.height = 64; const g = c.getContext('2d'), gr = g.createRadialGradient(32, 32, 2, 32, 32, 31); gr.addColorStop(0, 'rgba(0,0,0,0.45)'); gr.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c); })();
+const tpShadow = new THREE.Mesh(new THREE.PlaneGeometry(26 * IN, 20 * IN), new THREE.MeshBasicMaterial({ map: shadowTex, transparent: true, depthWrite: false }));
+tpShadow.rotation.x = -Math.PI / 2; tpShadow.position.y = 0.25 * IN; tpFig.add(tpShadow);
+tpFig.traverse(o => { if (o.isMesh) { o.userData.label = 'You (scale figure, about 5 ft 9 in)'; } });
+const TPA = { phase: 0, amp: 0, yaw: 0, t: performance.now() };
+function tpAnimate(dt) {   // walk cycle from the walker's real speed: legs, knees and feet step, arms swing opposite, the body bobs
+  const by = TP.body ?? walker.yaw, spd = Math.hypot(vel.x, vel.y), dyaw = Math.abs(Math.atan2(Math.sin(by - TPA.yaw), Math.cos(by - TPA.yaw))); TPA.yaw = by;
+  const target = Math.min(1, spd / 45) + Math.min(0.35, dyaw / Math.max(dt, 1e-3) * 0.12);   // turning in place shuffles a little
+  TPA.amp += (target - TPA.amp) * Math.min(1, dt * 6);
+  TPA.phase += (spd * dt / 50 + Math.min(0.5, dyaw * 0.9)) * Math.PI * 2;   // one full cycle (two steps) per about 50 in
+  const a = TPA.amp, ph = TPA.phase, run = Math.min(1, Math.max(0, (spd - 60) / 40));
+  for (const L of [tpL, tpR]) {
+    const p = ph + (L.side < 0 ? 0 : Math.PI), sw = Math.sin(p), fwd = Math.cos(p);
+    const th = a * (0.42 + 0.15 * run) * sw;                         // thigh swing
+    const kn = -a * (0.12 + (0.75 + 0.4 * run) * Math.max(0, fwd));   // knee bends while the leg swings through
+    L.thigh.rotation.x = th; L.knee.rotation.x = kn; L.ankle.rotation.x = -(th + kn) * 0.85 + a * 0.15 * Math.max(0, -fwd);   // foot stays near level, toe-off at the back
+    L.sh.rotation.x = -a * (0.38 + 0.2 * run) * sw; L.sh.rotation.z = L.side * 0.07;   // arms swing opposite the legs, hanging a little away from the body
+    L.elbow.rotation.x = 0.22 + a * (0.25 + 0.5 * run) * Math.max(0, -sw);
+  }
+  const breathe = Math.sin(performance.now() / 1300) * 0.004;
+  pelvis.position.y = (TPB.hip - a * 0.9 * (1 - Math.abs(Math.cos(ph)))) * IN;   // lowest as the feet pass, highest at mid-stride
+  pelvis.rotation.y = a * 0.09 * Math.sin(ph); torso.rotation.y = -a * 0.14 * Math.sin(ph); torso.rotation.x = -a * (0.05 + 0.08 * run) + breathe;
+  pelvis.rotation.z = a * 0.035 * Math.cos(ph); neck.rotation.x = a * 0.05;
+  tpShadow.scale.set(1 + a * 0.25, 1 + a * 0.35, 1);
+}
+const tpRay = new THREE.Raycaster();
+const tpTall = new Map(LEVELS.map(lv => [lv, lv.L.furniture.filter(f => !f.r && f.h >= 70).map(f => [f.x, f.y, f.x + f.w, f.y + f.d])]));
+function tpBlocked(lv, x, y) {
+  if (!inFloor(lv, x, y) || wallDist(lv, x, y) < 6) return true;
+  for (const [a, b, c, d] of tpTall.get(lv)) if (x > a - 4 && x < c + 4 && y > b - 4 && y < d + 4) return true;
+  return false;
+}
+const tpBtn = document.createElement('button'); tpBtn.id = 'wHudTP'; tpBtn.title = 'See yourself from behind, as in a third-person game'; tpBtn.textContent = 'Third person';
+wHud.insertBefore(tpBtn, ui('wHudMap'));
+function tpSet(on) { TP.on = !!on; try { localStorage.setItem(TPK, TP.on ? '1' : '0'); } catch (e) {} tpBtn.classList.toggle('on', TP.on); tpBtn.setAttribute('aria-pressed', String(TP.on)); TP.cur = 0; }
+tpBtn.onclick = () => tpSet(!TP.on); tpSet(TP.on);
+document.head.insertAdjacentHTML('beforeend', '<style>#walkHud #wHudTP.on { background: #fff; color: #1f4e79; border-color: #fff; }</style>');
+function tpApply(dt) {
+  if (dt === undefined) { const now = performance.now(); dt = Math.min(0.1, (now - TPA.t) / 1000); TPA.t = now; }
+  const atShot = lastShot && Math.hypot(walker.x - lastShot.x, walker.y - lastShot.y) < 1;   // shots and tour stops keep their framing
+  const show = TP.on && mode === 'walk' && !atShot;
+  tpFig.visible = show; if (!show) { TP.cur = 0; TP.t = 0; TP.body = undefined; return; }
+  const fz = walker.fz || 0, eye = camera.position.y / S;   // eye as the walk set it (ducks on the stair)
+  // the body faces the way it moves, as in GTA; the camera can look around it without turning it
+  const spd = Math.hypot(vel.x, vel.y);
+  if (TP.body === undefined) TP.body = walker.yaw;
+  if (spd > 6) { const tgt = Math.atan2(-vel.x, -vel.y), dd = Math.atan2(Math.sin(tgt - TP.body), Math.cos(tgt - TP.body)); TP.body += dd * Math.min(1, dt * 9); }
+  tpFig.position.set(walker.x * S, fz * S, walker.y * S); tpFig.rotation.y = TP.body;
+  tpAnimate(dt);
+  // over-the-shoulder camera: behind, to the right and a little above the shoulders; it orbits with the view
+  const yaw = walker.yaw, pitch = Math.max(-0.75, Math.min(0.55, walker.pitch));
+  const fx = -Math.sin(yaw), fy = -Math.cos(yaw), rx = Math.cos(yaw), ry = -Math.sin(yaw);
+  const pv = [walker.x, walker.y, eye - 4];
+  const arm = side => {   // how far out along an arm the camera can sit: walls, chases, angled walls, tall pieces, outside the floors, then a 3D ray for headers
+    const o = [-fx * TP.dist * Math.cos(pitch) + rx * side, -fy * TP.dist * Math.cos(pitch) + ry * side, TP.up - TP.dist * Math.sin(pitch)], L = Math.hypot(o[0], o[1], o[2]);
+    let t = 1; for (let k = 1; k <= 40; k++) { const q = k / 40; if (tpBlocked(cur, pv[0] + o[0] * q, pv[1] + o[1] * q)) { t = (k - 1) / 40; break; } }
+    tpRay.set(new THREE.Vector3(pv[0] * S, pv[2] * S, pv[1] * S), new THREE.Vector3(o[0], o[2], o[1]).normalize()); tpRay.far = L * S;
+    const h = tpRay.intersectObjects(cur.walls.children, true)[0]; if (h) t = Math.min(t, Math.max(0, (h.distance / S - 6) / L));
+    return { o, L, t, h, reach: t * L };
+  };
+  // over the right shoulder where there is room; where the shoulder side is blocked (narrow halls, the stairwell) slide in behind, as games do
+  const SIDE = TP.side * Math.min(1, TP.dist / 56);   // closer in, the shoulder offset shrinks with it
+  const A = arm(SIDE), B = SIDE ? arm(0) : A, pick = B.reach > A.reach * 1.4 + 6 ? B : A;
+  TP.sideCur = (TP.sideCur ?? SIDE) + ((pick === A ? SIDE : 0) - (TP.sideCur ?? SIDE)) * Math.min(1, dt * 5);
+  const S0 = Math.abs(TP.sideCur - SIDE) < 0.5 ? A : Math.abs(TP.sideCur) < 0.5 ? B : arm(TP.sideCur);
+  const off = S0.o, len = S0.L, h = S0.h; let t = S0.t;
+  if (t < TP.t) {   // pull in fast but smoothly (about 0.15 s); snap only if the smoothed spot would be in or behind a wall
+    const ts = TP.t + (t - TP.t) * Math.min(1, dt * 12), sx = pv[0] + off[0] * ts, sy = pv[1] + off[1] * ts;
+    const clear = inFloor(cur, sx, sy) && wallDist(cur, sx, sy) >= 5 && !(h && h.distance / S - 2 < ts * len);
+    TP.t = clear ? ts : t;
+  } else TP.t += (t - TP.t) * Math.min(1, dt * 3);   // ease back out
+  const cx = pv[0] + off[0] * TP.t, cy = pv[1] + off[1] * TP.t;
+  const onLow = toLowF(cur, cx, cy), sf = stairFloor(onLow[0], onLow[1]);
+  const ceilZ = sf !== null ? stairCeil(onLow[0], onLow[1]) - (cur === FIRSTL ? STR.ftf : 0) : cur.L.ceil;
+  const cz = Math.min(pv[2] + off[2] * TP.t, ceilZ - 5);
+  TP.ceil = ceilZ; TP.cur = Math.hypot(cx - walker.x, cy - walker.y);
+  camera.position.set(cx * S, cz * S, cy * S);
+  if (TP.debugCam) { const d = TP.debugCam.rel ? TP.debugCam.rel.map((v, i) => v + [walker.x, walker.y, fz][i % 3]) : TP.debugCam; camera.position.set(d[0] * S, d[2] * S, d[1] * S); camera.lookAt(d[3] * S, d[5] * S, d[4] * S); return; }
+  camera.rotation.set(walker.pitch - 0.1, yaw, 0, 'YXZ');   // the view aims where you look, a touch below level
+  const near = TP.t * len;
+  TP.hide = TP.hide ? near < 24 : near < 14;   // hysteresis: hide under 14 in, show again past 24 in, so it doesn't blink in doorways
+  TP.op = (TP.op ?? 1) + ((TP.hide ? 0 : near < 30 ? 0.35 + 0.65 * (near - 14) / 16 : 1) - (TP.op ?? 1)) * Math.min(1, dt * 8);
+  tpMat.opacity = Math.max(0, Math.min(1, TP.op)); tpFig.visible = tpMat.opacity > 0.03;   // no room at all: plain first person
+}
+// pinch (phones) and the mouse wheel (computers) zoom while walking: apart = closer, together = farther;
+// all the way in goes to first person, and pinching out from first person comes back to third person
+const ZMIN = 26, ZMAX = 120, ZK = 'studio.tpDist';
+try { const z = parseFloat(localStorage.getItem(ZK)); if (z >= ZMIN && z <= ZMAX) TP.dist = z; } catch (e) {}
+function tpZoom(dist) {
+  if (!TP.on) { if (dist <= ZMIN + 4) return; tpSet(true); TP.t = 0; }   // pinching out from first person: third person, starting close
+  if (dist < ZMIN) { tpSet(false); TP.dist = 40; } else TP.dist = Math.min(ZMAX, dist);
+  try { localStorage.setItem(ZK, String(Math.round(TP.dist))); } catch (e) {}
+}
+const pinch = { pts: new Map(), on: false };
+canvas.addEventListener('pointerdown', e => {
+  if (mode !== 'walk' || e.pointerType === 'mouse') return;
+  pinch.pts.set(e.pointerId, [e.clientX, e.clientY]);
+  if (pinch.pts.size === 2 && !pinch.on) {
+    const [a, b] = [...pinch.pts.values()], d = Math.hypot(a[0] - b[0], a[1] - b[1]);
+    const same = (a[0] < innerWidth / 2) === (b[0] < innerWidth / 2);
+    if (same || d < 140) {   // two fingers on the same half (or close together) pinch; one on each half still walk and look
+      pinch.on = true; pinch.d0 = Math.max(20, d); pinch.z0 = TP.on ? TP.dist : ZMIN;
+      touches.clear(); moveVec = { x: 0, y: 0 }; ringEnd(); if (glide) glideStop('took');
+      e.stopImmediatePropagation();
+    }
+  }
+}, { capture: true });
+canvas.addEventListener('pointermove', e => {
+  if (!pinch.pts.has(e.pointerId)) return;
+  pinch.pts.set(e.pointerId, [e.clientX, e.clientY]);
+  if (!pinch.on) return;
+  e.stopImmediatePropagation();
+  const [a, b] = [...pinch.pts.values()]; if (!b) return;
+  const d = Math.max(20, Math.hypot(a[0] - b[0], a[1] - b[1]));
+  tpZoom(pinch.z0 * pinch.d0 / d);
+}, { capture: true });
+const pinchEnd = e => { if (!pinch.pts.has(e.pointerId)) return; pinch.pts.delete(e.pointerId); if (pinch.on) { e.stopImmediatePropagation(); touches.delete(e.pointerId); if (pinch.pts.size < 2) { pinch.on = false; touches.clear(); moveVec = { x: 0, y: 0 }; } } };
+canvas.addEventListener('pointerup', pinchEnd, { capture: true }); canvas.addEventListener('pointercancel', pinchEnd, { capture: true });
+canvas.addEventListener('wheel', e => { if (mode !== 'walk') return; e.preventDefault(); tpZoom((TP.on ? TP.dist : ZMIN) * Math.exp(e.deltaY * 0.0015)); }, { passive: false });
+tpBtn.title = 'See yourself from behind, as in a third-person game. Pinch, or scroll the mouse wheel, to move the camera closer or farther.';
+window.__tp = { set: tpSet, on: () => TP.on, cam: () => ({ d: TP.cur, x: camera.position.x / S, y: camera.position.z / S, z: camera.position.y / S, lvl: cur.L.id, ceil: TP.ceil, fig: tpFig.visible, op: tpMat.opacity }), tick: dt => tpApply(dt ?? 1 / 60), zoom: tpZoom, dist: () => TP.dist, pinching: () => pinch.on, debugCam: v => { TP.debugCam = v; }, anim: () => ({ amp: TPA.amp, phase: TPA.phase }) };
 const clock = new THREE.Clock();
 renderer.setAnimationLoop(() => {
   const dt = Math.min(clock.getDelta(), 0.1);   // walk release 1: slow devices keep real walking speed (moves are sub-stepped)
   if (mode === 'walk') stepWalk(dt); else controls.update();
+  tpApply();
   miniTick();
   if (cmp.on) renderCompare();
   else if (aoOn && (mode !== 'walk' || photoOn)) composer.render(); else renderer.render(scene, camera);
   if (!cmp.on) updateLabels(); else hideLabels();
 });
 </script>
-<script type="module" src="present.js?v=2026-11-22c"></script>
+<script type="module" src="present.js?v=2026-11-22d"></script>
 </body>
 </html>
