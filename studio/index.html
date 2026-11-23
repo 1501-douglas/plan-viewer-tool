@@ -107,7 +107,7 @@
 <div id="legend" style="position:fixed;left:10px;top:58px;background:rgba(255,255,255,.95);border:1px solid #bbb;border-radius:8px;padding:8px 10px;font-size:12px;display:none;max-width:280px;line-height:1.45"></div>
 <div id="warn">This page needs WebGL, which this browser did not provide.</div>
 <div id="note"><button class="x" id="noteX" aria-label="Hide note">×</button>
-  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-22g: in the apartment, the east-window counter is a floating counter, open below, and the F5 sofa is the default layout (owner 11/23; seating at the peninsula still open, with option 1, stools tucked, added as a layer); hooks inside the common bath; occupancy sensors on the lower hall, vestibule and stair lights; the dining light over the round table; build 22f: a Rooms list on the left, grouped by floor and zone, with search and a previous-view button; the toolbar is unchanged (navigation redesign stage 1, owner 11/23); build 22e: the living room TV feature wall as it was in 22c (owner 11/23); build 22d: third person in Walk, one tap on the walk bar; build 22c: the 11/22 room-by-room design directions on both levels, window treatments as design layers, the Bed 113 door record corrected; the ADU living room layer and the peninsula south-end seating test kept): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld; 11/22: the room-by-room design directions, from owner sheets L-1 Rev 17, L-2 Rev 12 and L-3 Rev 27), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
+  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-22i: apartment realism prototype in photo mode, generic textures and window light, not products (owner 11/23); build 22h: the staging floor lamps removed; the ADU reading spot concept instead; peninsula stools tucked under the overhang (option 1); queen bed in the ADU bedroom; Bed 121 TV about 55 in; range electric (owner 11/23); build 22g: in the apartment, the east-window counter is a floating counter, open below, and the F5 sofa is the default layout (owner 11/23; seating at the peninsula still open, with option 1, stools tucked, added as a layer); hooks inside the common bath; occupancy sensors on the lower hall, vestibule and stair lights; the dining light over the round table; build 22f: a Rooms list on the left, grouped by floor and zone, with search and a previous-view button; the toolbar is unchanged (navigation redesign stage 1, owner 11/23); build 22e: the living room TV feature wall as it was in 22c (owner 11/23); build 22d: third person in Walk, one tap on the walk bar; build 22c: the 11/22 room-by-room design directions on both levels, window treatments as design layers, the Bed 113 door record corrected; the ADU living room layer and the peninsula south-end seating test kept): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld; 11/22: the room-by-room design directions, from owner sheets L-1 Rev 17, L-2 Rev 12 and L-3 Rev 27), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
 </div>
 
 <script type="importmap">
@@ -127,7 +127,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
 const [M, EL, DS] = await Promise.all(['data/model.json', 'data/elements.json', 'data/design.json'].map(u =>
-  fetch(u + '?v=2026-11-22g').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
+  fetch(u + '?v=2026-11-22i').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
   const w = document.getElementById('warn'); w.textContent = 'Could not load the model data (' + e.message + ').'; w.style.display = 'block'; throw e; });
 const S = 0.0254, EYE = 63, RAD = 9;
 
@@ -1038,7 +1038,7 @@ function applyPick(p) {
   const sf = O.soft.items[p.soft || 'base'];   // upholstery is furniture styling: both levels
   if ((p.soft || 'base') === 'base') { FM.fabric.color.copy(BASE.fabric); FM.fabricLt.color.copy(BASE.fabricLt); } else { FM.fabric.color.set(sf.color); FM.fabricLt.color.set(sf.color).offsetHSL(0, -0.03, 0.06); }
   const tc = O.tile.items[p.tile || 'base'].color;
-  for (const o of tiles) o.material.color.set((house || o.userData.adu) && (p.tile || 'base') !== 'base' ? tc : '#ffffff');
+  for (const o of tiles) (o.userData.realBase || o.material).color.set((house || o.userData.adu) && (p.tile || 'base') !== 'base' ? tc : '#ffffff');
   if (DS.features) {
     for (const [cat, groups] of Object.entries(FEAT)) for (const [key, g] of Object.entries(groups)) g.visible = p[cat] === key;
     const hide = new Set(); for (const [cat, opts] of Object.entries(DS.features.hides || {})) for (const l of (opts[p[cat]] || [])) hide.add(l);
@@ -1222,12 +1222,13 @@ function renderShots() {
   <div class="sub">Reusable eye-level views, saved as numbers in the design data so the same shot can be re-rendered after the design changes. They are the start of the shot list for stills and, later, the walkthrough video.</div>
   <div style="margin-top:6px">${DS.shots.map(s => `<button class="opt${lastShot === s ? ' on' : ''}" data-shot="${s.id}">${esc(s.name)}</button>`).join('')}</div>
   <h4>This view</h4>
-  <button class="opt" id="photoBtn">${photoOn ? 'Photo mode: on' : 'Photo mode: off'}</button><button class="opt" id="stillBtn">Capture a still</button><button class="opt" id="poseBtn">Show its camera numbers</button>
+  <button class="opt" id="photoBtn">${photoOn ? 'Photo mode: on' : 'Photo mode: off'}</button>${photoOn ? `<button class="opt${typeof REAL !== 'undefined' && REAL.on ? ' on' : ''}" id="realBtn">Apartment realism prototype: ${typeof REAL !== 'undefined' && REAL.on ? 'on' : 'off'}</button>` : ''}<button class="opt" id="stillBtn">Capture a still</button><button class="opt" id="poseBtn">Show its camera numbers</button>
   <pre id="poseOut" class="muted" style="white-space:pre-wrap;display:none"></pre>
-  <div class="muted">Stills carry a stamp saying they are concept views from drawing-derived geometry. Each still uses whatever finishes and layers are showing.</div>`;
+  <div class="muted">Photo mode (22i) also turns on the apartment realism prototype: generic floor, tile and surface textures and window light, not selected products. Switch it off to compare from the same camera. The rest of the house is unchanged.</div><div class="muted">Stills carry a stamp saying they are concept views from drawing-derived geometry. Each still uses whatever finishes and layers are showing.</div>`;
   el.querySelector('[data-close]').onclick = () => openPanel('spanel');
   el.querySelectorAll('[data-shot]').forEach(b => b.onclick = () => goShot(DS.shots.find(s => s.id === b.dataset.shot)));
   ui('stillBtn').onclick = captureStill; ui('photoBtn').onclick = () => { setPhoto(!photoOn); renderShots(); };
+  if (ui('realBtn')) ui('realBtn').onclick = () => { window.__real.set(!REAL.on); renderShots(); };
   ui('poseBtn').onclick = () => {
     const o = ui('poseOut'); o.style.display = 'block';
     if (mode === 'walk') o.textContent = JSON.stringify({ id: 'new-shot', name: 'New shot', level: cur.L.id, x: +walker.x.toFixed(1), y: +walker.y.toFixed(1), eye: walker.eye || EYE, yaw: +walker.yaw.toFixed(3), pitch: +walker.pitch.toFixed(3), fov: camera.fov });
@@ -1242,6 +1243,7 @@ function captureStill() {
   const src = renderer.domElement, fs = Math.max(11, Math.round(src.height * 0.022)), lines = [];
   lines.push([`1501 Douglas · ${cur.L.name} · ${lastShot ? lastShot.name : (mode === 'walk' ? 'eye-level view' : mode === 'top' ? 'top view' : 'dollhouse view')}`, 600, '#fff']);
   lines.push([`${pick.scope === 'house' ? 'Finishes (whole house)' : 'ADU finishes'}: ${cmp.on ? pickName(pick) + ' | ' + cmp.label : pickName(pick)}${arrChanged(ARR) ? ' · furniture arranged in the studio' : ''} · light: ${studioLight ? 'neutral studio light, not the house lighting' : warmLight ? 'warm 2700K (approximate)' : 'default'}${peopleOn ? ' · people are scale figures' : ''}${fixOn && !LAY.elec ? ' · fixtures from the owner lighting and power sheets (positions approximate)' : ''}${photoOn ? ' · photo mode (higher quality; glass, fill and window light approximate)' : ''}`, 400, '#e3e8ec']);
+  if (typeof REAL !== 'undefined' && REAL.active) lines.push(['Apartment realism prototype (photo mode): generic textures and approximate window light, not selected products or measured light.', 400, '#b9c3cc']);
   lines.push([`Concept view from drawing-derived geometry (about ±4 in); not to dimension. Design Studio v0.8, ${new Date().toLocaleDateString()}.`, 400, '#b9c3cc']);
   const lh = Math.round(fs * 1.45), band = lh * lines.length + Math.round(fs * 0.9), c = document.createElement('canvas');
   c.width = src.width; c.height = src.height + band;
@@ -2006,7 +2008,6 @@ const pillow = (lv, x, y, z, w, d, h, m) => putS(lv, place(box(w, h, d, m), x, y
 // first floor
 art(LVF, 'N', 199.5, 271, 50, 40, 30, 0, 'Art over the dining table (staging)');
 art(LVF, 'S', 360.5, 338, 48, 24, 32, 1, 'Art on the living room south wall (staging)', FRAME_O);
-stLamp(LVF, 316, 266, 0, 'Floor lamp by the sofa (staging; switched lamp outlet 9L)', true);
 plant(LVF, 184, 346, 'Plant in the living room corner (staging)', 50);
 wallPanel(LVF, 'S', 360.5, 255.75, 70, 106, 14, LINEN, 'Linen roman shade on the living room window (staging)', 2);
 rug(LVF, 178, 240, 96, 120, RUG2, 'Rug about 8 x 10 ft under the sofa front and coffee table; dining table on the bare floor (owner 11/22; staging)');
@@ -2021,12 +2022,10 @@ rug(LVF, 247, 50, 96, 60, RUGM, 'Rug 5 x 8 ft crosswise in Bed 113 (owner 11/22;
 art(LVF, 'N', 226, 48, 50, 30, 22, 4, 'Art in Bed 121 (staging)');
 // lower level: ADU and family room
 roundMirror(LVL, 'W', 243, 108, 62, 26, 'Round mirror over the ADU entry bench (staging)');
-stLamp(LVL, 279, 103, 0, 'Floor lamp by the ADU sofa (staging; switched lamp outlet A1L)', true);
 plant(LVL, 253, 172, 'Plant by the ADU TV wall (staging)', 46);
-pillow(LVL, 300, 83, 19, 16, 5, 14, PILLOW[0]); pillow(LVL, 344, 83, 19, 16, 5, 14, PILLOW[1]);
+pillow(LVL, 291.4, 83, 19, 16, 5, 14, PILLOW[0]); pillow(LVL, 329, 83, 19, 16, 5, 14, PILLOW[1]);   // 22h: on the F5 sofa
 art(LVL, 'S', 364.5, 410, 48, 30, 24, 0, 'Art in the ADU office (staging)', FRAME_O);
 art(LVL, 'S', 366, 150, 48, 40, 30, 2, 'Art on the family room south wall (staging)');
-stLamp(LVL, 48, 206, 0, 'Floor lamp by the family room chair (staging)', true);
 rug(LVL, 247.5, 211, 108, 144, RUG2, 'Rug about 9 x 12 ft under the sofa front and coffee table (owner 11/22; staging)');
 wallPanel(LVL, 'N', 2, 309, 66, 72, 16, LINEN, 'Linen roman shade on the ADU living window (staging)', 2);
 
@@ -2203,11 +2202,160 @@ function setPhoto(on) {
   sun.shadow.mapSize.set(shadowPx, shadowPx); if (sun.shadow.map) { sun.shadow.map.dispose(); sun.shadow.map = null; }
   ao.updateGtaoMaterial({ radius: photoOn ? 0.45 : 0.35, distanceExponent: 1.5, thickness: 1.2, scale: photoOn ? 1.4 : 1.2, samples: PH ? 24 : 16 });
   renderer.setPixelRatio(PH ? Math.min(devicePixelRatio * 1.25, 2.5) : (LOWPOWER ? Math.min(devicePixelRatio, 1.5) : Math.min(devicePixelRatio, 2)));
+  if (typeof applyReal === 'function') applyReal();   // 22i: ADU realism prototype follows photo mode
   resize();
 }
 for (const id of ['bL1', 'bL0']) ui(id).addEventListener('click', () => { if (photoOn) { skyFill.position.set(cur.cx + 8, 6, cur.cz - 6); skyFill.target.position.set(cur.cx, 0, cur.cz); } });
 window.__photo = { set: setPhoto, on: () => photoOn, glass: () => glassMeshes.length, fill: () => skyFill.intensity,
   cfg: () => ({ pixelRatio: renderer.getPixelRatio(), shadow: sun.shadow.mapSize.x, lowPower: LOWPOWER }) };
+
+
+// ================= 22i: ADU realism prototype (owner 11/23: "build that ADU prototype as build 22i") =================
+// Photo mode only, apartment only; the rest of the house and the live view are unchanged, so the same camera can compare.
+// Inside the owner's 11/20 realism rule: generic textures and surface response only, never a specific product.
+//  1. LVP: per-plank tone and grain, staggered ends, beveled joints, varied sheen; a 98 in repeat instead of 49 in
+//  2. tile at its existing format with recessed grout (bath floor, backsplash, shower wall); no format is changed
+//  3. surface response: eggshell walls, satin trim, cabinet finish by option (wood grain for wood options, satin paint for
+//     painted ones), quartz-like clearcoat on the counter, matte black that is not plastic, brushed nickel with a directional sheen
+//  4. window light: a bright sky behind each apartment window, and on desktops a soft daylight pool from each window
+//     (no shadows; the sun direction stays generic until the house orientation is confirmed)
+var REAL_READY = false;
+const REAL = { on: true, active: false };
+const REAL_LIST = []; window.REAL_LIST = REAL_LIST;
+lowerLv.root.updateMatrixWorld(true);
+lowerLv.root.traverse(o => { if (o.isMesh && (aduFloors.includes(o) || centerIn(o))) REAL_LIST.push(o); });
+const realSet = (o, m) => { if (assume) o.userData.mat0 = m; else { if (o.userData.mat0 === o.material) o.userData.mat0 = m; o.material = m; } };
+const realCur = o => assume ? (o.userData.mat0 || o.material) : o.material;
+const grey = (draw, px = 512) => { const t = canvasTex(draw, px); t.colorSpace = THREE.NoColorSpace; return t; };
+
+// 1. LVP
+const lvpTex = {};
+function lvpSet(opt) {
+  if (lvpTex[opt]) return lvpTex[opt];
+  const it = DS.options.floor.items[opt] || DS.options.floor.items.base, rgb = it.wood, v = it.var * 2.2;
+  const wide = /wide/i.test(it.name), pw = wide ? 9 : 7, rows = wide ? 11 : 14, tileIn = pw * rows, n = 1024, ppi = n / tileIn, rh = n / rows;
+  let sd = 11; const r = () => (sd = (sd * 16807) % 2147483647) / 2147483647;
+  const planks = [];
+  for (let k = 0; k < rows; k++) {   // staggered ends: each row starts at a new offset, joints at least 8 in from the row above
+    let x = -(8 + r() * 30) * ppi;
+    while (x < n) { const len = (36 + r() * 24) * ppi; planks.push({ x, y: k * rh, len, t: (r() - 0.5) * 2 * v, h: (r() - 0.5) * 6, s: r(), g: r() * 1000 }); x += len; }
+  }
+  const col = canvasTex((g) => {
+    for (const p of planks) for (const xo of [p.x - n, p.x, p.x + n]) {   // wrapped copies so the texture tiles cleanly
+      if (xo + p.len < 0 || xo > n) continue;
+      g.fillStyle = `rgb(${rgb[0] + p.t + p.h | 0},${rgb[1] + p.t * 0.92 | 0},${rgb[2] + p.t * 0.82 - p.h | 0})`; g.fillRect(xo, p.y, p.len, rh);
+      let s2 = p.g * 1e6 + 1 | 0; const rr = () => (s2 = (s2 * 16807) % 2147483647) / 2147483647;
+      for (let k = 0; k < 26; k++) {   // long, slightly wavy grain lines
+        const yy = p.y + rr() * rh, a = 0.06 + rr() * 0.09, amp = 0.6 + rr() * 2.2, fr = 0.004 + rr() * 0.01, ph = rr() * 6;
+        g.strokeStyle = rr() > 0.35 ? `rgba(92,62,36,${a})` : `rgba(255,248,236,${a})`; g.lineWidth = 0.6 + rr() * 1.6; g.beginPath();
+        for (let xx = 0; xx <= p.len; xx += 8) { const y2 = yy + Math.sin(xx * fr + ph) * amp; xx ? g.lineTo(xo + xx, y2) : g.moveTo(xo, y2); } g.stroke();
+      }
+      if (rr() > 0.82) { const kx = xo + rr() * p.len, ky = p.y + rh * (0.25 + rr() * 0.5); g.fillStyle = 'rgba(100,68,40,0.16)'; g.beginPath(); g.ellipse(kx, ky, 6 + rr() * 8, 2 + rr() * 2, 0, 0, 7); g.fill(); }
+      g.fillStyle = 'rgba(60,40,22,0.6)'; g.fillRect(xo, p.y, 2.2, rh); g.fillStyle = 'rgba(255,250,240,0.18)'; g.fillRect(xo + 1.6, p.y, 1, rh);
+    }
+    for (let k = 0; k <= rows; k++) { g.fillStyle = 'rgba(60,40,22,0.6)'; g.fillRect(0, k * rh - 1.1, n, 2.2); }
+  }, n);
+  const rough = grey((g) => { g.fillStyle = 'rgb(150,150,150)'; g.fillRect(0, 0, n, n);
+    for (const p of planks) for (const xo of [p.x - n, p.x, p.x + n]) { const l = 128 + p.s * 50 | 0; g.fillStyle = `rgb(${l},${l},${l})`; g.fillRect(xo, p.y, p.len, rh); }
+    g.fillStyle = 'rgb(235,235,235)'; for (const p of planks) for (const xo of [p.x - n, p.x, p.x + n]) g.fillRect(xo, p.y, 2, rh); for (let k = 0; k <= rows; k++) g.fillRect(0, k * rh - 1, n, 2); }, n);
+  const bump = grey((g) => { g.fillStyle = 'rgb(200,200,200)'; g.fillRect(0, 0, n, n); g.fillStyle = 'rgb(40,40,40)';
+    for (const p of planks) for (const xo of [p.x - n, p.x, p.x + n]) g.fillRect(xo - 1, p.y, 2.5, rh); for (let k = 0; k <= rows; k++) g.fillRect(0, k * rh - 1.2, n, 2.5); }, n);
+  return (lvpTex[opt] = { col, rough, bump, tileIn });
+}
+const lvpMats = {};
+function lvpMat(opt, i, o) {
+  const key = opt + ':' + i; if (lvpMats[key]) return lvpMats[key];
+  const T = lvpSet(opt), [, , w, d] = o.userData.rect, rep = t => { const c = t.clone(); c.needsUpdate = true; c.repeat.set(w / T.tileIn, d / T.tileIn); return c; };
+  const m = new THREE.MeshPhysicalMaterial({ map: rep(T.col), roughness: 0.78, roughnessMap: rep(T.rough), clearcoat: 0.06, clearcoatRoughness: 0.4 });
+  if (!LOWPOWER) { m.bumpMap = rep(T.bump); m.bumpScale = 1.2; }
+  m.userData.real = 'lvp'; return (lvpMats[key] = m);
+}
+
+// 2. grout bump maps for the existing tile layouts (same cells as the colour textures; formats unchanged)
+const groutTex = (cols, rows, line) => grey((g, n) => { g.fillStyle = 'rgb(40,40,40)'; g.fillRect(0, 0, n, n); g.fillStyle = 'rgb(210,210,210)';
+  const cw = n / cols, ch = n / rows; for (let i = 0; i < cols; i++) for (let j = 0; j < rows; j++) g.fillRect(i * cw + line, j * ch + line, cw - 2 * line, ch - 2 * line); });
+const GROUT = { splash: groutTex(8, 2, 2), subway: groutTex(6, 2, 2), tile: groutTex(2, 2, 3) };
+
+// cabinet wood grain (generic vertical grain, multiplied over the option colour)
+const CAB_GRAIN = canvasTex((g, n) => { g.fillStyle = '#ffffff'; g.fillRect(0, 0, n, n); let sd = 23; const r = () => (sd = (sd * 16807) % 2147483647) / 2147483647;
+  for (let k = 0; k < 90; k++) { const x = r() * n, a = 0.1 + r() * 0.14, amp = 1 + r() * 4, fr = 0.01 + r() * 0.02, ph = r() * 6; g.strokeStyle = `rgba(120,90,60,${a})`; g.lineWidth = 0.7 + r() * 2; g.beginPath();
+    for (let y = 0; y <= n; y += 8) { const x2 = x + Math.sin(y * fr + ph) * amp; y ? g.lineTo(x2, y) : g.moveTo(x2, 0); } g.stroke(); } }, 512);
+CAB_GRAIN.repeat.set(1 / 1.5, 1 / 1.5);
+
+// 3. enhanced materials, one per base material, re-synced from the base on every pick (the scheme picks keep working)
+const ENH = new Map();
+function realKind(b) {
+  if (b === ZM.cab) return 'cab'; if (b === ZM.counter) return 'counter'; if (b === ZM.hw) return 'hw'; if (b === ZM.wall) return 'wall';
+  if (b === ZM.trim || b === ZM.door || b === ZM.trim2) return 'trim'; if (b === CHROME) return 'nickel';
+  if (b.metalness >= 0.75 && b.color && b.color.r > 0.6) return 'nickel';
+  const img = b.map && b.map.image;
+  if (img && img === SPLASH_TX.image) return 'splash'; if (img && img === SUBWAY.image) return 'subway'; if (img && img === TILE.image) return 'tile';
+  return null;
+}
+function realMat(b) {
+  const k = realKind(b); if (!k) return null;
+  let e = ENH.get(b);
+  if (!e) { e = new THREE.MeshPhysicalMaterial(); e.userData.real = k; ENH.set(b, e); }
+  THREE.MeshStandardMaterial.prototype.copy.call(e, b);
+  e.userData.real = k;
+  const opt = DS.options, p = pick;
+  if (k === 'wall') { e.roughness = 0.86; e.sheen = 0; }
+  else if (k === 'trim') { e.roughness = 0.42; e.clearcoat = 0.25; e.clearcoatRoughness = 0.5; }
+  else if (k === 'cab') {
+    const wood = /oak|walnut/i.test((opt.cab.items[p.cab] || {}).name || '');
+    e.map = wood ? CAB_GRAIN : null; e.roughness = wood ? 0.6 : 0.48; e.clearcoat = wood ? 0.12 : 0.3; e.clearcoatRoughness = wood ? 0.6 : 0.45;
+  }
+  else if (k === 'counter') { e.roughness = Math.min(0.85, b.roughness * 0.75); e.clearcoat = b.roughness < 0.5 ? 0.7 : 0.15; e.clearcoatRoughness = b.roughness < 0.5 ? 0.12 : 0.5; }
+  else if (k === 'hw') { const black = b.metalness < 0.4; e.metalness = black ? 0.25 : 0.85; e.roughness = black ? 0.55 : 0.32; e.clearcoat = black ? 0.08 : 0; }
+  else if (k === 'nickel') { e.color.set(0xcdc9c1); e.metalness = 0.65; e.roughness = 0.36; e.envMapIntensity = 2; if (!LOWPOWER) { e.anisotropy = 0.7; e.anisotropyRotation = 0; } }
+  else {   // tile: keep the colour map and its repeat, add recessed grout and the right sheen
+    const g = GROUT[k].clone(); g.needsUpdate = true; if (b.map) { g.repeat.copy(b.map.repeat); g.offset.copy(b.map.offset); }
+    if (!LOWPOWER) { e.bumpMap = g; e.bumpScale = 1.6; } else e.bumpMap = null;
+    e.roughness = k === 'subway' ? 0.18 : k === 'splash' ? 0.7 : 0.55; e.clearcoat = k === 'subway' ? 0.5 : 0; e.clearcoatRoughness = 0.2;
+  }
+  e.needsUpdate = true; return e;
+}
+
+// 4. window light
+const ADU_WINS = lowerLv.L.windows.filter(w => inZone(w.x + w.w / 2 + (w.w < w.d ? -10 : 0), w.y + w.d / 2 + (w.w > w.d ? (w.y < 100 ? 10 : -10) : 0)));
+const winGrp = new THREE.Group(); winGrp.visible = false; lowerLv.root.add(winGrp);
+const SKY = new THREE.MeshBasicMaterial({ color: 0xf4f8fb, transparent: true, opacity: 0.35, depthWrite: false });   // a bright haze over the outside view, not an opaque sky (basement windows look onto the ground)
+const winSpots = [];
+for (const w of ADU_WINS) {
+  const L = lowerLv.L, hz = w.w > w.d, H = L.head - L.sill, out = hz ? (w.y < 100 ? -1 : 1) : (w.x > 300 ? 1 : -1);
+  const cx = w.x + w.w / 2, cy = w.y + w.d / 2, pane = hz ? new THREE.PlaneGeometry(w.w * S, H * S) : new THREE.PlaneGeometry(w.d * S, H * S);
+  const sky = new THREE.Mesh(pane, SKY); sky.userData.label = 'Daylight behind the window (photo mode realism prototype)';
+  const ox = hz ? cx : (out > 0 ? w.x + w.w + 3 : w.x - 3), oy = hz ? (out > 0 ? w.y + w.d + 3 : w.y - 3) : cy;
+  sky.position.set(ox * S, (L.sill + H / 2) * S, oy * S); if (!hz) sky.rotation.y = Math.PI / 2; winGrp.add(sky);
+  if (LOWPOWER) continue;
+  const sp = new THREE.SpotLight(0xf4f1ea, 0, 5.5, 1.05, 0.95, 1.6);
+  sp.position.set((hz ? cx : cx + out * 14) * S, (L.head + 4) * S, (hz ? cy + out * 14 : cy) * S);
+  sp.target.position.set((hz ? cx : cx - out * 70) * S, 0, (hz ? cy - out * 70 : cy) * S);
+  winGrp.add(sp, sp.target); winSpots.push(sp);
+}
+
+function applyReal() {
+  if (!REAL_READY) return;
+  const want = REAL.on && photoOn;
+  for (const o of REAL_LIST) {
+    const curM = realCur(o);
+    if (o.userData.realBase && curM !== o.userData.realLast) o.userData.realBase = null;   // something else (a pick) replaced the material: start from it
+    if (!o.userData.realBase) o.userData.realBase = curM;
+    const base = o.userData.realBase;
+    let m = base;
+    if (want) {
+      if (o.userData.role === 'floor') { const i = aduFloors.indexOf(o); m = lvpMat(pick.floor, i, o); }
+      else m = realMat(base) || base;
+    }
+    realSet(o, m); o.userData.realLast = m;
+  }
+  winGrp.visible = want; for (const s of winSpots) s.intensity = want ? 2.2 : 0;
+  REAL.active = want;
+}
+PICK_HOOK_LIST.push(() => applyReal());
+REAL_READY = true;
+window.__real = { set: on => { REAL.on = !!on; applyReal(); }, on: () => REAL.on, active: () => REAL.active, count: () => REAL_LIST.length, wins: () => ADU_WINS.length, spots: () => winSpots.length,
+  kinds: () => { const c = {}; for (const o of REAL_LIST) { const k = (o.material.userData || {}).real; if (k) c[k] = (c[k] || 0) + 1; } return c; } };
 
 setMode('doll');
 studioStart();
@@ -2400,9 +2548,9 @@ function fromImg(id, px, py) {
   const z = d.zones[0]; return [(px - z.bx) / z.ax, (py - z.by) / z.ay];
 }
 
-Promise.all(['data/minimap.json', 'data/places.json'].map(u => fetch(u + '?v=2026-11-22g').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); })))
+Promise.all(['data/minimap.json', 'data/places.json'].map(u => fetch(u + '?v=2026-11-22i').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); })))
   .then(([d, P]) => Promise.all(Object.entries(d.levels).map(([id, l]) => new Promise((res, rej) => {
-    const im = new Image(); im.onload = () => { mini.img[id] = im; res(); }; im.onerror = () => rej(new Error(l.img)); im.src = 'data/' + l.img + '?v=2026-11-22g';
+    const im = new Image(); im.onload = () => { mini.img[id] = im; res(); }; im.onerror = () => rej(new Error(l.img)); im.src = 'data/' + l.img + '?v=2026-11-22i';
   }))).then(() => {
     mini.data = d; mini.places = Object.entries(P.places).map(([id, p]) => ({ id, ...p })).filter(p => p.at && lvById(p.level));
     const sel = ui('miniGo');
@@ -2927,7 +3075,7 @@ renderer.setAnimationLoop(() => {
   if (!cmp.on) updateLabels(); else hideLabels();
 });
 </script>
-<script type="module" src="present.js?v=2026-11-22g"></script>
-<script type="module" src="nav.js?v=2026-11-22g"></script>
+<script type="module" src="present.js?v=2026-11-22i"></script>
+<script type="module" src="nav.js?v=2026-11-22i"></script>
 </body>
 </html>
