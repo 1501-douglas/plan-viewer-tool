@@ -107,7 +107,7 @@
 <div id="legend" style="position:fixed;left:10px;top:58px;background:rgba(255,255,255,.95);border:1px solid #bbb;border-radius:8px;padding:8px 10px;font-size:12px;display:none;max-width:280px;line-height:1.45"></div>
 <div id="warn">This page needs WebGL, which this browser did not provide.</div>
 <div id="note"><button class="x" id="noteX" aria-label="Hide note">×</button>
-  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-22d: third person in Walk, one tap on the walk bar; build 22c: the 11/22 room-by-room design directions on both levels, window treatments as design layers, the Bed 113 door record corrected; the ADU living room layer and the peninsula south-end seating test kept): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld; 11/22: the room-by-room design directions, from owner sheets L-1 Rev 17, L-2 Rev 12 and L-3 Rev 27), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
+  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-22f: a Rooms list on the left, grouped by floor and zone, with search and a previous-view button; the toolbar is unchanged (navigation redesign stage 1, owner 11/23); build 22e: the living room TV feature wall as it was in 22c (owner 11/23); build 22d: third person in Walk, one tap on the walk bar; build 22c: the 11/22 room-by-room design directions on both levels, window treatments as design layers, the Bed 113 door record corrected; the ADU living room layer and the peninsula south-end seating test kept): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld; 11/22: the room-by-room design directions, from owner sheets L-1 Rev 17, L-2 Rev 12 and L-3 Rev 27), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
 </div>
 
 <script type="importmap">
@@ -127,7 +127,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
 const [M, EL, DS] = await Promise.all(['data/model.json', 'data/elements.json', 'data/design.json'].map(u =>
-  fetch(u + '?v=2026-11-22d').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
+  fetch(u + '?v=2026-11-22f').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
   const w = document.getElementById('warn'); w.textContent = 'Could not load the model data (' + e.message + ').'; w.style.display = 'block'; throw e; });
 const S = 0.0254, EYE = 63, RAD = 9;
 
@@ -916,7 +916,9 @@ function updateLabels() {
     el.style.left = ((_v.x + 1) / 2 * innerWidth) + 'px'; el.style.top = ((1 - _v.y) / 2 * innerHeight) + 'px';
   }
 }
-function resize() { renderer.setSize(innerWidth, innerHeight, false); composer.setSize(innerWidth, innerHeight); camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); }
+let navDX = 0;   // 22f: room panel 'Re-centre model' layout (pixels the model's centre moves right); 0 = off
+function applyNavDX() { if (navDX && !cmp.on) camera.setViewOffset(innerWidth, innerHeight, -navDX, 0, innerWidth, innerHeight); else if (camera.view && camera.view.enabled) camera.clearViewOffset(); }
+function resize() { renderer.setSize(innerWidth, innerHeight, false); composer.setSize(innerWidth, innerHeight); camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); applyNavDX(); }
 addEventListener('resize', resize); resize();
 window.__walk = (x, y, yaw, pitch = 0) => Object.assign(walker, { x, y, yaw, pitch });
 window.__aim = (px, py, pz, tx, ty, tz) => { camera.position.set(px, py, pz); controls.target.set(tx, ty, tz); controls.update(); };
@@ -1190,6 +1192,7 @@ function updateCmpTags() {
   Object.assign(R.style, side ? { display: 'block', left: 'calc(50% + 10px)', bottom: '12px', top: 'auto' } : { display: 'block', left: '10px', bottom: '12px', top: 'auto' });
 }
 function renderCompare() {
+  if (camera.view && camera.view.enabled) camera.clearViewOffset();   // 22f: the split views are never offset
   const W = innerWidth, H = innerHeight, side = W >= H;
   const halves = side ? [[0, 0, W / 2, H], [W / 2, 0, W / 2, H]] : [[0, H / 2, W, H / 2], [0, 0, W, H / 2]];
   renderer.setScissorTest(true);
@@ -1233,7 +1236,9 @@ function renderShots() {
 }
 function captureStill() {
   const selWas = selBox.visible; selBox.visible = false;
+  const dxWas = !cmp.on && camera.view && camera.view.enabled; if (dxWas) camera.clearViewOffset();   // 22f: stills are never offset
   if (cmp.on) renderCompare(); else if (aoOn && (mode !== 'walk' || photoOn)) composer.render(); else renderer.render(scene, camera);
+  if (dxWas) applyNavDX();
   const src = renderer.domElement, fs = Math.max(11, Math.round(src.height * 0.022)), lines = [];
   lines.push([`1501 Douglas · ${cur.L.name} · ${lastShot ? lastShot.name : (mode === 'walk' ? 'eye-level view' : mode === 'top' ? 'top view' : 'dollhouse view')}`, 600, '#fff']);
   lines.push([`${pick.scope === 'house' ? 'Finishes (whole house)' : 'ADU finishes'}: ${cmp.on ? pickName(pick) + ' | ' + cmp.label : pickName(pick)}${arrChanged(ARR) ? ' · furniture arranged in the studio' : ''} · light: ${studioLight ? 'neutral studio light, not the house lighting' : warmLight ? 'warm 2700K (approximate)' : 'default'}${peopleOn ? ' · people are scale figures' : ''}${fixOn && !LAY.elec ? ' · fixtures from the owner lighting and power sheets (positions approximate)' : ''}${photoOn ? ' · photo mode (higher quality; glass, fill and window light approximate)' : ''}`, 400, '#e3e8ec']);
@@ -1305,7 +1310,7 @@ function studioStart() {
   ui('bShots').onclick = () => openPanel('spanel');
   ui('bReg').onclick = () => openPanel('rpanel');
   ui('bEl').onclick = () => { for (const k of ['dpanel', 'spanel', 'rpanel']) ui(k).style.display = 'none'; for (const b of ['bDes', 'bShots', 'bReg']) ui(b).classList.remove('on'); const p = ui('lpanel'); p.style.display = p.style.display === 'block' ? 'none' : 'block'; };
-  window.__studio = { setPick, applyPick, pick: () => pick, schemes: DS.schemes, goShot, captureStill, setCompare, openPanel,
+  window.__studio = { navOffset: dx => { navDX = dx || 0; applyNavDX(); }, navDX: () => navDX, setPick, applyPick, pick: () => pick, schemes: DS.schemes, goShot, captureStill, setCompare, openPanel,
     arr: () => ARR, ent: () => [...ENT.keys()], selectKey: k => selectEntry(ENT.get(k)), nudge, turn, resizeSel, removeSel, addPiece, setArr, setStudioLight, obsLen: () => lowerLv.obs.length,
     checksSel: () => sel ? checks(sel) : null, selFoot: () => sel ? footprint(sel, ARR.items[sel.key]) : null,
     counts: () => ({ aduFloors: aduFloors.length, pulls: pulls.children.length, zoneMats: Object.keys(ZM).length }), saved: () => saved,
@@ -2395,9 +2400,9 @@ function fromImg(id, px, py) {
   const z = d.zones[0]; return [(px - z.bx) / z.ax, (py - z.by) / z.ay];
 }
 
-Promise.all(['data/minimap.json', 'data/places.json'].map(u => fetch(u + '?v=2026-11-22d').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); })))
+Promise.all(['data/minimap.json', 'data/places.json'].map(u => fetch(u + '?v=2026-11-22f').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); })))
   .then(([d, P]) => Promise.all(Object.entries(d.levels).map(([id, l]) => new Promise((res, rej) => {
-    const im = new Image(); im.onload = () => { mini.img[id] = im; res(); }; im.onerror = () => rej(new Error(l.img)); im.src = 'data/' + l.img + '?v=2026-11-22d';
+    const im = new Image(); im.onload = () => { mini.img[id] = im; res(); }; im.onerror = () => rej(new Error(l.img)); im.src = 'data/' + l.img + '?v=2026-11-22f';
   }))).then(() => {
     mini.data = d; mini.places = Object.entries(P.places).map(([id, p]) => ({ id, ...p })).filter(p => p.at && lvById(p.level));
     const sel = ui('miniGo');
@@ -2922,6 +2927,7 @@ renderer.setAnimationLoop(() => {
   if (!cmp.on) updateLabels(); else hideLabels();
 });
 </script>
-<script type="module" src="present.js?v=2026-11-22d"></script>
+<script type="module" src="present.js?v=2026-11-22f"></script>
+<script type="module" src="nav.js?v=2026-11-22f"></script>
 </body>
 </html>

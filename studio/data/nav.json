@@ -1,0 +1,51 @@
+{
+  "note": "Navigation metadata only (Stage 1 of the navigation redesign, build 2026-11-22f). Group headings and order, and references to existing ids: 'place' is an id in places.json, 'views' are shot ids in design.json. No room labels, levels, centres or camera numbers are stored here; those stay in places.json and design.json. Grouping: the common bath / mudroom and the common utility room serve the main house only (owner, 11/23).",
+  "floors": [
+    {
+      "level": "first",
+      "heading": "First floor",
+      "zones": [
+        { "id": "ff-living", "heading": "Living areas", "items": [
+          { "place": "ff-foyer", "views": ["ff-foyer"] },
+          { "place": "ff-living", "views": ["ff-living"] },
+          { "place": "ff-kitchen", "views": ["ff-kitchen", "ff-fridgewall"] }
+        ] },
+        { "id": "ff-private", "heading": "Private rooms", "items": [
+          { "place": "ff-master", "views": [] },
+          { "place": "ff-masterbath", "views": ["ff-mbath-vanity", "ff-masterbath", "ff-masterbath-w"] },
+          { "place": "ff-bed113", "views": [] },
+          { "place": "ff-bed132", "views": [] },
+          { "place": "ff-bed121", "views": [] }
+        ] },
+        { "id": "ff-shared", "heading": "Shared and circulation", "items": [
+          { "place": "ff-hall", "views": [] },
+          { "place": "ff-hallbath", "views": ["ff-hallbath"] },
+          { "views": ["stair-top"] }
+        ] }
+      ]
+    },
+    {
+      "level": "lower",
+      "heading": "Lower level",
+      "zones": [
+        { "id": "ll-main", "heading": "Main house", "items": [
+          { "place": "ll-family", "views": ["fam-brick", "fam-studio"] },
+          { "place": "ll-wetbar", "views": [] },
+          { "place": "ll-commonbath", "views": ["ll-commonbath"] },
+          { "place": "ll-utility", "views": [] }
+        ] },
+        { "id": "ll-common", "heading": "Common to both units", "items": [
+          { "place": "ll-commonhall", "views": ["ll-commonhall", "stair"] }
+        ] },
+        { "id": "adu", "heading": "ADU (apartment)", "items": [
+          { "place": "adu-living", "views": ["adu-living", "adu-entry", "adu-tvwall"] },
+          { "place": "adu-kitchen", "views": ["adu-kitchen", "adu-pantry"] },
+          { "place": "adu-bedroom", "views": ["adu-bedroom"] },
+          { "place": "adu-closet", "views": [] },
+          { "place": "adu-office", "views": ["adu-office"] },
+          { "place": "adu-bath", "views": ["adu-bath"] }
+        ] }
+      ]
+    }
+  ]
+}
