@@ -107,7 +107,7 @@
 <div id="legend" style="position:fixed;left:10px;top:58px;background:rgba(255,255,255,.95);border:1px solid #bbb;border-radius:8px;padding:8px 10px;font-size:12px;display:none;max-width:280px;line-height:1.45"></div>
 <div id="warn">This page needs WebGL, which this browser did not provide.</div>
 <div id="note"><button class="x" id="noteX" aria-label="Hide note">×</button>
-  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-22k: realism prototype calmed after close-up checks, window light removed (outside grade not measured), per-door cabinet grain, softer tile and counter sheen; build 22j: realism prototype fixes, window haze on all five apartment windows, trim colour follows the pick; build 22i: apartment realism prototype in photo mode, generic textures and window light, not products (owner 11/23); build 22h: the staging floor lamps removed; the ADU reading spot concept instead; peninsula stools tucked under the overhang (option 1); queen bed in the ADU bedroom; Bed 121 TV about 55 in; range electric (owner 11/23); build 22g: in the apartment, the east-window counter is a floating counter, open below, and the F5 sofa is the default layout (owner 11/23; seating at the peninsula still open, with option 1, stools tucked, added as a layer); hooks inside the common bath; occupancy sensors on the lower hall, vestibule and stair lights; the dining light over the round table; build 22f: a Rooms list on the left, grouped by floor and zone, with search and a previous-view button; the toolbar is unchanged (navigation redesign stage 1, owner 11/23); build 22e: the living room TV feature wall as it was in 22c (owner 11/23); build 22d: third person in Walk, one tap on the walk bar; build 22c: the 11/22 room-by-room design directions on both levels, window treatments as design layers, the Bed 113 door record corrected; the ADU living room layer and the peninsula south-end seating test kept): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld; 11/22: the room-by-room design directions, from owner sheets L-1 Rev 17, L-2 Rev 12 and L-3 Rev 27), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
+  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-22l: owner decisions 11/24, sliding double doors on the bedroom closets, single hinged doors on the hall linen and foyer coat closets, a louvered bifold laundry door, no ceiling fan in Bed 121, mirrored medicine cabinets in the hall, apartment and common baths (the common bath one surface-mounted, as its wall is the foundation wall; the master bath keeps its decided pair), the wet bar backsplash to the ceiling, light molding on the living room TV wall, and a tall cleaning cabinet in place of the apartment entry closet; build 22k: realism prototype calmed after close-up checks, window light removed (outside grade not measured), per-door cabinet grain, softer tile and counter sheen; build 22j: realism prototype fixes, window haze on all five apartment windows, trim colour follows the pick; build 22i: apartment realism prototype in photo mode, generic textures and window light, not products (owner 11/23); build 22h: the staging floor lamps removed; the ADU reading spot concept instead; peninsula stools tucked under the overhang (option 1); queen bed in the ADU bedroom; Bed 121 TV about 55 in; range electric (owner 11/23); build 22g: in the apartment, the east-window counter is a floating counter, open below, and the F5 sofa is the default layout (owner 11/23; seating at the peninsula still open, with option 1, stools tucked, added as a layer); hooks inside the common bath; occupancy sensors on the lower hall, vestibule and stair lights; the dining light over the round table; build 22f: a Rooms list on the left, grouped by floor and zone, with search and a previous-view button; the toolbar is unchanged (navigation redesign stage 1, owner 11/23); build 22e: the living room TV feature wall as it was in 22c (owner 11/23); build 22d: third person in Walk, one tap on the walk bar; build 22c: the 11/22 room-by-room design directions on both levels, window treatments as design layers, the Bed 113 door record corrected; the ADU living room layer and the peninsula south-end seating test kept): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld; 11/22: the room-by-room design directions, from owner sheets L-1 Rev 17, L-2 Rev 12 and L-3 Rev 27), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
 </div>
 
 <script type="importmap">
@@ -127,7 +127,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
 const [M, EL, DS] = await Promise.all(['data/model.json', 'data/elements.json', 'data/design.json'].map(u =>
-  fetch(u + '?v=2026-11-22k').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
+  fetch(u + '?v=2026-11-22l').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
   const w = document.getElementById('warn'); w.textContent = 'Could not load the model data (' + e.message + ').'; w.style.display = 'block'; throw e; });
 const S = 0.0254, EYE = 63, RAD = 9;
 
@@ -301,7 +301,8 @@ function closetFront(L, f) {   // the open side: the side with no wall just outs
 const DOOR2 = mat(0xf3f0ea, { roughness: 0.55 }), GAPM = mat(0x3b3b3b, { roughness: 0.9 });
 function closetDoors(furn, f, L) {
   const side = f.front || closetFront(L, f), g = new THREE.Group(), H = Math.min(80, f.h), len = (side === 'N' || side === 'S') ? f.w : f.d;
-  const n = len > 84 ? 3 : 2, pw = len / n + 1;
+  const single = /single hinged/i.test(f.door || ''), dbl = /sliding double/i.test(f.door || '');   // 22l: owner 11/24 door types
+  const n = single ? 1 : dbl ? 2 : (len > 84 ? 3 : 2), pw = single ? len : dbl ? len / 2 + 1.5 : len / n + 1;
   // if the sketch drew a solid front wall, hang the doors on its room face
   const inWall = (x, y) => [...L.walls, ...L.fixed].some(w => x > w.x && x < w.x + w.w && y > w.y && y < w.y + w.d);
   const cx = f.x + f.w / 2, cy = f.y + f.d / 2; let off = 0;
@@ -329,6 +330,7 @@ function closetDoors(furn, f, L) {
     fr(a0, a1, H - 3, H, face0, face1, m); fr(a0, a1, 0, 4, face0, face1, m); fr(a0, a1, H / 2 - 1.5, H / 2 + 1.5, face0, face1, m);   // rails
     fr(a1 - 0.4, a1, 0, H, face0 - 0.2, face1, GAPM);                                        // edge shadow line
     const pu = i % 2 ? a0 + 5 : a1 - 5; fr(pu - 0.4, pu + 0.4, 34, 46, face1, face1 + 0.8, HANDLE);   // pull
+    if (dbl && i === 0) fr(0, len, H, H + 1.2, off, off + 3.4, HANDLE);   // 22l: top track for the sliding pair
   }
   const label = (f.door || 'Closet doors') + ' (placeholder)';
   g.userData.label = label; g.traverse(o => { if (o.isMesh) o.userData.label = label; });
@@ -2210,6 +2212,81 @@ window.__photo = { set: setPhoto, on: () => photoOn, glass: () => glassMeshes.le
   cfg: () => ({ pixelRatio: renderer.getPixelRatio(), shadow: sun.shadow.mapSize.x, lowPower: LOWPOWER }) };
 
 
+
+// ================= 22l: owner decisions of 11/24 (the owner's checklist, each item confirmed in chat) =================
+// Laundry louvered bifold, recessed mirrored medicine cabinets in the four baths, wet bar backsplash to the ceiling, light molding on
+// the first-floor TV wall, and the apartment cleaning cabinet's doors. Closet doors (sliding pairs, single hinged) are drawn by
+// closetDoors from the model data. Sizes and positions are placeholders; nothing here is a selected product.
+const INFO22 = { status: 'owner concept', why: 'Owner decision 11/24. Sizes, positions and profiles are placeholders, drawn so the decision reads in the model; no product is selected.', source: 'Owner decisions 11/24 (checklist confirmed in chat)', fix: 'Owner selection and the architect or trade sets sizes.' };
+const FF22 = LEVELS.find(v => v.L.id === 'first');
+const put22 = (lv, mesh, label, info = INFO22) => { mesh.castShadow = mesh.receiveShadow = true; const g = new THREE.Group(); g.add(mesh); tag(g, info); g.traverse(o => { if (o.isMesh) o.userData.label = label; }); detailRoot.get(lv).add(g); return mesh; };
+const onFace22 = (side, face, c, W, off, t) => side === 'E' ? [face - off - t, c - W / 2, t, W] : side === 'W' ? [face + off, c - W / 2, t, W] : side === 'N' ? [c - W / 2, face + off, W, t] : [c - W / 2, face - off - t, W, t];
+const slab22 = (lv, side, face, c, W, off, t, z, H, m, label, info) => { const r = onFace22(side, face, c, W, off, t); return put22(lv, place(box(r[2], H, r[3], m), r[0], r[1], r[2], r[3], z, H), label, info); };
+
+// 1. first-floor laundry: louvered bifold pair across the stack's opening (owner 11/24: ventilation)
+const BIFOLD_LBL = 'Laundry door: louvered bifold pair, for ventilation (owner 11/24; size and louver style placeholders)';
+const BIFOLD = { a0: 353, a1: 386, y: 0 };
+{ const f = FF22.L.furniture.find(q => q.label === 'washer/dryer stack');
+  if (f) {
+    const H = 80, lw = (BIFOLD.a1 - BIFOLD.a0) / 2, y = f.y + f.d + 3.5; BIFOLD.y = y;
+    for (let i = 0; i < 2; i++) {
+      const x0 = BIFOLD.a0 + i * lw, fr = (x, z, w, h) => put22(FF22, place(box(w, h, 1.2, DOORM), x, y, w, 1.2, z, h), BIFOLD_LBL);
+      fr(x0, 0, 2, H); fr(x0 + lw - 2, 0, 2, H); fr(x0, H - 2.5, lw, 2.5); fr(x0, 0, lw, 4); fr(x0, H / 2 - 1, lw, 2);
+      for (let z = 5.5; z < H - 3; z += 1.6) { if (Math.abs(z - H / 2) < 1.8) continue; const s = place(box(lw - 4, 1.1, 0.5, DOORM), x0 + 2, y + 0.35, lw - 4, 0.5, z, 1.1); s.rotation.x = -0.6; put22(FF22, s, BIFOLD_LBL); }
+      put22(FF22, place(box(0.4, H, 1.4, GAPM), x0 + lw - 0.2, y - 0.1, 0.4, 1.4, 0, H), BIFOLD_LBL);   // fold line / meeting edge
+    }
+    put22(FF22, place(box(0.8, 0.8, 1.2, HANDLE), BIFOLD.a0 + lw - 3, y + 1.2, 0.8, 1.2, 40, 0.8), BIFOLD_LBL);
+  } }
+
+// 2. recessed mirrored medicine cabinets (owner 11/24: all four baths). Placeholder sizes. The master bath already has one over each
+//    basin in its decided design layer (Decision 2, recessed if the plumber confirms): kept, and only its mirror made to read in the live view.
+const MED = [];
+{ const MIRR = new THREE.MeshStandardMaterial({ color: 0xdfe5e8, metalness: 0.2, roughness: 0.14 });   // reads as a mirror in the live view without an environment map
+  const plan = [
+    [FF22, /^42" vanity/, 'E', 20, 26, 'Hall bath'],
+    [lowerLv, /^23 in wall-hung vanity/, 'N', 16, 24, 'Apartment bath'],
+    [lowerLv, /^24" vanity on legs/, 'N', 16, 24, 'Common bath']];
+  for (const [lv, re, side, W, H, room] of plan) {
+    const f = lv.L.furniture.find(q => re.test(q.label || '')); if (!f) continue;
+    const face = wallFace(lv.L, f, side); if (face == null) continue;
+    const ns = side === 'N' || side === 'S', c = ns ? f.x + f.w / 2 : f.y + f.d / 2, z = (f.h || 34) + 10;
+    const ext = room === 'Common bath';   // its back wall is the north foundation wall on the model: a recess is not possible there
+    const lbl = ext ? `Medicine cabinet, ${room}: mirrored, about ${W} x ${H} in, SURFACE-MOUNTED here. The wall behind the vanity is the exterior foundation wall, so it cannot be recessed (owner 11/24 asked for recessed: owner to choose)`
+      : `Recessed mirrored medicine cabinet, ${room}, about ${W} x ${H} in (owner 11/24; size placeholder; recess depth to check against framing, plumbing and wiring in this wall)`;
+    if (ext) { slab22(lv, side, face, c, W, 0, 4.5, z, H, FM.white, lbl); slab22(lv, side, face, c, W - 1.2, 4.5, 0.25, z + 0.6, H - 1.2, MIRR, lbl); }
+    else { slab22(lv, side, face, c, W + 1.2, 0, 0.3, z - 0.6, H + 1.2, FM.white, lbl); slab22(lv, side, face, c, W - 0.4, 0.3, 0.2, z + 0.2, H - 0.4, MIRR, lbl); }
+    MED.push({ room, lv: lv.L.id, side, face, c, W, H, z, recessed: !ext });
+  }
+  FF22.furn.traverse(o => { if (o.isMesh && /^Medicine cabinet centred on the sink/.test(o.userData.label || '') && o.material.metalness > 0.3) { if (o.userData.mat0 === o.material) o.userData.mat0 = MIRR; o.material = MIRR; } });
+}
+
+// 3. wet bar backsplash, counter to ceiling, across the whole run (owner 11/24). Tile is not selected: the generic backsplash texture stands in.
+{ const run = lowerLv.L.furniture.filter(q => /^wet bar (sink|counter)$|^under-counter fridge$/.test(q.label || ''));
+  if (run.length) {
+    const x0 = Math.min(...run.map(q => q.x)), x1 = Math.max(...run.map(q => q.x + q.w)), y0 = Math.min(...run.map(q => q.y)), d = run[0].d;
+    facePanel(lowerLv, { x: x0, y: y0, w: x1 - x0, d }, 'N', 36, lowerLv.L.ceil, SPLASH, 'Wet bar backsplash, counter to ceiling (owner 11/24; tile not selected, generic texture shown)');
+  } }
+
+// 4. first-floor TV wall: restrained painted molding in the side bays, the TV and fireplace bay left plain (owner 11/24)
+const MOLD = [];
+{ const fw = FF22.L.furniture.find(q => q.label === 'TV and fireplace build-out'), tv = FF22.L.furniture.find(q => q.label === 'TV' && q.x > 160 && q.x < 175);
+  if (fw && tv) {
+    const face = fw.x + fw.w, y0 = fw.y, y1 = fw.y + fw.d, c0 = tv.y - 6, c1 = tv.y + tv.d + 6, lbl = 'TV wall molding: thin painted molding, side bays only (owner 11/24; layout and profile placeholders)';
+    const rect = (a0, a1, z0, z1) => { const t = 0.5, wd = 0.75;
+      for (const [p0, p1, q0, q1] of [[a0, a1, z0, z0 + wd], [a0, a1, z1 - wd, z1], [a0, a0 + wd, z0, z1], [a1 - wd, a1, z0, z1]])
+        put22(FF22, place(box(t, q1 - q0, p1 - p0, MAT.wall), face, p0, t, p1 - p0, q0, q1 - q0), lbl);
+      MOLD.push([a0, a1, z0, z1]); };
+    for (const [a0, a1] of [[y0 + 5, c0 - 5], [c1 + 5, y1 - 5]]) { if (a1 - a0 < 12) continue; rect(a0, a1, 6, 32); rect(a0, a1, 38, 90); }
+  } }
+
+// 5. apartment cleaning cabinet: two doors with a centre seam and pulls on the apartment hardware finish
+{ const f = lowerLv.L.furniture.find(q => /^tall cleaning cabinet/.test(q.label || ''));
+  if (f) { const x = f.x + f.w, lbl = 'Cleaning cabinet doors (owner 11/24; placeholders)';
+    put22(lowerLv, place(box(0.6, f.h - 2, 0.4, GAPM), x, f.y + f.d / 2 - 0.2, 0.6, 0.4, 1, f.h - 2), lbl);
+    for (const yy of [f.y + f.d / 2 - 2.5, f.y + f.d / 2 + 2]) put22(lowerLv, place(box(0.9, 12, 0.6, ZM.hw), x + 0.3, yy, 0.9, 0.6, 38, 12), lbl);
+  } }
+window.__l22 = { bifold: () => ({ ...BIFOLD }), med: () => MED.slice(), mold: () => MOLD.slice() };
+
 // ================= 22i: ADU realism prototype (owner 11/23: "build that ADU prototype as build 22i") =================
 // Photo mode only, apartment only; the rest of the house and the live view are unchanged, so the same camera can compare.
 // Inside the owner's 11/20 realism rule: generic textures and surface response only, never a specific product.
@@ -2556,9 +2633,9 @@ function fromImg(id, px, py) {
   const z = d.zones[0]; return [(px - z.bx) / z.ax, (py - z.by) / z.ay];
 }
 
-Promise.all(['data/minimap.json', 'data/places.json'].map(u => fetch(u + '?v=2026-11-22k').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); })))
+Promise.all(['data/minimap.json', 'data/places.json'].map(u => fetch(u + '?v=2026-11-22l').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); })))
   .then(([d, P]) => Promise.all(Object.entries(d.levels).map(([id, l]) => new Promise((res, rej) => {
-    const im = new Image(); im.onload = () => { mini.img[id] = im; res(); }; im.onerror = () => rej(new Error(l.img)); im.src = 'data/' + l.img + '?v=2026-11-22k';
+    const im = new Image(); im.onload = () => { mini.img[id] = im; res(); }; im.onerror = () => rej(new Error(l.img)); im.src = 'data/' + l.img + '?v=2026-11-22l';
   }))).then(() => {
     mini.data = d; mini.places = Object.entries(P.places).map(([id, p]) => ({ id, ...p })).filter(p => p.at && lvById(p.level));
     const sel = ui('miniGo');
@@ -3083,7 +3160,7 @@ renderer.setAnimationLoop(() => {
   if (!cmp.on) updateLabels(); else hideLabels();
 });
 </script>
-<script type="module" src="present.js?v=2026-11-22k"></script>
-<script type="module" src="nav.js?v=2026-11-22k"></script>
+<script type="module" src="present.js?v=2026-11-22l"></script>
+<script type="module" src="nav.js?v=2026-11-22l"></script>
 </body>
 </html>
