@@ -1930,30 +1930,6 @@
     },
     {
      "type": "box",
-     "x": 538.0,
-     "y": 164.0,
-     "w": 6.0,
-     "d": 6.0,
-     "z": 0,
-     "h": 0.6,
-     "mat": "nickel",
-     "label": "Freestanding toilet paper holder on the vanity side (master bath direction; test the actual holder)",
-     "level": "first"
-    },
-    {
-     "type": "box",
-     "x": 540.4,
-     "y": 166.4,
-     "w": 1.2,
-     "d": 1.2,
-     "z": 0.6,
-     "h": 24,
-     "mat": "nickel",
-     "label": "Freestanding toilet paper holder on the vanity side (master bath direction; test the actual holder)",
-     "level": "first"
-    },
-    {
-     "type": "box",
      "x": 594.0,
      "y": 225.3,
      "w": 12.0,
@@ -2034,18 +2010,6 @@
      "h": 2.0,
      "mat": "nickel",
      "label": "Slim brushed-nickel light bar over the medicine cabinet (Decision 2)",
-     "level": "first"
-    },
-    {
-     "type": "box",
-     "x": 574.6,
-     "y": 170.6,
-     "w": 0.5,
-     "d": 30.0,
-     "z": 2,
-     "h": 74,
-     "mat": "film",
-     "label": "Fixed glass panel at the toilet end; sliding panel at the standing end (master bath direction; clear opening from the hardware)",
      "level": "first"
     }
    ],

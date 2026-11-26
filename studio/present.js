@@ -2,7 +2,7 @@
 // Opening screen, guided tour, shareable view links and plan-viewer handoff.
 // Presentation only: it moves the camera and applies existing finish picks through window.__studio.
 // It adds no geometry and changes no records.
-const V = '2026-11-26b';   // studio files version
+const V = '2026-11-26c';   // studio files version
 const VIEWER = '../1501-Douglas-Sheet-Viewer.html?v=2026-11-20';
 const K_SEEN = 'douglas.studio.intro.seen', K_PICK = 'douglas.studio.pick.v3';
 const ls = { get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }, set(k, v) { try { v === null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} } };

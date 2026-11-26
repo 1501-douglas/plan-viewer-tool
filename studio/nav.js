@@ -2,7 +2,7 @@
 // Presentation only. It reads data/nav.json (group headings and id references), data/places.json (rooms) and the
 // shots in design.json through window.__studio, and moves the camera with the studio's own goShot / focusRoom / setView.
 // It stores no room, shot or tour data of its own and changes no design pick. The existing toolbar is left as it is.
-const V = '2026-11-26b';
+const V = '2026-11-26c';
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 while (!window.__studio) await sleep(50);
 const ST = window.__studio, $ = id => document.getElementById(id);
