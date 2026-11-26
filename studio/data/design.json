@@ -123,6 +123,10 @@
     "alabaster": {
      "name": "Creamy off-white (like SW Alabaster)",
      "color": "#ece6da"
+    },
+    "cityLoft": {
+     "name": "SW City Loft (SW 7631), owner choice 11/26, all rooms except the baths (screen approximation)",
+     "color": "#dfdad1"
     }
    }
   },
@@ -230,6 +234,10 @@
     "matchWall": {
      "name": "Match the wall",
      "color": null
+    },
+    "pureWhite": {
+     "name": "SW Pure White (SW 7005), owner choice 11/26, trim, doors and bath walls (screen approximation)",
+     "color": "#edece6"
     }
    }
   },
@@ -292,7 +300,7 @@
      "color": "#e4e6e6"
     },
     "warmGreige": {
-     "name": "Warm greige (bath finish direction, 10/10)",
+     "name": "Warm greige (family room and apartment baths; the hall and master baths are a light-mid gray hex, owner 11/26)",
      "color": "#cdc4b6"
     },
     "limestone": {
@@ -570,11 +578,11 @@
    "note": "Working warm-modern concept for both levels, from the owner brief (11/18). The owner adopted this warm-modern direction on 11/19, choosing the low-risk options. Decided by the owner: the metal rule (matte black outside the baths, brushed nickel in them); SW Alabaster as the working wall paint, final after a sample check; TV wall B; the round dining table. Kept from earlier decisions: the bath floor formats, the owned white shaker first-floor kitchen, the natural brick. Everything else shown (white oak LVP, white oak ADU cabinets, warm white quartz, matte black pulls, oatmeal upholstery, white oak stair treads) is an unselected concept: no product is chosen. See the whole-house finish palette record for the state of each item.",
    "pick": {
     "floor": "whiteOakWide",
-    "wall": "alabaster",
+    "wall": "cityLoft",
     "cab": "whiteOak",
     "counter": "softWhiteQuartz",
     "hw": "matteBlack",
-    "trim": "matchWall",
+    "trim": "pureWhite",
     "scope": "house",
     "soft": "oatmeal",
     "tile": "warmGreige"
