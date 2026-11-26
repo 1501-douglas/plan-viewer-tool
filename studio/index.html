@@ -53,7 +53,7 @@
     #bar button { flex: 0 0 auto; font-size: 13px; padding: 6px 11px; }
     #bar .sep { display: none; }
     #bL1, #bL0 { order: 1; } #bDoll, #bTop, #bWalk, #bWalk2 { order: 2; } #bDes, #bShots, #bReg { order: 3; }
-    #bEl, #bAs { order: 4; } #bFurn, #bFix, #bLab, #bAO { order: 5; } #bar::after { content: ''; flex: 0 0 30px; order: 9; }
+    #bEl, #bAs { order: 4; } #bFurn, #bFix, #bClo, #bLab, #bAO { order: 5; } #bar::after { content: ''; flex: 0 0 30px; order: 9; }
     .spanel, #lpanel { left: 0 !important; right: 0 !important; top: auto !important; bottom: 0 !important; width: 100% !important; transform: none !important;
       max-height: 48vh; border-radius: 14px 14px 0 0 !important; border-width: 1px 0 0 0 !important; box-shadow: 0 -4px 16px rgba(0,0,0,.15);
       padding: 10px 12px calc(12px + env(safe-area-inset-bottom)) !important; overflow: auto; box-sizing: border-box; z-index: 6 !important; }
@@ -85,6 +85,7 @@
   <span class="sep"></span>
   <button id="bFurn" class="on">Furniture</button>
   <button id="bFix" class="on" title="Light fixtures, switches, outlets and alarms from the owner lighting and power sheets">Fixtures</button>
+  <button id="bClo" title="Open or close every closet to see the interior on record (assumed fit-outs are labelled)">Open closets</button>
   <button id="bLab" class="on">Labels</button>
   <button id="bAO" class="on">Soft shade</button>
   <button id="bEl">Layers</button>
@@ -107,7 +108,7 @@
 <div id="legend" style="position:fixed;left:10px;top:58px;background:rgba(255,255,255,.95);border:1px solid #bbb;border-radius:8px;padding:8px 10px;font-size:12px;display:none;max-width:280px;line-height:1.45"></div>
 <div id="warn">This page needs WebGL, which this browser did not provide.</div>
 <div id="note"><button class="x" id="noteX" aria-label="Hide note">×</button>
-  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-22p: first-floor kitchen finished to match the apartment, with white uppers on the range wall and left of the window and an under-cabinet hood over the range, all placeholders; build 22o: living room re-planned with the owner, a 78 in sofa, a counter-height eating ledge behind it with two stools, a 32 in round coffee table, the accent chair angled in the south-west corner, and a corner banquette in the north-east corner with the round table and one chair; living room added to the Design checks; build 22n: owner 11/24 late afternoon, the master bath wall tile no longer runs across its door (the 22m floor strip removed), the living room accent chair angled in the south-west corner in place of the plant, and the round table in the north-east corner with its light; build 22m: owner 11/24 afternoon, the pantry closet south of the stair with a 24 in pair of doors (a box in its floor from the stair below, size to measure), a louvered door on the basement utility room, the master bath tile across its doorway, modern pedestal round tables with the chairs tucked under, and the living room reading chair turned to face the room; build 22l: owner decisions 11/24, sliding double doors on the bedroom closets, single hinged doors on the hall linen and foyer coat closets, a louvered bifold laundry door, no ceiling fan in Bed 121, mirrored medicine cabinets in the hall, apartment and common baths (the common bath one surface-mounted, as its wall is the foundation wall; the master bath keeps its decided pair), the wet bar backsplash to the ceiling, light molding on the living room TV wall, and a tall cleaning cabinet in place of the apartment entry closet; build 22k: realism prototype calmed after close-up checks, window light removed (outside grade not measured), per-door cabinet grain, softer tile and counter sheen; build 22j: realism prototype fixes, window haze on all five apartment windows, trim colour follows the pick; build 22i: apartment realism prototype in photo mode, generic textures and window light, not products (owner 11/23); build 22h: the staging floor lamps removed; the ADU reading spot concept instead; peninsula stools tucked under the overhang (option 1); queen bed in the ADU bedroom; Bed 121 TV about 55 in; range electric (owner 11/23); build 22g: in the apartment, the east-window counter is a floating counter, open below, and the F5 sofa is the default layout (owner 11/23; seating at the peninsula still open, with option 1, stools tucked, added as a layer); hooks inside the common bath; occupancy sensors on the lower hall, vestibule and stair lights; the dining light over the round table; build 22f: a Rooms list on the left, grouped by floor and zone, with search and a previous-view button; the toolbar is unchanged (navigation redesign stage 1, owner 11/23); build 22e: the living room TV feature wall as it was in 22c (owner 11/23); build 22d: third person in Walk, one tap on the walk bar; build 22c: the 11/22 room-by-room design directions on both levels, window treatments as design layers, the Bed 113 door record corrected; the ADU living room layer and the peninsula south-end seating test kept): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld; 11/22: the room-by-room design directions, from owner sheets L-1 Rev 17, L-2 Rev 12 and L-3 Rev 27), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
+  <b>Owner concept model, not to dimension; not the permit set.</b> Design Studio v0.8 (build 2026-11-26a: every closet opens and closes with the Open closets button, showing the interior on record (standard fit-outs labelled assumed), and the apartment entry closet is one combined closet, coats in the north bay and cleaning in the south bay (owner 11/26; sizes placeholders); build 25r: the master bath wainscot runs down to the floor with no separate base (owner 11/25); build 24q: in all four baths the floor tile is the baseboard, with a metal edge on top, and the master bath wainscot stops on a metal edge (owner 11/24; base height, wainscot height and the edge profile and finish are placeholders); build 22p: first-floor kitchen finished to match the apartment, with white uppers on the range wall and left of the window and an under-cabinet hood over the range, all placeholders; build 22o: living room re-planned with the owner, a 78 in sofa, a counter-height eating ledge behind it with two stools, a 32 in round coffee table, the accent chair angled in the south-west corner, and a corner banquette in the north-east corner with the round table and one chair; living room added to the Design checks; build 22n: owner 11/24 late afternoon, the master bath wall tile no longer runs across its door (the 22m floor strip removed), the living room accent chair angled in the south-west corner in place of the plant, and the round table in the north-east corner with its light; build 22m: owner 11/24 afternoon, the pantry closet south of the stair with a 24 in pair of doors (a box in its floor from the stair below, size to measure), a louvered door on the basement utility room, the master bath tile across its doorway, modern pedestal round tables with the chairs tucked under, and the living room reading chair turned to face the room; build 22l: owner decisions 11/24, sliding double doors on the bedroom closets, single hinged doors on the hall linen and foyer coat closets, a louvered bifold laundry door, no ceiling fan in Bed 121, mirrored medicine cabinets in the hall, apartment and common baths (the common bath one surface-mounted, as its wall is the foundation wall; the master bath keeps its decided pair), the wet bar backsplash to the ceiling, light molding on the living room TV wall, and a tall cleaning cabinet in place of the apartment entry closet; build 22k: realism prototype calmed after close-up checks, window light removed (outside grade not measured), per-door cabinet grain, softer tile and counter sheen; build 22j: realism prototype fixes, window haze on all five apartment windows, trim colour follows the pick; build 22i: apartment realism prototype in photo mode, generic textures and window light, not products (owner 11/23); build 22h: the staging floor lamps removed; the ADU reading spot concept instead; peninsula stools tucked under the overhang (option 1); queen bed in the ADU bedroom; Bed 121 TV about 55 in; range electric (owner 11/23); build 22g: in the apartment, the east-window counter is a floating counter, open below, and the F5 sofa is the default layout (owner 11/23; seating at the peninsula still open, with option 1, stools tucked, added as a layer); hooks inside the common bath; occupancy sensors on the lower hall, vestibule and stair lights; the dining light over the round table; build 22f: a Rooms list on the left, grouped by floor and zone, with search and a previous-view button; the toolbar is unchanged (navigation redesign stage 1, owner 11/23); build 22e: the living room TV feature wall as it was in 22c (owner 11/23); build 22d: third person in Walk, one tap on the walk bar; build 22c: the 11/22 room-by-room design directions on both levels, window treatments as design layers, the Bed 113 door record corrected; the ADU living room layer and the peninsula south-end seating test kept): opens on the working whole-house warm-modern concept W (direction adopted 11/19; most finishes are unselected concepts); <b>Design</b> compares finish schemes and furniture arrangements; <b>Shots</b> holds reusable camera views; <b>Register</b> lists the 29 individually recorded items and the worksheet row that settles each; every other object reports its status by type under Show assumptions. Detail pass: trim, doors and frames are visual placeholders; tap <b>Show assumptions</b> to see what each object rests on. Walls come from the 10/01 geometry file, accurate to about ±4 in. Furniture comes from the 10/19 owner sheets; later owner-sheet changes are added as they are decided (v0.7: master bath double vanity, kitchen riser, common hall wall and door, house ducts; 11/20: a 72 in master shower with a bench, a fixed head and a handheld; 11/22: the room-by-room design directions, from owner sheets L-1 Rev 17, L-2 Rev 12 and L-3 Rev 27), and the family room arrangement is approximate. The ADU shows Option A and the 11/18 storage ideas: owner concepts, not on the architect's set. Ceilings: 8'-0" upstairs, 7'-9" lower level per A001 (not field-verified). Window heights assumed. The architect's drawings govern.
 </div>
 
 <script type="importmap">
@@ -127,7 +128,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 
 const [M, EL, DS] = await Promise.all(['data/model.json', 'data/elements.json', 'data/design.json'].map(u =>
-  fetch(u + '?v=2026-11-22p').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
+  fetch(u + '?v=2026-11-26a').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }))).catch(e => {
   const w = document.getElementById('warn'); w.textContent = 'Could not load the model data (' + e.message + ').'; w.style.display = 'block'; throw e; });
 const S = 0.0254, EYE = 63, RAD = 9;
 
@@ -303,6 +304,7 @@ function closetFront(L, f) {   // the open side: the side with no wall just outs
   return (open[0] || sides.sort((a, b) => b[3] - a[3])[0])[0];
 }
 const DOOR2 = mat(0xf3f0ea, { roughness: 0.55 }), GAPM = mat(0x3b3b3b, { roughness: 0.9 });
+const CLBOX = new Map(), CLDOOR = new Map();   // 26a: closet blocks and door sets, for the open/close button
 function closetDoors(furn, f, L) {
   const side = f.front || closetFront(L, f), g = new THREE.Group(), H = Math.min(80, f.h), len = (side === 'N' || side === 'S') ? f.w : f.d;
   const single = /single hinged/i.test(f.door || ''), dbl = /sliding double/i.test(f.door || ''), pair = /pair of hinged/i.test(f.door || '');   // 22l/22m: owner 11/24 door types
@@ -341,6 +343,7 @@ function closetDoors(furn, f, L) {
   const label = (f.door || 'Closet doors') + ' (placeholder)';
   g.userData.label = label; g.traverse(o => { if (o.isMesh) o.userData.label = label; });
   furn.add(g); tag(g, 'closetDoor');
+  CLDOOR.set(f, { g, side, off, len, single, dbl, pair, span, s0 });   // 26a
 }
 function buildFurniture(L, furn, obs) {
   for (const f of L.furniture) {
@@ -372,7 +375,7 @@ function buildFurniture(L, furn, obs) {
       }
       else if (k === 'tub') { add(g, f.x, f.y, f.w, f.d, 0, f.h, FM.porcelain); add(g, f.x + 3, f.y + 3, f.w - 6, f.d - 6, f.h, 0.3, FM.basin); }
       else if (k === 'shower') { add(g, f.x, f.y, f.w, f.d, 0, 2, FM.porcelain); add(g, f.x + 2, f.y + 2, f.w - 4, f.d - 4, 2, 0.2, FM.basin); add(g, f.x, f.y, f.w, f.d, 2, f.h - 2, FM.glass).castShadow = false; }
-      else if (k === 'closet' || k === 'tallcab') { add(g, f.x, f.y, f.w, f.d, f.z, f.h, k === 'closet' ? FM.closet : FM.cabinet); if (k === 'closet') closetDoors(furn, f, L); }
+      else if (k === 'closet' || k === 'tallcab') { CLBOX.set(f, add(g, f.x, f.y, f.w, f.d, f.z, f.h, k === 'closet' ? FM.closet : FM.cabinet)); if (k === 'closet') closetDoors(furn, f, L); }   // 26a: block registered
       else if (k === 'wallpart') add(g, f.x, f.y, f.w, f.d, f.z, f.h, MAT.wall);
       else if (k === 'panel') { add(g, f.x, f.y, f.w, f.d, f.z, f.h, DOORM); add(g, f.x - 1, f.y - 0.75, f.w + 2, f.d + 1.5, f.z + f.h, 2, TRIM); }
       else if (k === 'lock') add(g, f.x, f.y, f.w, f.d, f.z, f.h, FM.lock);
@@ -968,7 +971,7 @@ const PULL = new Set(['cab', 'tallcab', 'lock', 'vanity']);
 const pulls = new THREE.Group(); lowerLv.furn.add(pulls);
 const OPP = { N: 'S', S: 'N', E: 'W', W: 'E' };
 for (const f of lowerLv.L.furniture) {
-  if (!PULL.has(f.kind) || f.r || f.z !== 0 || /niche|overhang|chase/.test(f.label)) continue;
+  if (!PULL.has(f.kind) || f.r || f.z !== 0 || /niche|overhang|chase|^entry closet, combined/.test(f.label)) continue;   // 26a: the combined closet draws its own door pulls
   const cx = f.x + f.w / 2, cy = f.y + f.d / 2; if (!inZone(cx, cy)) continue;
   const front = /^peninsula$/.test(f.label) ? 'E' : OPP[nearestWallSide(lowerLv.L, cx, cy)[0]];
   const ns = front === 'N' || front === 'S', span = ns ? f.w : f.d, tall = f.h > 60;
@@ -1756,6 +1759,97 @@ for (const o of tiles) {
 }
 for (const lv of LEVELS) lv.root.updateMatrixWorld(true);
 
+
+// 24q: bath tile base and metal edges (owner decisions 11/24). Placeholders: base 4 in, edge 1/2 in, neutral grey (profile shape and finish not chosen).
+const TB_H = 4, TB_E = 0.5, TB_FL = LEVELS.find(v => v.L.id === 'first');
+const TB_INFO = { status: 'owner concept', why: 'Owner decisions 11/24 and 11/25: the floor tile is the baseboard in the hall, family room and apartment baths, finished at the top with a Schluter metal edge; in the master bath the wainscot tile runs to the floor instead and stops at the top on a Schluter edge. The 4 in base height and the 48 in wainscot top are placeholders; the profile shape and finish are not chosen, so the edge is a neutral grey, not a selected finish.', source: 'Owner decisions 11/24 (design decisions sheet rows 40 to 42); Bathroom_Finish_Direction decisions 15 to 17', fix: 'Tile installer sets the base height from the real tile and cuts, and the wainscot top from whole tile courses; owner picks the profile shape and finish.' };
+const TB_EDGE = mat(0xb4b7ba, { roughness: 0.45, metalness: 0.45 });
+const putTB = (lv, mesh, label) => { mesh.castShadow = false; mesh.receiveShadow = true; const g = new THREE.Group(); g.add(mesh); tag(g, TB_INFO); g.traverse(o => { if (o.isMesh) o.userData.label = label; }); detailRoot.get(lv).add(g); (window.__tb24q = window.__tb24q || []).push({ lv: lv.L.id, label, mesh }); return mesh; };
+// a band on side s of rect f, z0 to z1, only where a wall (or the back of a closet, where the model has no partition) lines that side; door spans and, above the sill, windows are cut. Placed by putTB.
+function tbBand(lv, f, s, z0, z1, m, label, t) {
+  const L = lv.L, ns = s === 'N' || s === 'S', a0 = ns ? f.x : f.y, a1 = ns ? f.x + f.w : f.y + f.d, e = { N: f.y, S: f.y + f.d, W: f.x, E: f.x + f.w }[s];
+  const backs = L.furniture.filter(g => !g.r && g.kind === 'closet' && g.x != null);
+  const segs = [];
+  for (const w of [...L.walls, ...L.fixed, ...backs]) {
+    const face = { N: w.y + w.d, S: w.y, W: w.x + w.w, E: w.x }[s];
+    if (Math.abs(face - e) > 3.5) continue;
+    const s0 = Math.max(a0, ns ? w.x : w.y), s1 = Math.min(a1, ns ? w.x + w.w : w.y + w.d);
+    if (s1 - s0 > 0.5) segs.push([s0, s1, face]);
+  }
+  segs.sort((p, q) => p[0] - q[0]);
+  const span = d => { const sx = d.sw.includes('E') ? 1 : -1, sy = d.sw.includes('S') ? 1 : -1; return ns ? [Math.min(d.x, d.x + sx * d.leaf), Math.max(d.x, d.x + sx * d.leaf), d.y] : [Math.min(d.y, d.y + sy * d.leaf), Math.max(d.y, d.y + sy * d.leaf), d.x]; };
+  const gaps = (L.doors || []).map(span).filter(([p0, p1, w]) => Math.abs(w - e) < 8 && p0 < a1 && p1 > a0).map(([p0, p1]) => [p0 - 3, p1 + 3]);
+  if (z1 > L.sill) for (const v of L.windows) { const on = ns ? Math.abs((v.y + v.d / 2) - e) < 8 && v.x < a1 && v.x + v.w > a0 : Math.abs((v.x + v.w / 2) - e) < 8 && v.y < a1 && v.y + v.d > a0; if (on) gaps.push(ns ? [v.x, v.x + v.w] : [v.y, v.y + v.d]); }
+  const out = []; let done = -1e9;
+  for (const [g0, g1, face] of segs) {
+    let pcs = [[Math.max(g0, done), g1]]; done = Math.max(done, g1);
+    for (const [x0, x1] of gaps) pcs = pcs.flatMap(([p0, p1]) => x1 <= p0 || x0 >= p1 ? [[p0, p1]] : [[p0, x0], [x1, p1]]);
+    const pos = s === 'N' || s === 'W' ? face : face - t;
+    for (const [p0, p1] of pcs) {
+      if (p1 - p0 < 0.5) continue;
+      const mm = m.map ? texMat(m.map, p1 - p0, z1 - z0, m.userData.tile || 24) : m; if (m.map) { mm.roughness = m.roughness; mm.color.copy(m.color); }
+      out.push(putTB(lv, ns ? place(box(p1 - p0, z1 - z0, t, mm), p0, pos, p1 - p0, t, z0, z1 - z0) : place(box(t, z1 - z0, p1 - p0, mm), pos, p0, t, p1 - p0, z0, z1 - z0), label));
+    }
+  }
+  return out;
+}
+const TB_TILES = [];   // [base mesh, floor tile mesh]: the base copies its bath floor's colour after each pick
+for (const lv of LEVELS) {
+  lv.root.updateMatrixWorld(true);
+  const L = lv.L;
+  for (const T of L.tile) {
+    // the floor tile mesh of this bath, for texture and colour
+    const fl = tiles.find(o => { const b = new THREE.Box3().setFromObject(o); return Math.abs(b.min.x / S - T.x) < 2 && Math.abs(b.min.z / S - T.y) < 2; });
+    // 1. take the painted baseboard off the bath side of each wall (the part inside the bath; the rest of the run stays)
+    const inT = (x0, y0, x1, y1) => x1 > T.x - 2.5 && x0 < T.x + T.w + 2.5 && y1 > T.y - 2.5 && y0 < T.y + T.d + 2.5;   // 25r: 2.5 in, the tile rects stop up to about 1.2 in short of a wall face
+    const cut = [];
+    lv.root.traverse(o => { if (!o.isMesh || !(o.geometry instanceof THREE.BoxGeometry)) return; const gp = o.geometry.parameters;
+      if (Math.abs(gp.height - 4 * S) > 1e-6 || !(Math.abs(gp.width - 0.6 * S) < 1e-6 || Math.abs(gp.depth - 0.6 * S) < 1e-6) || o.userData.info !== INFO.trim) return;
+      const b = new THREE.Box3().setFromObject(o), x0 = b.min.x / S, x1 = b.max.x / S, y0 = b.min.z / S, y1 = b.max.z / S;
+      const thinY = y1 - y0 < 1, inside = thinY ? (y0 >= T.y - 2.5 && y1 <= T.y + T.d + 2.5) : (x0 >= T.x - 2.5 && x1 <= T.x + T.w + 2.5);
+      if (inside && inT(x0, y0, x1, y1)) cut.push([o, thinY, x0, x1, y0, y1]); });
+    for (const [o, thinY, x0, x1, y0, y1] of cut) {
+      const [b0, b1, t0, t1] = thinY ? [x0, x1, T.x, T.x + T.w] : [y0, y1, T.y, T.y + T.d];
+      for (const [p0, p1] of [[b0, Math.min(b1, t0)], [Math.max(b0, t1), b1]]) {
+        if (p1 - p0 < 0.5) continue;
+        const k = o.clone(); k.geometry = thinY ? new THREE.BoxGeometry((p1 - p0) * S, 4 * S, 0.6 * S) : new THREE.BoxGeometry(0.6 * S, 4 * S, (p1 - p0) * S);
+        if (thinY) k.position.x = (p0 + p1) / 2 * S; else k.position.z = (p0 + p1) / 2 * S;
+        k.userData = { ...o.userData }; tagged.push(k); o.parent.add(k);
+      }
+      o.parent.remove(o); const i = tagged.indexOf(o); if (i >= 0) tagged.splice(i, 1);
+    }
+    // 2. tile base on every wall of the bath, except along a shower or tub (its wall tile runs to the floor)
+    const fx = L.furniture.filter(f => !f.r && ['shower', 'tub'].includes(f.kind) && f.x < T.x + T.w && f.x + f.w > T.x && f.y < T.y + T.d && f.y + f.d > T.y);
+    const bm = new THREE.MeshStandardMaterial({ map: fl ? fl.material.map : TILE, roughness: 0.6 }); bm.userData.tile = lv === lowerLv ? 48 : 24;
+    if (fx.some(f => f.info === 'mbath')) continue;   // 25r: the master wainscot runs to the floor, no tile base (owner 11/25)
+    for (const s of ['N', 'S', 'E', 'W']) {
+      const ns = s === 'N' || s === 'S', a0 = ns ? T.x : T.y, a1 = ns ? T.x + T.w : T.y + T.d, edge = { N: T.y, S: T.y + T.d, W: T.x, E: T.x + T.w }[s];
+      const block = fx.filter(f => Math.abs((ns ? (s === 'N' ? f.y : f.y + f.d) : (s === 'W' ? f.x : f.x + f.w)) - edge) < 6).map(f => ns ? [f.x, f.x + f.w] : [f.y, f.y + f.d]).sort((p, q) => p[0] - q[0]);
+      let c0 = a0; const runs = [];
+      for (const [b0, b1] of block) { if (b0 > c0) runs.push([c0, b0]); c0 = Math.max(c0, b1); }
+      if (c0 < a1) runs.push([c0, a1]);
+      for (const [r0, r1] of runs) {
+        if (r1 - r0 < 1) continue;
+        const sub = ns ? { x: r0, y: T.y, w: r1 - r0, d: T.d } : { x: T.x, y: r0, w: T.w, d: r1 - r0 };
+        for (const k of tbBand(lv, sub, s, 0, TB_H, bm, 'Tile base: the bath floor tile cut as the baseboard (owner 11/24); 4 in placeholder height', 0.5)) if (fl) TB_TILES.push([k, fl]);
+        tbBand(lv, sub, s, TB_H, TB_H + TB_E, TB_EDGE, 'Metal edge profile on the tile base (owner 11/24: Schluter; shape and finish not chosen, neutral placeholder)', 0.65);
+      }
+    }
+  }
+}
+// the master bath north wall is only the back of the Bed 132 closet in the model (no partition drawn), so facePanel finds no wall there: add its wainscot here
+{
+  const L = TB_FL.L, sh = L.furniture.find(f => f.kind === 'shower' && f.info === 'mbath');
+  const room = sh && L.tile.find(t => sh.x >= t.x - 1 && sh.x <= t.x + t.w + 1 && sh.y >= t.y - 1 && sh.y <= t.y + t.d + 1);
+  if (room && wallFace(L, { x: room.x, y: room.y, w: sh.x - room.x, d: room.d }, 'N') == null) {
+    const r = { x: room.x, y: room.y, w: sh.x - room.x, d: room.d };
+    const m = new THREE.MeshStandardMaterial({ map: SUBWAY, roughness: 0.35 }); m.userData.tile = 24;
+    tbBand(TB_FL, r, 'N', 0, 48, m, 'Master bath wainscot: white subway, vertical stack, from the floor to about 48 in, no separate base (decision 4; owner 11/25; height set by whole tile courses); north wall, the model has no partition here', 0.3);
+    tbBand(TB_FL, r, 'N', 48, 48 + TB_E, TB_EDGE, 'Metal edge profile at the top of the wainscot (owner 11/24: Schluter; shape and finish not chosen, neutral placeholder)', 0.45);
+  }
+}
+PICK_HOOK_LIST.push(() => { for (const [k, fl] of TB_TILES) k.material.color.copy((fl.userData.realBase || fl.material).color); });
+
 // 5. pendants (Electrical layer) in matte black when the hardware is black: separate materials per zone
 const PEND_H = EM.metal.clone(), PEND_A = EM.metal.clone(), PEND_BASE = EM.metal.color.clone();
 for (const lv of LEVELS) for (const eg of [lv.g.elec, lv.fix]) eg.traverse(o => {   // 21f: the fixtures view's pendants follow the hardware finish too
@@ -1888,8 +1982,8 @@ PICK_HOOK_LIST.push(p => {
     const r = { x: room.x, y: room.y, w: sh.x - room.x, d: room.d };   // the part of the bath outside the shower
     for (const s of ['N', 'S', 'W']) {
       const m = new THREE.MeshStandardMaterial({ map: SUBWAY, roughness: 0.35 }); m.userData.tile = 24;
-      facePanel(FIRSTL, r, s, 0, 48, m, 'Master bath wainscot: white subway, vertical stack, about 48 in (decision 4; height set by the tile)');
-      facePanel(FIRSTL, r, s, 48, 49.5, mat(0xf6f6f4, { roughness: 0.3 }), 'Wainscot cap (placeholder)', 0.9);
+      facePanel(FIRSTL, r, s, 0, 48, m, 'Master bath wainscot: white subway, vertical stack, from the floor to about 48 in, no separate base (decision 4; owner 11/25; height set by whole tile courses)');   // 25r: runs to the floor
+      facePanel(FIRSTL, r, s, 48, 48.5, mat(0xb4b7ba, { roughness: 0.45, metalness: 0.45 }), 'Metal edge profile at the top of the wainscot (owner 11/24: Schluter; shape and finish not chosen, neutral placeholder)', 0.45);   // 24q: replaces the white cap
     }
   }
 }
@@ -2345,6 +2439,155 @@ const UTILDOOR = { x: 141.9, y0: 121.5, y1: 153.0 };
 window.__m22 = { util: () => ({ ...UTILDOOR }) };
 window.__l22 = { bifold: () => ({ ...BIFOLD }), med: () => MED.slice(), mold: () => MOLD.slice() };
 
+
+// ================= 26a: closets open and close (owner 11/26), and the combined apartment entry closet (owner 11/26) =================
+// Every closet gets an interior drawn from the decisions on record; where no interior is on record, a standard shelf and rod (or
+// shelves) is shown and labelled assumed. The Open closets button opens or closes them all: hinged doors swing open, sliding pairs
+// are hidden while open. Default closed. All sizes are placeholders.
+const CLO = [];   // { name, lv, kind, leaves, open(on) }
+const CLO_ASSUMED = { status: 'assumed', why: 'No interior is on record for this closet, so a standard fit-out is shown: a shelf at about 68 in with a rod under it (or plain shelves for linen, pantry and storage). It is a placeholder, not a decision.', source: 'Generic closet fit-out (no owner decision yet)', fix: 'Owner decides the interior; cabinet maker or closet installer sets it from the framed opening.' };
+const cloInfo = (why, src) => ({ status: 'owner concept', why, source: src, fix: 'Closet installer sets the layout from the framed opening; sizes here are placeholders.' });
+const CLO_SPECS = [
+  ['first', 356.2, 8.2, 'Bed 113 closet', { t: 'hang' }],
+  ['first', 505.5, 125.7, 'Bed 132 closet', { t: 'hang' }],
+  ['first', 423.6, 206.8, 'Hall linen closet', { t: 'shelves', z: [14, 28, 42, 56, 70] }],
+  ['first', 423.6, 230.8, 'Master closet A', { t: 'hang' }],
+  ['first', 423.6, 294.5, 'Foyer coat closet', { t: 'hang' }],
+  ['first', 423.6, 338.4, 'Master closet B', { t: 'drawers', a0: 0, a1: 30, info: cloInfo('Owner decision 11/22: drawers in closet B, no dresser. The drawer unit is drawn at the north end, about 30 in wide and 20 in deep; its position and size are placeholders.', 'House decision register 11/22 (master bedroom)') }],
+  ['first', 8.6, 200.3, 'Bed 121 closet', { t: 'hang' }],
+  ['first', 196.0, 135.0, 'Pantry closet', { t: 'shelves', z: [16, 30, 44, 58, 72] }],
+  ['lower', 435.7, 332.1, 'Office storage closet', { t: 'shelves', z: [16, 32, 48, 64] }],
+  ['lower', 528.0, 188.0, 'Apartment bedroom closet', { t: 'drawers', a0: 0, a1: 36, mid: 48, info: cloInfo('Owner preferred 11/22 (closet drawers): a drawer unit about 36 in wide and 18 to 20 in deep at the west end behind one sliding panel, a shelf over it, about 54 in of rod beside it and a high shelf for luggage (ADU record S5). Sizes are placeholders.', 'Interior design review 11/22 (apartment bedroom closet); ADU design record S5') }],
+];
+{ const T = 0.6, OUT = { N: [0, -1], S: [0, 1], W: [-1, 0], E: [1, 0] };
+  for (const [lid, fx, fy, name, sp] of CLO_SPECS) {
+    const lv = LEVELS.find(v => v.L.id === lid), f = lv && lv.L.furniture.find(q => q.kind === 'closet' && Math.abs(q.x - fx) < 0.2 && Math.abs(q.y - fy) < 0.2);
+    const cd = f && CLDOOR.get(f), bx = f && CLBOX.get(f); if (!f || !cd || !bx) continue;
+    bx.visible = false;   // the solid placeholder block gives way to the shell and interior
+    const g0 = bx.parent, side = cd.side, len = cd.len, D = side === 'N' || side === 'S' ? f.d : f.w, Hc = f.h, info = sp.info || CLO_ASSUMED;
+    const R = (a0, a1, d0, d1) => side === 'N' ? [f.x + a0, f.y + f.d - d1, a1 - a0, d1 - d0] : side === 'S' ? [f.x + a0, f.y + d0, a1 - a0, d1 - d0]
+      : side === 'W' ? [f.x + f.w - d1, f.y + a0, d1 - d0, a1 - a0] : [f.x + d0, f.y + a0, d1 - d0, a1 - a0];
+    const P = (a0, a1, d0, d1, z0, z1, m, label, inf = info) => { const [x, y, w, d] = R(a0, a1, d0, d1); const b = place(box(w, z1 - z0, d, m), x, y, w, d, z0, z1 - z0); b.castShadow = b.receiveShadow = true; const g = new THREE.Group(); g.add(b); tag(g, inf); b.userData.label = label; g0.add(g); };
+    const SH = FM.white, nm = name + ': ';
+    // shell
+    P(0, len, 0, 0.5, 0, Hc, SH, nm + 'closet back (painted)', CLO_ASSUMED); P(0, 0.5, 0, D, 0, Hc, SH, nm + 'closet end (painted)', CLO_ASSUMED); P(len - 0.5, len, 0, D, 0, Hc, SH, nm + 'closet end (painted)', CLO_ASSUMED); P(0, len, 0, D, Hc - 0.5, Hc, SH, nm + 'closet ceiling', CLO_ASSUMED);
+    const shelf = (a0, a1, z, dd, lab) => P(a0, a1, 0.5, dd, z, z + 0.75, FM.white, lab);
+    const rod = (a0, a1, z, lab) => P(a0, a1, 10.5, 11.5, z, z + 1, HANDLE, lab);
+    if (sp.t === 'hang') { shelf(0.5, len - 0.5, 68, Math.min(12.5, D - 1), nm + 'shelf over the rod (standard fit-out, assumed)'); rod(1, len - 1, 65.5, nm + 'hanging rod (standard fit-out, assumed)'); }
+    if (sp.t === 'shelves') for (const z of sp.z) shelf(0.5, len - 0.5, z, D - 1.5, nm + 'shelf (standard fit-out, assumed)');
+    if (sp.t === 'drawers') {
+      const dl = nm + 'drawer unit in the closet (see status)', a0 = sp.a0 + 0.5, a1 = sp.a1;
+      P(a0, a1, 0.5, 20.5, 0, 32, FM.white, dl);
+      for (const z of [8, 16, 24]) P(a0 + 0.5, a1 - 0.5, 20.5, 20.8, z - 0.2, z + 0.2, GAPM, dl);
+      for (const z of [4, 12, 20, 28]) P((a0 + a1) / 2 - 3, (a0 + a1) / 2 + 3, 20.8, 21.4, z - 0.3, z + 0.3, HANDLE, dl);
+      if (sp.mid) shelf(a0, a1, sp.mid, 14, nm + 'shelf over the drawer unit (see status)');
+      shelf(0.5, len - 0.5, 68, Math.min(12.5, D - 1), nm + 'high shelf (see status)'); rod(a1 + 0.5, len - 1, 65.5, nm + 'hanging rod beside the drawer unit (see status)');
+    }
+    // doors: hinged leaves for the open state; the existing door drawing stays for the closed state
+    const n = OUT[side], u = side === 'N' || side === 'S' ? [1, 0] : [0, 1], H = Math.min(80, f.h);
+    const hingeAt = a => side === 'N' ? [f.x + a, f.y - cd.off] : side === 'S' ? [f.x + a, f.y + f.d + cd.off] : side === 'W' ? [f.x - cd.off, f.y + a] : [f.x + f.w + cd.off, f.y + a];
+    const leaves = [];
+    const leaf = (aH, w, dir) => {   // hinge position along the face, leaf width, dir +1 if the free end is at higher a
+      const [hx, hy] = hingeAt(aH), c = Math.cos(100 * Math.PI / 180), s = Math.sin(100 * Math.PI / 180);
+      const dx = dir * u[0] * c + n[0] * s, dz = dir * u[1] * c + n[1] * s;
+      const g = new THREE.Group(); g.position.set((hx + n[0] * T / 2) * S, 0, (hy + n[1] * T / 2) * S); g.rotation.y = Math.atan2(-dz, dx);
+      const b = new THREE.Mesh(new THREE.BoxGeometry(w * S, H * S, T * S), DOORM); b.position.set(w / 2 * S, H / 2 * S, 0);
+      const p1 = new THREE.Mesh(new THREE.BoxGeometry(0.6 * S, 12 * S, 0.6 * S), HANDLE); p1.position.set((w - 2.5) * S, 44 * S, (T / 2 + 0.4) * S);
+      const p2 = p1.clone(); p2.position.z = -(T / 2 + 0.4) * S;
+      g.add(b, p1, p2); const lab = (f.door || 'Closet door') + ': shown open (placeholder)';
+      tag(g, 'closetDoor'); g.traverse(o => { if (o.isMesh) { o.userData.label = lab; o.castShadow = o.receiveShadow = true; } });
+      g.visible = false; lv.furn.add(g); leaves.push(g);
+    };
+    if (cd.single) leaf(0, len, 1);
+    else if (cd.pair) { const pw = cd.span / 2; leaf(cd.s0, pw, 1); leaf(cd.s0 + cd.span, pw, -1); }
+    else if (!cd.dbl) { leaf(0, len / 2, 1); leaf(len, len / 2, -1); }   // other hinged sets (office storage doors): drawn as a pair at the outer edges
+    CLO.push({ name, lv: lid, kind: cd.dbl ? 'sliding' : 'hinged', leaves: leaves.length, open: on => { cd.g.visible = !on; for (const g of leaves) g.visible = on; } });
+  } }
+
+// the combined apartment entry closet: same footprint as the 11/24 cleaning cabinet (24 in deep x 36 in wide, west wall, front faces
+// east). North bay: coats on hooks, landing shelf, adjustable shoe shelves. South bay: stick vacuum on its charging outlet, broom,
+// mop, supply shelf. Top shelf with baskets, light strip under it, two 18 in hinged doors that open with the Open closets button.
+const INFO26 = { status: 'owner concept', why: 'Owner decision 11/26: one combined entry closet, coats in the north bay (hooks, a landing shelf and adjustable shoe shelves) and cleaning in the south bay (stick vacuum on its charging outlet, broom and mop), a top shelf with baskets, a light strip under it, two 18 in hinged doors. Shelf heights, bay widths, hook positions and the vacuum are placeholders; no product is selected.', source: 'Owner decision 11/26 (combines the 11/24 cleaning cabinet with the coat closet in the owner reference photo); ADU design record S1', fix: 'Cabinet maker sets the bays and shelf heights from the measured ceiling and the chosen vacuum; electrician sets the charging receptacle and the light strip switching; check the door swings against the open entry door.' };
+const CL26 = { parts: 0, removed: 0, doors: [] };
+{ const f = lowerLv.L.furniture.find(q => /^entry closet, combined/.test(q.label || ''));
+  if (f) {
+    const bx = CLBOX.get(f); if (bx) { bx.visible = false; CL26.removed++; }
+    const X0 = f.x, X1 = f.x + f.w, Y0 = f.y, Y1 = f.y + f.d, H = f.h, T = 0.75, DIV = Y0 + 20.25;   // north bay about 19.5 in clear, south bay about 14.25 in
+    const OAK = FM.oak, BASK = mat(0xb9a27c, { roughness: 0.95 }), LED = new THREE.MeshStandardMaterial({ color: 0xfff1d6, emissive: 0xffe2b0, emissiveIntensity: 0.9, roughness: 0.4 });
+    const P = (x0, x1, y0, y1, z0, z1, m, label) => { put22(lowerLv, place(box(x1 - x0, z1 - z0, y1 - y0, m), x0, y0, x1 - x0, y1 - y0, z0, z1 - z0), label, INFO26); CL26.parts++; };
+    const L1 = 'Entry closet interior, white oak look (owner 11/26; placeholder)', L0 = 'Entry closet case, warm-white matte outside (owner 11/26; placeholder)';
+    P(X0, X0 + 0.5, Y0, Y1, 0, H, OAK, L1);                                                         // back
+    P(X0, X1, Y0, Y0 + T, 0, H, DOORM, L0); P(X0, X1, Y1 - T, Y1, 0, H, DOORM, L0);               // sides, warm white outside
+    P(X0 + 0.5, X1 - 0.2, Y0 + T, Y0 + T + 0.2, 0, H - T, OAK, L1); P(X0 + 0.5, X1 - 0.2, Y1 - T - 0.2, Y1 - T, 0, H - T, OAK, L1);   // oak liners inside
+    P(X0, X1, Y0, Y1, H - T, H, DOORM, L0);                                                         // top
+    P(X0 + 0.5, X1 - 1, DIV - T / 2, DIV + T / 2, 0, 72, OAK, 'Entry closet divider between the coat bay and the cleaning bay (owner 11/26; position placeholder)');
+    P(X0 + 0.5, X1 - 1.5, Y0 + T, Y1 - T, 72, 72 + T, OAK, 'Entry closet top shelf across both bays (owner 11/26; height set by the measured ceiling)');
+    for (const y0 of [Y0 + 3, Y0 + 19]) P(X0 + 2, X0 + 14, y0, y0 + 14, 72 + T, 72 + T + 9, BASK, 'Basket on the top shelf (staging, placeholder)');
+    P(X1 - 3, X1 - 2.4, Y0 + 1.5, Y1 - 1.5, 71.4, 72, LED, 'Light strip under the top shelf, on when the doors open (owner 11/26 concept; electrician sets the power and switching before close-in)');
+    const NB0 = Y0 + T, NB1 = DIV - T / 2, HK = 'Coat hook, matte black (owner 11/26; positions placeholders; metal rule: matte black outside the baths)';
+    for (let i = 0; i < 4; i++) { const yy = NB0 + 2.5 + i * (NB1 - NB0 - 5) / 3; P(X0 + 0.5, X0 + 3, yy - 0.3, yy + 0.3, 62, 62.6, ZM.hw, HK); P(X0 + 2.4, X0 + 3, yy - 0.3, yy + 0.3, 62.6, 64, ZM.hw, HK); }
+    P(X0 + 0.5, X0 + 16, NB0, NB1, 37, 37 + T, OAK, 'Landing shelf at about 38 in for keys and a basket (owner 11/26; height placeholder)');
+    P(X0 + 2, X0 + 12, NB0 + 4, NB0 + 15, 37 + T, 37 + T + 6, BASK, 'Basket on the landing shelf (staging, placeholder)');
+    for (const z of [7, 16, 25]) P(X0 + 0.5, X0 + 14, NB0, NB1, z, z + T, OAK, 'Shoe shelf, adjustable on pin rows so a tenant can reset or remove it (owner 11/26; heights placeholders)');
+    const SB0 = DIV + T / 2, SB1 = Y1 - T, sm = (SB0 + SB1) / 2;
+    P(X0 + 0.5, X0 + 12, SB0, SB1, 58, 58 + T, OAK, 'Supply shelf in the cleaning bay (owner 11/26; height placeholder)');
+    const VL = 'Stick vacuum on a wall dock, charging from the receptacle in this bay (owner 11/24 and 11/26; generic placeholder, size waits for the vacuum)';
+    P(X0 + 0.5, X0 + 2, sm - 2, sm + 2, 40, 47, MAT.wall, VL); P(X0 + 2, X0 + 3.4, sm - 0.7, sm + 0.7, 3, 46, FM.black, VL);
+    P(X0 + 2, X0 + 6, sm - 2, sm + 2, 30, 40, FM.steel, VL); P(X0 + 1.5, X0 + 9, sm - 5, sm + 5, 0, 3, FM.black, VL);
+    const BL = 'Broom and mop on side-wall clips (owner 11/24 and 11/26; placeholders)';
+    for (const xx of [X0 + 13, X0 + 17]) { P(xx, xx + 1, SB1 - 2.2, SB1 - 1.2, 4, 54, OAK, BL); P(xx - 4, xx + 5, SB1 - 3.5, SB1 - 0.5, 0, 4, xx < X0 + 15 ? FM.black : MAT.wall, BL); }
+    const DL = 'Entry closet doors: two 18 in warm-white slab leaves on hinges, matte black long pulls (owner 11/26; check the swings against the open entry door)';
+    for (const [hy, dir] of [[Y0, 1], [Y1, -1]]) {
+      const g = new THREE.Group(); g.position.set(X1 * S, 0, hy * S); g.userData.dir = dir;
+      const leaf = place(box(T, H - 1, 18, DOORM), 0, dir > 0 ? 0 : -18, T, 18, 0.5, H - 1);
+      const pull = place(box(0.6, 12, 0.6, ZM.hw), T, dir > 0 ? 18 - 2.5 : -18 + 1.9, 0.6, 0.6, 38, 12);
+      g.add(leaf, pull); tag(g, INFO26); g.traverse(o => { if (o.isMesh) { o.userData.label = DL; o.castShadow = o.receiveShadow = true; } });
+      detailRoot.get(lowerLv).add(g); CL26.doors.push(g); CL26.parts += 2;
+    }
+    CLO.push({ name: 'Apartment entry closet', lv: 'lower', kind: 'hinged', leaves: 2, open: on => { for (const g of CL26.doors) g.rotation.y = on ? g.userData.dir * 100 * Math.PI / 180 : 0; } });
+  } }
+
+// where the sketch drew a solid wall in front of a closet (its doors hang on the wall's room face), cut an opening in that wall
+// while the closets are open, so the interior shows: the wall and its baseboards are swapped for pieces either side of the opening
+// and a header above the 80 in door head
+const CLCUT = [];
+{ const byMesh = new Map();
+  for (const lv of LEVELS) for (const f of lv.L.furniture) {
+    const cd = CLDOOR.get(f); if (!cd || cd.off < 0.4) continue;
+    const side = cd.side, ns = side === 'N' || side === 'S';
+    const band = side === 'N' ? [f.y - cd.off - 0.3, f.y + 0.3] : side === 'S' ? [f.y + f.d - 0.3, f.y + f.d + cd.off + 0.3] : side === 'W' ? [f.x - cd.off - 0.3, f.x + 0.3] : [f.x + f.w - 0.3, f.x + f.w + cd.off + 0.3];
+    const A0 = ns ? f.x : f.y, A1 = A0 + cd.len;
+    lv.root.traverse(o => {
+      if (!o.isMesh || !(o.geometry instanceof THREE.BoxGeometry) || !(o.userData.info === INFO.wall || o.userData.info === INFO.trim)) return;
+      const p = o.geometry.parameters, cx = o.position.x / S, cy = o.position.z / S, w = p.width / S, d = p.depth / S;
+      const along0 = ns ? cx - w / 2 : cy - d / 2, along1 = ns ? cx + w / 2 : cy + d / 2, dep0 = ns ? cy - d / 2 : cx - w / 2, dep1 = ns ? cy + d / 2 : cx + w / 2;
+      if ((ns ? w : d) < (ns ? d : w)) return;                       // only walls running along the closet face
+      if (dep1 < band[0] || dep0 > band[1]) return;
+      const c0 = Math.max(A0, along0), c1 = Math.min(A1, along1); if (c1 - c0 < 1) return;
+      const e = byMesh.get(o) || { o, ns, along0, along1, cuts: [] }; e.cuts.push([c0, c1]); byMesh.set(o, e);
+    });
+  }
+  for (const e of byMesh.values()) {
+    const { o, ns } = e, p = o.geometry.parameters, h = p.height / S, zc = o.position.y / S, z0 = zc - h / 2, wall = o.userData.info === INFO.wall;
+    const cuts = e.cuts.sort((a, b) => a[0] - b[0]), keep = []; let a = e.along0;
+    for (const [c0, c1] of cuts) { if (c0 > a) keep.push([a, c0]); a = Math.max(a, c1); } if (a < e.along1) keep.push([a, e.along1]);
+    const g = new THREE.Group(); g.visible = false; o.parent.add(g);
+    const piece = (a0, a1, zz0, zz1) => { const b = new THREE.Mesh(new THREE.BoxGeometry(ns ? (a1 - a0) * S : p.width, (zz1 - zz0) * S, ns ? p.depth : (a1 - a0) * S), o.material);
+      b.position.set(ns ? (a0 + a1) / 2 * S : o.position.x, (zz0 + zz1) / 2 * S, ns ? o.position.z : (a0 + a1) / 2 * S); b.castShadow = b.receiveShadow = true;
+      b.userData.info = o.userData.info; b.userData.mat0 = o.material; b.userData.label = o.userData.label; tagged.push(b); g.add(b); };
+    for (const [a0, a1] of keep) if (a1 - a0 > 0.2) piece(a0, a1, z0, z0 + h);
+    if (wall) for (const [c0, c1] of cuts) if (z0 + h > 80.5) piece(c0, c1, 80, z0 + h);
+    CLCUT.push({ open: on => { o.visible = !on; g.visible = on; } });
+  } }
+
+// Open closets button: opens or closes them all (remembered in this browser; default closed)
+let cloOpen = false; try { cloOpen = localStorage.getItem('studio.closets') === 'open'; } catch (e) {}
+function setClosets(on) { cloOpen = !!on; try { localStorage.setItem('studio.closets', cloOpen ? 'open' : 'closed'); } catch (e) {} for (const c of CLO) c.open(cloOpen); for (const c of CLCUT) c.open(cloOpen); const b = ui('bClo'); if (b) { b.classList.toggle('on', cloOpen); b.textContent = cloOpen ? 'Close closets' : 'Open closets'; } }
+if (ui('bClo')) ui('bClo').onclick = () => setClosets(!cloOpen);
+setClosets(cloOpen);
+window.__cl26 = { info: () => ({ parts: CL26.parts, removed: CL26.removed, doors: CL26.doors.map(g => Math.round(g.rotation.y * 180 / Math.PI)) }),
+  closets: () => CLO.map(c => ({ name: c.name, lv: c.lv, kind: c.kind, leaves: c.leaves })), cuts: () => CLCUT.length, set: setClosets, open: () => cloOpen };
+
 // ================= 22i: ADU realism prototype (owner 11/23: "build that ADU prototype as build 22i") =================
 // Photo mode only, apartment only; the rest of the house and the live view are unchanged, so the same camera can compare.
 // Inside the owner's 11/20 realism rule: generic textures and surface response only, never a specific product.
@@ -2691,9 +2934,9 @@ function fromImg(id, px, py) {
   const z = d.zones[0]; return [(px - z.bx) / z.ax, (py - z.by) / z.ay];
 }
 
-Promise.all(['data/minimap.json', 'data/places.json'].map(u => fetch(u + '?v=2026-11-22p').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); })))
+Promise.all(['data/minimap.json', 'data/places.json'].map(u => fetch(u + '?v=2026-11-26a').then(r => { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); })))
   .then(([d, P]) => Promise.all(Object.entries(d.levels).map(([id, l]) => new Promise((res, rej) => {
-    const im = new Image(); im.onload = () => { mini.img[id] = im; res(); }; im.onerror = () => rej(new Error(l.img)); im.src = 'data/' + l.img + '?v=2026-11-22p';
+    const im = new Image(); im.onload = () => { mini.img[id] = im; res(); }; im.onerror = () => rej(new Error(l.img)); im.src = 'data/' + l.img + '?v=2026-11-26a';
   }))).then(() => {
     mini.data = d; mini.places = Object.entries(P.places).map(([id, p]) => ({ id, ...p })).filter(p => p.at && lvById(p.level));
     const sel = ui('miniGo');
@@ -3218,7 +3461,7 @@ renderer.setAnimationLoop(() => {
   if (!cmp.on) updateLabels(); else hideLabels();
 });
 </script>
-<script type="module" src="present.js?v=2026-11-22p"></script>
-<script type="module" src="nav.js?v=2026-11-22p"></script>
+<script type="module" src="present.js?v=2026-11-26a"></script>
+<script type="module" src="nav.js?v=2026-11-26a"></script>
 </body>
 </html>
