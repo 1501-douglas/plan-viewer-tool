@@ -1930,18 +1930,6 @@
     },
     {
      "type": "box",
-     "x": 594.0,
-     "y": 225.3,
-     "w": 12.0,
-     "d": 0.8,
-     "z": 46,
-     "h": 14,
-     "mat": "gap",
-     "label": "Niche in the south wet wall at the standing end (master bath direction; plumber and waterproofing open)",
-     "level": "first"
-    },
-    {
-     "type": "box",
      "x": 604.8,
      "y": 171.0,
      "w": 5.0,
@@ -2062,7 +2050,7 @@
      "z": 48,
      "h": 0.8,
      "mat": "counter",
-     "label": "Corner shelf, not a niche (owner 11/22)",
+     "label": "Corner shelf (owner 11/22); the niche in the south wall is added 11/27",
      "level": "lower"
     },
     {
